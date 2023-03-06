@@ -1,0 +1,29 @@
+{
+  "name": "Only U",
+  "short_name": "Only U",
+  "theme_color": "#ffffff",
+  "background_color": "#004740",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "OnlyU-64.png",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "OnlyU-128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "OnlyU-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "splash_pages": null
+}
