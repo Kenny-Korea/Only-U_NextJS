@@ -5,6 +5,9 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <link rel="manifest" href="/manifest.json" />
+        {/* 파비콘 */}
+        <link rel="icon" href="../../OnlyU-192.png" />
+        <link rel="apple-touch-icon" href="../../OnlyU-192.png" />
       </Head>
       <body>
         <Main />

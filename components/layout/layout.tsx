@@ -8,9 +8,11 @@ type ComponentProps = {
 const Layout = (props: ComponentProps) => {
   return (
     <>
-      <Header />
-      <main>{props.children}</main>
-      <Navbar />
+      <div className="w-[100vw] h-[100vh] bg-pink-200 relative">
+        <Header />
+        <main>{props.children}</main>
+        <Navbar />
+      </div>
     </>
   );
 };

@@ -28,7 +28,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "components/card/dday/dday.jsx"
+    "components/card/plan/dday.jsx"
   ],
   "exclude": [
     "node_modules"

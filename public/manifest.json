@@ -9,7 +9,7 @@
   "start_url": "/",
   "icons": [
     {
-      "src": "OnlyU-64.png",
+      "src": "./icons/OnlyU-64.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },

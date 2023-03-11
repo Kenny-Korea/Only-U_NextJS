@@ -36,15 +36,15 @@
 }
 
 .loginInput {
-  @apply w-full h-8 px-2 py-1 text-sm rounded-sm outline-main border-2 border-gray-200;
+  @apply w-full h-8 px-2 py-1 text-sm rounded-sm outline-none border-2 border-gray-200;
 }
 
 .textArea {
-  @apply w-full px-2 py-1 text-sm rounded-sm outline-main border-2 border-gray-200 resize-none;
+  @apply w-full px-2 py-1 text-sm rounded-sm outline-none border-2 border-gray-200 resize-none;
 }
 
 .ratingButton {
-  @apply w-1/5 h-full bg-gray-200 hover:bg-sub;
+  @apply w-1/5 h-full bg-gray-200 hover:bg-yellow-400;
 }
 
 tr {

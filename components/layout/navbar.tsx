@@ -6,11 +6,10 @@ import PhotoRoundedIcon from "@mui/icons-material/PhotoRounded";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import PlaceRoundedIcon from "@mui/icons-material/PlaceRounded";
 import CardGiftcardRoundedIcon from "@mui/icons-material/CardGiftcardRounded";
-// import "./navbar.module.css";
 // import { useRecoilState } from "recoil";
 // import { hidingNavbarState } from "../../atoms";
-import { useRouter } from "next/router";
 import Link from "next/link";
+import { navbarItems } from "@/utils/navbarItems";
 
 const Navbar = () =>
   // { currentPage }
@@ -33,7 +32,7 @@ const Navbar = () =>
 
     return (
       <>
-        <div className="Navbar">
+        <div className="Navbar fixed bottom-0 right-0">
           <div
             className={`w-full bg-bgColor rounded-tr-lg rounded-tl-lg z-50 
         ${hideNavbar ? "hidden" : "centerItem"}
@@ -41,46 +40,14 @@ const Navbar = () =>
           >
             <div className="navigation">
               <ul>
-                <li className="list active">
-                  <Link href="/">
-                    <span className="icon">
-                      <HomeRoundedIcon />
-                    </span>
-                    <span className="text">Home</span>
-                  </Link>
-                </li>
-                <li className="list">
-                  <Link href="/post">
-                    <span className="icon">
-                      <PhotoRoundedIcon />
-                    </span>
-                    <span className="text">Post</span>
-                  </Link>
-                </li>
-                <li className="list">
-                  <Link href="/chat">
-                    <span className="icon">
-                      <ChatBubbleOutlineRoundedIcon />
-                    </span>
-                    <span className="text">Chat</span>
-                  </Link>
-                </li>
-                <li className="list">
-                  <Link href="/place">
-                    <span className="icon">
-                      <PlaceRoundedIcon />
-                    </span>
-                    <span className="text">Place</span>
-                  </Link>
-                </li>
-                <li className="list">
-                  <Link href="/gift">
-                    <span className="icon">
-                      <CardGiftcardRoundedIcon />
-                    </span>
-                    <span className="text">Gift</span>
-                  </Link>
-                </li>
+                {navbarItems.map((item) => (
+                  <li className="list active">
+                    <Link href={item.path}>
+                      <span className="icon">{<item.icon />}</span>
+                      <span className="text">{item.name}</span>
+                    </Link>
+                  </li>
+                ))}
                 <div className="indicator"></div>
               </ul>
             </div>
