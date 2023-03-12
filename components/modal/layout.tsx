@@ -4,8 +4,8 @@ type ComponentProps = {
   children: React.ReactNode;
 };
 
-const Layout = ({ children }: ComponentProps) => {
-  const [modal, setModal] = useState(true);
+const ModalLayout = ({ children }: ComponentProps) => {
+  const [modal, setModal] = useState<boolean>(false);
   return (
     <>
       <>
@@ -28,4 +28,4 @@ const Layout = ({ children }: ComponentProps) => {
   );
 };
 
-export default Layout;
+export default ModalLayout;

@@ -3,7 +3,26 @@ import React from "react";
 const Post = () => {
   return (
     <>
-      <div className="Post"></div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
+      <div className="Post">hello</div>
     </>
   );
 };

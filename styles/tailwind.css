@@ -23,6 +23,10 @@
   @apply flex justify-center items-center;
 }
 
+.apartItem {
+  @apply flex justify-between items-center;
+}
+
 .submenu {
   @apply text-xl font-bold mx-5 my-3;
 }
@@ -61,4 +65,8 @@ td:nth-child(even) {
 
 .ellipsis {
   @apply whitespace-nowrap overflow-hidden text-ellipsis;
+}
+
+.roundDecoration {
+  @apply w-[50rem] h-[50rem] -top-[40rem] left-[calc(100vw/2-25rem)] rounded-full bg-gradient-to-br from-white via-subColor to-yellow-200 fixed;
 }
