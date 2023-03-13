@@ -71,7 +71,10 @@ const ItemModificationButton = (props: ItemModificationButtonProps) => {
               : "w-[1.59rem] shadow-sm bg-bgColor"
           } absolute top-0 right-0 h-[1.59rem] px-[0.17rem] flex rounded-full duration-300 overflow-hidden`}
         >
-          <div className="w-24 flex justify-between gap-1 items-center">
+          <div
+            className="w-24 flex justify-between gap-1 items-center"
+            key={item.id}
+          >
             {content().map((item) => item)}
             {/* {content()} */}
           </div>

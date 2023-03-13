@@ -55,6 +55,14 @@ tr {
   @apply h-6;
 }
 
+li {
+  @apply list-none;
+}
+
+label {
+  @apply px-1 text-sm;
+}
+
 td:nth-child(odd) {
   @apply w-14 h-full text-xs align-middle text-start pl-2;
 }

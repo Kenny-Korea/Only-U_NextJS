@@ -4,16 +4,35 @@
 //   GET_USER_INFO = "GET_USER_INFO"
 // }
 
-const initialValue = { currentPage: "Home" };
+const initialState: State = { currentPage: "Home", navbar: true };
+
+export type State = {
+  currentPage: string;
+  navbar: boolean;
+};
+
 type Action = {
   type: string;
   payload?: string;
 };
 
-export const pageReducer = (state = initialValue, action: Action) => {
+export const pageReducer = (state: State = initialState, action: Action) => {
   if (action.type === "CHANGE_PATH") {
     return {
       currentPage: action.payload,
+      navbar: true,
+    };
+  }
+  if (action.type === "SHOW_NAVBAR") {
+    return {
+      currentPage: state.currentPage,
+      navbar: true,
+    };
+  }
+  if (action.type === "TOGGLE_NAVBAR") {
+    return {
+      currentPage: state.currentPage,
+      navbar: !state.navbar,
     };
   }
   return state;

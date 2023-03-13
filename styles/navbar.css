@@ -1,8 +1,8 @@
-.Navbar {
+/* .Navbar {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
-}
+} */
 
 :root {
   /* --clr: rgb(229 231 235); */
@@ -13,8 +13,8 @@
 }
 
 .navigation {
-  width: 400px;
-  height: 70px;
+  width: 100vw;
+  height: 4rem;
   background-color: var(--clr);
   position: relative;
   display: flex;
@@ -33,7 +33,7 @@
   position: relative;
   list-style: none;
   width: 70px;
-  height: 60px;
+  height: 4rem;
   z-index: 1;
 
   display: flex;
@@ -88,8 +88,8 @@
   position: absolute;
   top: 0px;
   margin: 10px;
-  width: 50px;
-  height: 50px;
+  width: 3rem;
+  height: 3rem;
   background-color: var(--clr);
   border-radius: 50%;
   transition: 0.5s;
