@@ -1,9 +1,11 @@
 import CreateNewItemButton from "@/components/features/openModal";
 import { usePath } from "@/hooks/usePath";
-import React from "react";
+import React, { useState } from "react";
 
 const Place = () => {
   usePath("Place");
+  const [items, setItems] = useState([]);
+  const [modal, setModal] = useState(false);
 
   return (
     <>

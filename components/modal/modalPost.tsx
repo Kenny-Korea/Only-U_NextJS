@@ -2,32 +2,39 @@ import React, { useRef, useState } from "react";
 import ModalLayout from "./layout";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Image from "next/image";
-import { ModalPropsType } from "@/pages/post";
+import { ModalItemPropsType } from "@/types";
+import { createItem } from "@/api/apiService";
 
-const ModalPost = (props: ModalPropsType) => {
+const ModalPost = (props: ModalItemPropsType) => {
+  const { modal, setModal } = props;
+  const [missingValueError, setMissingValueError] = useState<boolean>(false);
   const [imageFileContainer, setImageFileContainer] = useState<File[]>([]);
   const [previewUrlContainer, setPreviewUrlContainer] = useState<string[]>([]);
   const [hashtagContainer, setHashtagContainer] = useState<string[]>([]);
+  const titleRef = useRef<HTMLInputElement>(null);
   const hashtagRef = useRef<HTMLInputElement>(null);
+  const contentRef = useRef<HTMLTextAreaElement>(null);
 
   const addHashtag = () => {
     if (hashtagRef.current?.hasAttribute) {
       if (hashtagRef.current.value === "") return;
-      setHashtagContainer(hashtagContainer.concat(hashtagRef.current.value));
+      const hashtagValue = hashtagRef.current.value;
+      setHashtagContainer([...hashtagContainer.concat(hashtagValue)]);
       hashtagRef.current.value = "";
       hashtagRef.current.focus();
     }
   };
 
-  const removeHashtag = (item) => {
-    setHashtag(
-      hashtag.filter((tag) => {
-        return tag !== item;
-      })
-    );
+  const removeHashtag = (item: string) => {
+    setHashtagContainer([
+      ...hashtagContainer.filter((hashtag) => {
+        return hashtag !== item;
+      }),
+    ]);
   };
 
   const addImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // 지금 좀 문제 있음
     if (e.currentTarget.files) {
       const previewFilesArray = [...e.currentTarget.files];
       const previewsToUrl = previewFilesArray.map((item) =>
@@ -46,18 +53,48 @@ const ModalPost = (props: ModalPropsType) => {
     ]);
     setImageFileContainer([...imageFileContainer.splice(index, 1)]);
   };
+
+  const partnerInfo = {
+    combinedId: "kenny",
+  };
+
+  const onClickSubmit = async () => {
+    console.log("함수 실행");
+    // 예외 처리
+    if (
+      !titleRef.current?.value ||
+      !contentRef.current?.value ||
+      imageFileContainer.length === 0 ||
+      !Array.isArray(imageFileContainer)
+    ) {
+      setMissingValueError(true);
+      return;
+    }
+    console.log("예외 처리 통과");
+
+    const data = {
+      id: null,
+      title: titleRef.current?.value,
+      hashtag: hashtagContainer,
+      content: contentRef.current?.value,
+      url: null,
+      writer: "kenny",
+      date: null,
+    };
+    createItem("posts", data, imageFileContainer);
+  };
+
+  const onClickCancel = () => {
+    setModal(false);
+  };
+
   return (
-    <ModalLayout modal={props.modal} setModal={props.setModal}>
-      <button
-        onClick={() => {
-          console.log(imageFileContainer);
-          console.log(previewUrlContainer);
-        }}
-      >
-        click
-      </button>
+    <ModalLayout
+      modal={modal}
+      onClickSubmit={onClickSubmit}
+      onClickCancel={onClickCancel}
+    >
       포스트 작성
-      {/* <ul className="flex flex-col gap-4 text-sm"> */}
       <li>
         <label htmlFor="title">제목</label>
         <input
@@ -65,6 +102,7 @@ const ModalPost = (props: ModalPropsType) => {
           type="text"
           placeholder="제목을 입력하세요"
           className="loginInput"
+          ref={titleRef}
         />
       </li>
       <li>
@@ -85,10 +123,17 @@ const ModalPost = (props: ModalPropsType) => {
           </button>
         </div>
       </li>
-      {hashtagContainer.length > 1 && (
+      {hashtagContainer.length > 0 && (
         <div className="flex gap-2 px-1 text-xs">
           {hashtagContainer.map((item) => (
-            <div key={item}>#{item}</div>
+            <div
+              key={item}
+              onClick={() => {
+                removeHashtag(item);
+              }}
+            >
+              #{item}
+            </div>
           ))}
         </div>
       )}
@@ -101,7 +146,6 @@ const ModalPost = (props: ModalPropsType) => {
           multiple
           className="hidden"
           onChange={addImageFile}
-          // ref={fileRef}
         />
         <div className="flex items-center gap-2">
           <div className="w-full h-12 bg-white flex items-center gap-1 overflow-x-scroll rounded-md border border-gray-200">
@@ -135,16 +179,16 @@ const ModalPost = (props: ModalPropsType) => {
           rows={4}
           placeholder="내용을 입력하세요"
           className="textArea"
-          // ref={contentRef}
+          ref={contentRef}
           // onFocus={handleFooter}
           // onBlur={handleFooter}
         />
       </li>
-      {/* </ul> */}
-      {/* <SubmitCancelButton
-              handleSubmit={handleSubmit}
-              handleCancel={handleCancel}
-            /> */}
+      {missingValueError && (
+        <span className="px-1 font-bold text-sm text-mainColor">
+          * 빈 항목을 모두 채워주세요.
+        </span>
+      )}
     </ModalLayout>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import CalendarTodayRoundedIcon from "@mui/icons-material/CalendarTodayRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import PlanItem from "../card/plan/planItem";
+import PlanItem from "../card/planItem";
 
 type Test = {
   id: number;

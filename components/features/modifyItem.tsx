@@ -6,14 +6,14 @@ import { doc, updateDoc, arrayRemove } from "firebase/firestore";
 import { db } from "../../firebase";
 import { AuthContext } from "@/context/authContext";
 
-type ItemModificationButtonProps = {
+type EditButtonProps = {
   item: {
-    id: number;
+    id: string;
   };
   docName: string;
 };
 
-const ItemModificationButton = (props: ItemModificationButtonProps) => {
+const EditButton = (props: EditButtonProps) => {
   const { item, docName } = props;
   const [clicked, setClicked] = useState(false);
   const { partnerInfo } = useContext(AuthContext);
@@ -84,4 +84,4 @@ const ItemModificationButton = (props: ItemModificationButtonProps) => {
   );
 };
 
-export default ItemModificationButton;
+export default EditButton;
