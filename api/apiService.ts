@@ -14,9 +14,11 @@ import {
 } from "firebase/firestore";
 import { db, storage } from "../firebase";
 import { uuidv4 } from "@firebase/util";
+import { partnerInfo } from "@/utils/combinedId";
+import { useDispatch } from "react-redux";
 // import { PartnerContext } from "../Context/PartnerContext";
 
-const partnerInfo = { combinedId: "test" };
+partnerInfo;
 
 type TypeArg = "posts" | "plans" | "places";
 type DataArg = {
@@ -85,9 +87,10 @@ export const createItem = async (
 
   // TODO 3. 데이터 저장
   const handleUpdate = async (funcDoc: any) => {
+    const modifiedType = type.substring(0, type.length - 1);
     try {
       await funcDoc(docRef, {
-        [type]: arrayUnion(data),
+        [modifiedType]: arrayUnion(data),
       });
     } catch {
       console.log("err");
@@ -100,6 +103,7 @@ export const createItem = async (
     handleUpdate(updateDoc);
   }
 };
+
 export const readItems = async (type: TypeArg) => {
   const modifiedType = type.substring(0, type.length - 1); // db 내 이름 수정하지 않기 위해 사용
   const docRef = doc(

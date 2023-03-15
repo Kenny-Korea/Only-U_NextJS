@@ -1,12 +1,11 @@
-// 유저 정보 가져오고 나중에 유저 정보 수정까지 하는 authReducer
+export type PageReducerSelector = {
+  pageReducer: {
+    currentPage: string;
+    navbar: boolean;
+  };
+};
 
-// enum ActionType {
-//   GET_USER_INFO = "GET_USER_INFO"
-// }
-
-const initialState: State = { currentPage: "Home", navbar: true };
-
-export type State = {
+type State = {
   currentPage: string;
   navbar: boolean;
 };
@@ -15,6 +14,8 @@ type Action = {
   type: string;
   payload?: string;
 };
+
+const initialState: State = { currentPage: "Home", navbar: true };
 
 export const pageReducer = (state: State = initialState, action: Action) => {
   if (action.type === "CHANGE_PATH") {

@@ -1,5 +1,7 @@
+import { UploadingReducerSelector } from "@/state/reducers/uploadingReducer";
 import React from "react";
-import ModalLayout from "../modal/layout";
+import { useSelector } from "react-redux";
+import ModalUploading from "../modal/uploading";
 import Content from "./content";
 import Header from "./header";
 import Navbar from "./navbar";
@@ -9,9 +11,15 @@ type ComponentProps = {
 };
 
 const Layout = (props: ComponentProps) => {
+  const isUploading = useSelector(
+    (state: UploadingReducerSelector) => state.uploadingReducer.uploading
+  );
+  // console.log(isUploading);
+
   return (
     <>
-      <div className="w-screen h-screen bg-pink-200">
+      {isUploading && <ModalUploading />}
+      <div className="w-screen h-screen">
         <Header />
         <Content>{props.children}</Content>
         <Navbar />

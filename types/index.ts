@@ -20,5 +20,6 @@ export type ItemPropsType = {
     readonly url?: string[];
     readonly writer: string;
     readonly date: number;
+    readonly rate?: string;
   };
 };

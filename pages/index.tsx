@@ -4,7 +4,6 @@ import { usePath } from "@/hooks/usePath";
 
 const Home = () => {
   usePath("Home");
-  console.log("home");
 
   return (
     <>

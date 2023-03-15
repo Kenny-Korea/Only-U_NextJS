@@ -4,6 +4,7 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Image from "next/image";
 import { ModalItemPropsType } from "@/types";
 import { createItem } from "@/api/apiService";
+import { useDispatch } from "react-redux";
 
 const ModalPost = (props: ModalItemPropsType) => {
   const { modal, setModal } = props;
@@ -14,6 +15,7 @@ const ModalPost = (props: ModalItemPropsType) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const hashtagRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
+  const dispatch = useDispatch();
 
   const addHashtag = () => {
     if (hashtagRef.current?.hasAttribute) {
@@ -59,6 +61,8 @@ const ModalPost = (props: ModalItemPropsType) => {
   };
 
   const onClickSubmit = async () => {
+    dispatch({ type: "UPLOADING_STARTS" });
+
     console.log("함수 실행");
     // 예외 처리
     if (
@@ -81,7 +85,9 @@ const ModalPost = (props: ModalItemPropsType) => {
       writer: "kenny",
       date: null,
     };
-    createItem("posts", data, imageFileContainer);
+    await createItem("posts", data, imageFileContainer);
+    dispatch({ type: "UPLOADING_DONE" });
+    setModal(false);
   };
 
   const onClickCancel = () => {

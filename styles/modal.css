@@ -145,13 +145,13 @@
   background-color: aliceblue;
 }
 
-.hashTag {
+/* .hashTag {
   background-image: radial-gradient(
     circle 981px at 14.6% 17.7%,
     rgba(255, 101, 91, 0.85) 2.7%,
     rgba(121, 32, 82, 0.78) 97.2%
   );
-}
+} */
 
 /* React Datepicker 부분 */
 .react-datepicker__month-container {

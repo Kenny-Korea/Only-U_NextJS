@@ -2,12 +2,16 @@ import React, { useEffect, useMemo } from "react";
 import Link from "next/link";
 import { navbarItems } from "@/utils/navbarItems";
 import { useSelector } from "react-redux";
-import { State } from "@/state/reducers/pageReducer";
 import { useRouter } from "next/router";
+import { PageReducerSelector } from "@/state/reducers/pageReducer";
 
 const Navbar = () => {
-  const currentPage = useSelector((state: State) => state.currentPage);
-  const showNavbar = useSelector((state: State) => state.navbar);
+  const currentPage = useSelector(
+    (state: PageReducerSelector) => state.pageReducer.currentPage
+  );
+  const showNavbar = useSelector(
+    (state: PageReducerSelector) => state.pageReducer.navbar
+  );
   const router = useRouter();
   const onClickBackButton = (path: string) => {
     router.replace(path);

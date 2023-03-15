@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded"; //이거 그 web dev simplified에서 구현한걸로 변경하기
 import { useSelector } from "react-redux";
-import { State } from "@/state/reducers/pageReducer";
+import { PageReducerSelector } from "@/state/reducers/pageReducer";
 import { createBrowserHistory } from "history";
 import { useDispatch } from "react-redux";
 // import ModalSettings from "../Modal/ModalSettings";
@@ -11,17 +11,19 @@ import { useDispatch } from "react-redux";
 const Header = () => {
   // const { currentUser } = useContext(AuthContext); - redux로 관리
   const [settings, setSettings] = useState(false);
-  const headerTitle = useSelector((state: State) => state.currentPage);
+  const headerTitle = useSelector(
+    (state: PageReducerSelector) => state.pageReducer.currentPage
+  );
   const dispatch = useDispatch();
 
   const onClickHeaderTitle = () => {
     dispatch({ type: "TOGGLE_NAVBAR" });
   };
 
-  useEffect(() => {
-    const history = createBrowserHistory();
-    console.log(history.action);
-  }, [headerTitle]);
+  // useEffect(() => {
+  //   const history = createBrowserHistory();
+  //   console.log(history.action);
+  // }, [headerTitle]);
 
   const onClickSettings = () => {
     setSettings(!settings);

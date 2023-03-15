@@ -1,19 +1,15 @@
-import React from "react";
+import { useState } from "react";
 import CalendarTodayRoundedIcon from "@mui/icons-material/CalendarTodayRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import PlanItem from "../card/planItem";
 
-type Test = {
-  id: number;
-  title: string;
-  date: number;
-};
-
 const Plan = () => {
-  const test: Array<Test | null> = [
-    { id: 1, title: "test", date: 1 },
-    { id: 2, title: "test2", date: 1 },
-  ];
+  const [items, setItems] = useState([]);
+  const [modal, setModal] = useState(false);
+
+  const openModal = () => {
+    setModal(true);
+  };
   return (
     <>
       <div className="min-w-full min-h-[40vh] h-[60vh] flex flex-col gap-2 pt-2">
@@ -23,20 +19,16 @@ const Plan = () => {
             Plan
           </div>
           <div className="w-6 h-6 bg-white text-mainColor rounded-full centerItem">
-            <AddRoundedIcon
-            // onClick={() => {
-            //   setAddDday(!addDday);
-            // }}
-            />
+            <AddRoundedIcon onClick={openModal} />
           </div>
         </div>
         <div className="w-full h-4/5 overflow-y-scroll">
           <div className="w-full h-fit flex flex-col gap-2">
             <hr />
-            {test.map((item) => {
-              if (item) return <PlanItem item={item} key={item.id} />;
-            })}
-            {test.length === 0 && "Add new plan!"}
+            {items.map((item) => (
+              <PlanItem item={item} />
+            ))}
+            {items.length === 0 && "Add new plan!"}
           </div>
         </div>
       </div>

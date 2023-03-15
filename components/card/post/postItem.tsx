@@ -1,12 +1,14 @@
+//! state 변화가 많이 일어나는 컴포넌트이므로, 렌더링 최적화에 특별히 신경쓰기
+// memoization 활용하기
+// touchEvent를 state가 아닌 다른 값으로 사용할 수 있는 방법을 고민해보기
+
 import { ItemPropsType } from "@/types";
-import React, { useContext, useRef, useState } from "react";
+import { dateFormat } from "@/utils/dateFormat";
+import { useMemo, useRef, useState } from "react";
 import EditButton from "../../features/modifyItem";
-// import ProfileImageSmall from "../Profile/ProfileImageSmall";
 
 const PostItem = (props: ItemPropsType) => {
   const { item } = props;
-  console.log(item);
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [firstTouchX, setFirstTouchX] = useState(0);
   // const { currentUser } = useContext(AuthContext);
@@ -19,7 +21,7 @@ const PostItem = (props: ItemPropsType) => {
     uid: "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2",
     photoURL: "abc",
   };
-  const [isDetailOpen, setIsDetailOpen] = useState<boolean>(false);
+  const [isDetailOpen, setIsDetailOpen] = useState<boolean | null>(null);
 
   const titleRef = useRef<HTMLSpanElement>(null);
   const imageContainerRef = useRef<HTMLDivElement>(null);
@@ -62,8 +64,16 @@ const PostItem = (props: ItemPropsType) => {
   };
 
   const handleClick = () => {
+    if (isDetailOpen === null) {
+      setIsDetailOpen(true);
+      return;
+    }
     setIsDetailOpen(!isDetailOpen);
   };
+
+  const getRegisteredDate = useMemo(() => {
+    return dateFormat(item.date);
+  }, [item]);
 
   return (
     <>
@@ -87,11 +97,11 @@ const PostItem = (props: ItemPropsType) => {
                     alt=""
                     className="w-8 h-8 object-cover rounded-full border border-gray-300"
                   />
-                  {item.url ? (
+                  {Array.isArray(item.url) && item.url.length > 1 && (
                     <div className="w-9 h-5 rounded-full bg-black opacity-50 text-[9px] text-center align-middle leading-5 text-white">
                       {currentIndex + 1} / {item.url.length}
                     </div>
-                  ) : null}
+                  )}
                 </div>
                 <EditButton item={item} docName="posts" />
               </div>
@@ -100,7 +110,7 @@ const PostItem = (props: ItemPropsType) => {
               <div
                 className={`absolute w-full h-full text-white flex flex-col justify-center z-10`}
                 id={
-                  !isDetailOpen
+                  isDetailOpen === null
                     ? "defaultPostDetail"
                     : isDetailOpen
                     ? "showPostDetail"
@@ -123,21 +133,19 @@ const PostItem = (props: ItemPropsType) => {
                   >
                     {item?.title}
                   </span>
-                  <div className="flex gap-x-2 text-sm overflow-hidden">
-                    {item.hashtag?.map((data: any) => {
-                      return (
-                        <div
-                          className="h-5 w-fit px-2 text-white text-xs text-center rounded-full leading-5 border border-main hashTag"
-                          key={data.id}
-                        >
-                          #{data}
-                        </div>
-                      );
-                    })}
+                  <div className="w-full overflow-x-scroll">
+                    <div className="w-auto max-h-6 h-6">
+                      {item.hashtag?.map((data: any) => {
+                        return (
+                          <div className="hashtag" key={data.id}>
+                            #{data}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                   <div className="flex justify-end text-xs text-gray-200">
-                    posted at{" "}
-                    {new Intl.DateTimeFormat("ko-KR").format(item.date)}
+                    posted at {getRegisteredDate}
                   </div>
                 </div>
                 <div className="p-3 flex flex-col gap-y-4 text-xs w-full h-full bg-neutral-600 bg-opacity-60">
@@ -153,6 +161,7 @@ const PostItem = (props: ItemPropsType) => {
                 {item.url?.map((imageURL: string) => {
                   return (
                     <div
+                      key={imageURL}
                       style={{ backgroundImage: `url(${imageURL})` }}
                       className="min-w-full h-full bg-cover bg-no-repeat bg-center"
                     />
