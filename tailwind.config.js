@@ -18,12 +18,13 @@ module.exports = {
         main: ["Andika"],
       },
       colors: {
-        bgColor: "#F7F7F7",
-        starColor: "rgb(234, 179, 8)",
+        DEFAULT: "#4A4A4A",
+        backgroundColor: "#F8F8F8",
         mainColor: "#FF766B",
         subColor: "rgb(255,87,100)",
         textColor: "#4A4A4A",
-        sub: "rgb(255,87,100)",
+        starColor: "rgb(234, 179, 8)",
+        testColor: "AAAAAA",
       },
       boxShadow: {
         test: "rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",

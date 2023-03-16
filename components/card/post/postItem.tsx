@@ -118,13 +118,9 @@ const PostItem = (props: ItemPropsType) => {
                 }
                 onClick={handleClick}
               >
-                <div
-                  className={`w-full bg-neutral-600 bg-opacity-60 flex flex-col gap-2 p-3 rounded-tl-xl rounded-tr-xl ${
-                    isDetailOpen ? "h-fit" : "h-[8rem]"
-                  }`}
-                >
+                <div className="w-full h-[8rem] bg-neutral-600 bg-opacity-60 flex flex-col justify-between px-3 py-2 rounded-tl-xl rounded-tr-xl">
                   <span
-                    className={`font-bold text-2xl leading-7 ${
+                    className={`font-bold text-[1.5rem] leading-7 ${
                       isDetailOpen
                         ? null
                         : "block whitespace-nowrap overflow-hidden text-ellipsis duration-500"
@@ -133,11 +129,11 @@ const PostItem = (props: ItemPropsType) => {
                   >
                     {item?.title}
                   </span>
-                  <div className="w-full overflow-x-scroll">
-                    <div className="w-auto max-h-6 h-6">
-                      {item.hashtag?.map((data: any) => {
+                  <div className="w-full overflow-x-scroll whitespace-nowrap scrollbar-hide">
+                    <div className="max-h-6">
+                      {item.hashtag?.map((data: any, index: number) => {
                         return (
-                          <div className="hashtag" key={data.id}>
+                          <div className="hashtag" key={data + index}>
                             #{data}
                           </div>
                         );

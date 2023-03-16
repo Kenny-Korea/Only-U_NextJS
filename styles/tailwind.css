@@ -4,20 +4,21 @@
 @tailwind components;
 @tailwind utilities;
 
-.page {
+/** 공용 Layout 관련 */
+/* .page {
   @apply bg-green-200 flex flex-col pb-2;
-}
+} */
 .card {
   @apply bg-white rounded-2xl overflow-hidden shadow-md;
 }
 
-.cardItems {
+/* .cardItems {
   @apply flex flex-col gap-3 p-3;
-}
+} */
 
-.centerPage {
+/* .centerPage {
   @apply flex flex-col items-center;
-}
+} */
 
 .centerItem {
   @apply flex justify-center items-center;
@@ -27,13 +28,13 @@
   @apply flex justify-between items-center;
 }
 
-.submenu {
+/* .submenu {
   @apply text-xl font-bold mx-5 my-3;
-}
+} */
 
-.wrapper {
+/* .wrapper {
   @apply text-xl;
-}
+} */
 
 .input {
   @apply w-[calc(100%-(mx*3))] h-6 mx-3 my-2 px-2 py-1 text-sm shadow-sm rounded-md outline-none;
@@ -52,7 +53,7 @@
 }
 
 .hashtag {
-  @apply h-5 mr-2 w-fit px-2 text-white text-xs text-center rounded-full leading-5 border bg-mainColor inline-block;
+  @apply h-5 mr-2 w-fit px-2 font-semibold text-xs text-center text-white rounded-full leading-5 bg-mainColor inline-block;
 }
 
 tr {
@@ -80,5 +81,5 @@ td:nth-child(even) {
 }
 
 .roundDecoration {
-  @apply w-[50rem] h-[50rem] -top-[40rem] left-[calc(100vw/2-25rem)] rounded-full bg-gradient-to-br from-white via-subColor to-yellow-200 fixed;
+  @apply w-[50rem] h-[50rem] -top-[40rem] left-[calc(100vw/2-25rem)] rounded-full bg-gradient-to-br from-white via-subColor to-yellow-100 fixed;
 }

@@ -3,11 +3,13 @@ import ModalLayout from "./layout";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Image from "next/image";
 import { ModalItemPropsType } from "@/types";
-import { createItem } from "@/api/apiService";
+import { createItem, DataArg } from "@/api/apiService";
 import { useDispatch } from "react-redux";
+import { useMutation, useQueryClient } from "react-query";
+import Error from "next/error";
 
 const ModalPost = (props: ModalItemPropsType) => {
-  const { modal, setModal } = props;
+  const { modal, setModal } = props; // 각 개별 모달의 상태를 전역적으로 관리할 필요는 없기 때문에 local state로 관리
   const [missingValueError, setMissingValueError] = useState<boolean>(false);
   const [imageFileContainer, setImageFileContainer] = useState<File[]>([]);
   const [previewUrlContainer, setPreviewUrlContainer] = useState<string[]>([]);
@@ -16,6 +18,26 @@ const ModalPost = (props: ModalItemPropsType) => {
   const hashtagRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+
+  //* useMutation
+  const mutation = useMutation(
+    (data: DataArg) => {
+      return createItem("posts", data, imageFileContainer);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("getPosts");
+        dispatch({ type: "UPLOADING_DONE" });
+        setModal(false);
+      },
+      onError: () => {
+        alert("Failed to upload posts. Please try again");
+        dispatch({ type: "UPLOADING_DONE" });
+        setModal(false);
+      },
+    }
+  );
 
   const addHashtag = () => {
     if (hashtagRef.current?.hasAttribute) {
@@ -56,14 +78,8 @@ const ModalPost = (props: ModalItemPropsType) => {
     setImageFileContainer([...imageFileContainer.splice(index, 1)]);
   };
 
-  const partnerInfo = {
-    combinedId: "kenny",
-  };
-
   const onClickSubmit = async () => {
     dispatch({ type: "UPLOADING_STARTS" });
-
-    console.log("함수 실행");
     // 예외 처리
     if (
       !titleRef.current?.value ||
@@ -74,7 +90,6 @@ const ModalPost = (props: ModalItemPropsType) => {
       setMissingValueError(true);
       return;
     }
-    console.log("예외 처리 통과");
 
     const data = {
       id: null,
@@ -85,9 +100,8 @@ const ModalPost = (props: ModalItemPropsType) => {
       writer: "kenny",
       date: null,
     };
-    await createItem("posts", data, imageFileContainer);
-    dispatch({ type: "UPLOADING_DONE" });
-    setModal(false);
+    // mutation 객체에 데이터 전달
+    mutation.mutate(data);
   };
 
   const onClickCancel = () => {

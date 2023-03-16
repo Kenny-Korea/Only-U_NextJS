@@ -3,6 +3,10 @@
   --main: #ff766b;
 }
 
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 @keyframes settingSlideIn {
   from {
     right: -4rem;

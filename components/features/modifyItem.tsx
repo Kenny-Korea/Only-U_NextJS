@@ -60,7 +60,6 @@ const EditButton = (props: EditButtonProps) => {
   // 특히 post 페이지는 state의 변화가 매우 심함
 
   const content = () => {
-    console.log("rendered");
     if (!clicked) return [settingsButton, updateButton, deleteButton];
     return [updateButton, deleteButton, settingsButton];
   };

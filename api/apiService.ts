@@ -1,6 +1,5 @@
 // import { useQuery } from "react-query";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-
 import {
   addDoc,
   getDoc,
@@ -14,14 +13,12 @@ import {
 } from "firebase/firestore";
 import { db, storage } from "../firebase";
 import { uuidv4 } from "@firebase/util";
-import { partnerInfo } from "@/utils/combinedId";
-import { useDispatch } from "react-redux";
-// import { PartnerContext } from "../Context/PartnerContext";
+import imageCompression from "browser-image-compression";
 
-partnerInfo;
+export const docPath =
+  "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2";
 
-type TypeArg = "posts" | "plans" | "places";
-type DataArg = {
+export type DataArg = {
   id: string | null;
   readonly title: string;
   readonly hashtag?: (string | null)[];
@@ -30,15 +27,7 @@ type DataArg = {
   readonly writer: string;
   date: number | null;
 };
-type DataToSave = {
-  id: string;
-  title: string;
-  hashtag?: (string | null)[];
-  content?: string;
-  url?: string[] | string | null;
-  writer: string;
-  date: number;
-};
+type TypeArg = "posts" | "plans" | "places";
 type ImageArg = File[];
 
 export const createItem = async (
@@ -46,25 +35,41 @@ export const createItem = async (
   data: DataArg,
   image: ImageArg
 ) => {
-  // TODO 1. 기존에 데이터가 있는지 확인하는 공통 res
-  const res = await getDoc(doc(db, type, partnerInfo.combinedId));
-  const docRef = doc(db, type, partnerInfo.combinedId);
+  //* 1. 기존에 데이터가 있는지 확인하는 공통 res
+  const res = await getDoc(doc(db, type, docPath));
+  const docRef = doc(db, type, docPath);
   const uploadDate = Timestamp.now().seconds;
 
-  // TODO 2. switch - case
+  //* 2. switch - case
   switch (type) {
     case "posts":
+      const options = {
+        maxSizeMB: 0.5,
+        maxWidth: 300,
+      };
+      const compressedImages: File[] = [];
+      for (let x of image) {
+        try {
+          const compressedImage = await imageCompression(x, options);
+          console.log(compressedImage);
+          compressedImages.push(compressedImage);
+        } catch {
+          console.log("error");
+        }
+      }
+      console.log(compressedImages);
       // 이미지 업로드 및 url 다운로드
       const urlArray: string[] = [];
-      if (image.length !== 0 || Array.isArray(image)) {
-        for (let i = 0; i < image.length; i++) {
-          const storageRef = ref(
-            storage,
-            partnerInfo.combinedId + uploadDate + i
+      if (compressedImages.length !== 0 || Array.isArray(compressedImages)) {
+        for (let i = 0; i < compressedImages.length; i++) {
+          const storageRef = ref(storage, docPath + uploadDate + i);
+          const uploadTask = await uploadBytesResumable(
+            storageRef,
+            compressedImages[i],
+            {
+              contentType: "image/jpeg",
+            }
           );
-          const uploadTask = await uploadBytesResumable(storageRef, image[i], {
-            contentType: "image/jpeg",
-          });
           await getDownloadURL(uploadTask.ref).then((url) => {
             urlArray.push(url);
           });
@@ -85,7 +90,7 @@ export const createItem = async (
       break;
   }
 
-  // TODO 3. 데이터 저장
+  //* 3. 데이터 저장
   const handleUpdate = async (funcDoc: any) => {
     const modifiedType = type.substring(0, type.length - 1);
     try {
@@ -106,19 +111,26 @@ export const createItem = async (
 
 export const readItems = async (type: TypeArg) => {
   const modifiedType = type.substring(0, type.length - 1); // db 내 이름 수정하지 않기 위해 사용
-  const docRef = doc(
-    db,
-    type,
-    "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2"
-  );
+  const docRef = doc(db, type, docPath);
   const docSnap = await getDoc(docRef); // Promise 객체 리턴
   if (docSnap.exists()) {
     const array = docSnap.data()[modifiedType];
-    console.log(array);
     return array;
   } else {
     return [];
   }
 };
+// export const readItems = async (type: TypeArg) => {
+//   const modifiedType = type.substring(0, type.length - 1); // db 내 이름 수정하지 않기 위해 사용
+//   const docRef = doc(db, type, docPath);
+//   const docSnap = await getDoc(docRef); // Promise 객체 리턴
+//   if (docSnap.exists()) {
+//     const array = docSnap.data()[modifiedType];
+//     console.log(array);
+//     return array;
+//   } else {
+//     return [];
+//   }
+// };
 export const updateItem = () => {};
 export const deleteItem = () => {};
