@@ -2,12 +2,12 @@
 // memoization 활용하기
 // touchEvent를 state가 아닌 다른 값으로 사용할 수 있는 방법을 고민해보기
 
-import { ItemPropsType } from "@/types";
+import { ItemProps, PostData } from "@/types";
 import { dateFormat } from "@/utils/dateFormat";
 import { useMemo, useRef, useState } from "react";
 import EditButton from "../../features/modifyItem";
 
-const PostItem = (props: ItemPropsType) => {
+const PostItem = (props: ItemProps<PostData>) => {
   const { item } = props;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [firstTouchX, setFirstTouchX] = useState(0);
@@ -15,11 +15,11 @@ const PostItem = (props: ItemPropsType) => {
   // const { partnerInfo } = useContext(PartnerContext);
   const currentUser = {
     uid: "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2",
-    photoURL: "abc",
+    imageurl: "abc",
   };
   const partnerInfo = {
     uid: "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2",
-    photoURL: "abc",
+    imageurl: "abc",
   };
   const [isDetailOpen, setIsDetailOpen] = useState<boolean | null>(null);
 
@@ -27,7 +27,7 @@ const PostItem = (props: ItemPropsType) => {
   const imageContainerRef = useRef<HTMLDivElement>(null);
 
   const toPrevImage = () => {
-    if (!item.url) return; // url을 optional로 지정했으므로
+    // if (!item.imageurl) return; // imageurl을 optional로 지정했으므로
     const isFirstSlide = currentIndex === 0; // boolean
     if (isFirstSlide) return;
     const newIndex = currentIndex - 1;
@@ -40,8 +40,8 @@ const PostItem = (props: ItemPropsType) => {
   };
 
   const toNextImage = () => {
-    if (!item.url) return; // url을 optional로 지정했으므로
-    const isLastSlide = currentIndex === item.url.length - 1;
+    // if (!item.imageurl) return; // imageurl을 optional로 지정했으므로
+    const isLastSlide = currentIndex === item.imageurl.length - 1;
     if (isLastSlide) return;
     const newIndex = currentIndex + 1;
     if (imageContainerRef.current) {
@@ -63,7 +63,7 @@ const PostItem = (props: ItemPropsType) => {
     if (scrollX > 30) toNextImage();
   };
 
-  const handleClick = () => {
+  const onTouchDetail = () => {
     if (isDetailOpen === null) {
       setIsDetailOpen(true);
       return;
@@ -72,7 +72,7 @@ const PostItem = (props: ItemPropsType) => {
   };
 
   const getRegisteredDate = useMemo(() => {
-    return dateFormat(item.date);
+    return dateFormat(item.regdate);
   }, [item]);
 
   return (
@@ -91,15 +91,15 @@ const PostItem = (props: ItemPropsType) => {
                   <img
                     src={
                       item.writer === currentUser.uid
-                        ? currentUser?.photoURL
-                        : partnerInfo?.photoURL
+                        ? currentUser?.imageurl
+                        : partnerInfo?.imageurl
                     }
                     alt=""
                     className="w-8 h-8 object-cover rounded-full border border-gray-300"
                   />
-                  {Array.isArray(item.url) && item.url.length > 1 && (
+                  {Array.isArray(item.imageurl) && item.imageurl.length > 1 && (
                     <div className="w-9 h-5 rounded-full bg-black opacity-50 text-[9px] text-center align-middle leading-5 text-white">
-                      {currentIndex + 1} / {item.url.length}
+                      {currentIndex + 1} / {item.imageurl.length}
                     </div>
                   )}
                 </div>
@@ -116,7 +116,7 @@ const PostItem = (props: ItemPropsType) => {
                     ? "showPostDetail"
                     : "hidePostDetail"
                 }
-                onClick={handleClick}
+                onClick={onTouchDetail}
               >
                 <div className="w-full h-[8rem] bg-neutral-600 bg-opacity-60 flex flex-col justify-between px-3 py-2 rounded-tl-xl rounded-tr-xl">
                   <span
@@ -154,11 +154,11 @@ const PostItem = (props: ItemPropsType) => {
                 className={`w-full h-full flex duration-500`}
                 ref={imageContainerRef}
               >
-                {item.url?.map((imageURL: string) => {
+                {item.imageurl?.map((imageimageurl: string) => {
                   return (
                     <div
-                      key={imageURL}
-                      style={{ backgroundImage: `url(${imageURL})` }}
+                      key={imageimageurl}
+                      style={{ backgroundImage: `imageurl(${imageimageurl})` }}
                       className="min-w-full h-full bg-cover bg-no-repeat bg-center"
                     />
                   );

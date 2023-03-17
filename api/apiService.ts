@@ -1,4 +1,3 @@
-// import { useQuery } from "react-query";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {
   addDoc,
@@ -14,25 +13,27 @@ import {
 import { db, storage } from "../firebase";
 import { uuidv4 } from "@firebase/util";
 import imageCompression from "browser-image-compression";
+import {
+  ChatArg,
+  ImageArg,
+  ItemArg,
+  PlaceArg,
+  PlanArg,
+  PostArg,
+  TypeArg,
+} from "@/types";
 
 export const docPath =
   "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2";
 
-export type DataArg = {
-  id: string | null;
-  readonly title: string;
-  readonly hashtag?: (string | null)[];
-  readonly content: string;
-  url: string[] | string | null;
-  readonly writer: string;
-  date: number | null;
+const imageCompressionOptions = {
+  maxSizeMB: 0.5,
+  maxWidth: 300,
 };
-type TypeArg = "posts" | "plans" | "places";
-type ImageArg = File[];
 
 export const createItem = async (
   type: TypeArg,
-  data: DataArg,
+  data: ItemArg<PlanArg | PostArg | ChatArg | PlaceArg>,
   image: ImageArg
 ) => {
   //* 1. 기존에 데이터가 있는지 확인하는 공통 res
@@ -43,14 +44,13 @@ export const createItem = async (
   //* 2. switch - case
   switch (type) {
     case "posts":
-      const options = {
-        maxSizeMB: 0.5,
-        maxWidth: 300,
-      };
       const compressedImages: File[] = [];
       for (let x of image) {
         try {
-          const compressedImage = await imageCompression(x, options);
+          const compressedImage = await imageCompression(
+            x,
+            imageCompressionOptions
+          );
           console.log(compressedImage);
           compressedImages.push(compressedImage);
         } catch {
@@ -74,10 +74,13 @@ export const createItem = async (
             urlArray.push(url);
           });
         }
-        data.id = uuidv4();
-        data.url = urlArray;
-        data.date = uploadDate;
-        console.log("for문 다 돌았음");
+        // data의 타입이 확실하지 않기 때문에 예외 처리 별도 해줘야 함
+        if ("imageurl" in data) {
+          data.id = uuidv4();
+          data.imageurl = urlArray;
+          data.regdate = uploadDate;
+          console.log("for문 다 돌았음");
+        }
       }
       break;
     case "places":

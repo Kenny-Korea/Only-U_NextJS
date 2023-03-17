@@ -1,14 +1,14 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import ModalLayout from "./layout";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Image from "next/image";
-import { ModalItemPropsType } from "@/types";
-import { createItem, DataArg } from "@/api/apiService";
+import { ItemArg, ModalProps, PostArg } from "@/types";
+import { createItem } from "@/api/apiService";
 import { useDispatch } from "react-redux";
 import { useMutation, useQueryClient } from "react-query";
-import Error from "next/error";
+import { MissingValueErrorMessage } from "@/utils/missingValueError";
 
-const ModalPost = (props: ModalItemPropsType) => {
+const ModalPost = (props: ModalProps) => {
   const { modal, setModal } = props; // 각 개별 모달의 상태를 전역적으로 관리할 필요는 없기 때문에 local state로 관리
   const [missingValueError, setMissingValueError] = useState<boolean>(false);
   const [imageFileContainer, setImageFileContainer] = useState<File[]>([]);
@@ -22,7 +22,7 @@ const ModalPost = (props: ModalItemPropsType) => {
 
   //* useMutation
   const mutation = useMutation(
-    (data: DataArg) => {
+    (data: ItemArg<PostArg>) => {
       return createItem("posts", data, imageFileContainer);
     },
     {
@@ -38,6 +38,36 @@ const ModalPost = (props: ModalItemPropsType) => {
       },
     }
   );
+
+  const onClickSubmit = async () => {
+    dispatch({ type: "UPLOADING_STARTS" });
+    // 예외 처리
+    if (
+      !titleRef.current?.value ||
+      !contentRef.current?.value ||
+      imageFileContainer.length === 0 ||
+      !Array.isArray(imageFileContainer)
+    ) {
+      setMissingValueError(true);
+      return;
+    }
+
+    const data: ItemArg<PostArg> = {
+      id: null,
+      title: titleRef.current?.value,
+      hashtag: hashtagContainer,
+      content: contentRef.current?.value,
+      imageurl: null,
+      writer: "kenny",
+      regdate: null,
+    };
+    // mutation 객체에 데이터 전달
+    mutation.mutate(data);
+  };
+
+  const onClickCancel = () => {
+    setModal(false);
+  };
 
   const addHashtag = () => {
     if (hashtagRef.current?.hasAttribute) {
@@ -78,34 +108,8 @@ const ModalPost = (props: ModalItemPropsType) => {
     setImageFileContainer([...imageFileContainer.splice(index, 1)]);
   };
 
-  const onClickSubmit = async () => {
-    dispatch({ type: "UPLOADING_STARTS" });
-    // 예외 처리
-    if (
-      !titleRef.current?.value ||
-      !contentRef.current?.value ||
-      imageFileContainer.length === 0 ||
-      !Array.isArray(imageFileContainer)
-    ) {
-      setMissingValueError(true);
-      return;
-    }
-
-    const data = {
-      id: null,
-      title: titleRef.current?.value,
-      hashtag: hashtagContainer,
-      content: contentRef.current?.value,
-      url: null,
-      writer: "kenny",
-      date: null,
-    };
-    // mutation 객체에 데이터 전달
-    mutation.mutate(data);
-  };
-
-  const onClickCancel = () => {
-    setModal(false);
+  const toggleNavbar = () => {
+    dispatch({ type: "TOGGLE_NAVBAR" });
   };
 
   return (
@@ -123,6 +127,8 @@ const ModalPost = (props: ModalItemPropsType) => {
           placeholder="제목을 입력하세요"
           className="loginInput"
           ref={titleRef}
+          onFocus={toggleNavbar}
+          onBlur={toggleNavbar}
         />
       </li>
       <li>
@@ -134,6 +140,8 @@ const ModalPost = (props: ModalItemPropsType) => {
             placeholder="태그할 내용을 입력하세요"
             className="loginInput"
             ref={hashtagRef}
+            onFocus={toggleNavbar}
+            onBlur={toggleNavbar}
           />
           <button
             className="w-7 h-7 bg-mainColor text-white rounded-md centerItem"
@@ -200,15 +208,11 @@ const ModalPost = (props: ModalItemPropsType) => {
           placeholder="내용을 입력하세요"
           className="textArea"
           ref={contentRef}
-          // onFocus={handleFooter}
-          // onBlur={handleFooter}
+          onFocus={toggleNavbar}
+          onBlur={toggleNavbar}
         />
       </li>
-      {missingValueError && (
-        <span className="px-1 font-bold text-sm text-mainColor">
-          * 빈 항목을 모두 채워주세요.
-        </span>
-      )}
+      {missingValueError && <MissingValueErrorMessage />}
     </ModalLayout>
   );
 };

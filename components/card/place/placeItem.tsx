@@ -1,24 +1,14 @@
-import { ItemPropsType } from "@/types";
+import { ItemProps, PlaceData } from "@/types";
 import { dateFormat } from "@/utils/dateFormat";
 import React from "react";
-import EditButton from "../features/modifyItem";
+import EditButton from "../../features/modifyItem";
 
-const PlaceItem = (props: ItemPropsType) => {
+const PlaceItem = (props: ItemProps<PlaceData>) => {
   const { item } = props;
-  const currentUser = {
-    uid: "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2",
-    photoURL: "abc",
-  };
-  const partnerInfo = {
-    uid: "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2",
-    photoURL: "abc",
-  };
 
   const displayRatings = () => {
-    if (!item.rate) return; // for TS
-    const parsedNum = parseInt(item.rate);
     let result = "";
-    for (let i = 0; i < parsedNum; i++) {
+    for (let i = 0; i < item.rating; i++) {
       result += "★";
     }
     return result;
@@ -28,7 +18,7 @@ const PlaceItem = (props: ItemPropsType) => {
     <>
       <div className="w-full h-fit min-h-[5rem] rounded-md bg-white shadow-md mb-3 p-2 flex gap-2">
         <img
-          src={typeof item.url === "string" ? item.url : ""}
+          src={item.imageurl.length > 0 ? item.imageurl[0] : ""} // 아직 그림은 1개만
           alt="pp"
           className="w-24 h-full min-h-[4.5rem] object-cover rounded-lg"
         />
@@ -42,7 +32,7 @@ const PlaceItem = (props: ItemPropsType) => {
           <span className="text-xs">{item.content}</span>
           <div className="text-xs h-4"></div>
           <span className="text-xs text-gray-500 absolute block bottom-0 right-0">
-            visited at {dateFormat(item.date)}
+            visited at {dateFormat(item.regdate)}
           </span>
         </div>
       </div>

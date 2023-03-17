@@ -1,6 +1,6 @@
-import { ModalLayoutPropsType } from "@/types";
+import { ModalLayoutProps } from "@/types";
 
-const ModalLayout = (props: ModalLayoutPropsType) => {
+const ModalLayout = (props: ModalLayoutProps) => {
   const { children, modal, onClickSubmit, onClickCancel } = props;
 
   return (
@@ -14,11 +14,11 @@ const ModalLayout = (props: ModalLayoutPropsType) => {
           />
         )}
         <div
-          className="w-full h-screen fixed left-0 pt-12 itemCenter z-10"
+          className="w-full h-screen fixed left-0 pt-12 z-10"
           id={modal ? "addPostSlideIn" : "addPostSlideOut"}
         >
           {/* 내부 컨텐츠 */}
-          <div className="rounded-xl overflow-hidden shadow-md m-4 p-3 bg-bgColor overflow-y-scroll">
+          <div className="rounded-xl overflow-hidden shadow-md m-4 p-3 bg-backgroundColor overflow-y-scroll">
             <div className="flex flex-col gap-2">{children}</div>
             <div className="flex justify-between gap-4 mx-3 my-2">
               <button

@@ -1,30 +1,41 @@
-import PlaceItem from "@/components/card/placeItem";
+import { readItems } from "@/api/apiService";
+import PlaceItem from "@/components/card/place/placeItem";
 import CreateNewItemButton from "@/components/features/openModal";
 import ModalPlace from "@/components/modal/modalPlace";
 import { usePath } from "@/hooks/usePath";
-import React, { useState } from "react";
+import { PlaceData } from "@/types";
+import { useState } from "react";
+import { useQuery } from "react-query";
 
 const Place = () => {
   usePath("Place");
-  const [items, setItems] = useState([]);
   const [modal, setModal] = useState(false);
-
+  const { isLoading, error, data, isFetching } = useQuery<PlaceData[]>(
+    "getPlaces",
+    () => {
+      return readItems("places");
+    },
+    { staleTime: 30000, keepPreviousData: true }
+  );
+  if (isLoading) return "Loading...";
+  if (error) return "An error has occurred: " + error;
+  console.log(isFetching);
   const openModal = () => {
     setModal(true);
   };
 
   return (
     <>
-      {items?.map((item) => (
+      {data?.map((item) => (
         <PlaceItem item={item} />
       ))}
       {modal && <ModalPlace modal={modal} setModal={setModal} />}
       {!modal && (
         <div onClick={openModal}>
-          <CreateNewItemButton path="Post" />
+          <CreateNewItemButton path="Place" />
         </div>
       )}
-      {items.length === 0 && "Add new place!"}
+      {data && data.length === 0 && "Add new place!"}
     </>
   );
 };

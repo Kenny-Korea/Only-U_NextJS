@@ -1,25 +1,13 @@
 import { readItems } from "@/api/apiService";
 import PostItem from "@/components/card/post/postItem";
 import CreateNewItemButton from "@/components/features/openModal";
-import ModalLayout from "@/components/modal/layout";
 import ModalPost from "@/components/modal/modalPost";
 import { usePath } from "@/hooks/usePath";
-import { ItemPropsType } from "@/types";
-import React, { useEffect, useState } from "react";
+import { PostData } from "@/types";
+import { useState } from "react";
 import { useQuery } from "react-query";
 
-type FetchedData = {
-  readonly id: string;
-  readonly title: string;
-  readonly hashtag?: (string | null)[];
-  readonly content: string;
-  readonly url: string[];
-  readonly writer: string;
-  readonly date: number;
-  readonly rate: string;
-};
-
-const Post = (props: any) => {
+const Post = () => {
   usePath("Post");
   // const { jsonData } = props;
   // let data;
@@ -29,7 +17,7 @@ const Post = (props: any) => {
   // }
 
   const [modal, setModal] = useState(false);
-  const { isLoading, error, data, isFetching } = useQuery<FetchedData[]>(
+  const { isLoading, error, data, isFetching } = useQuery<PostData[]>(
     "getPosts",
     () => {
       return readItems("posts");
@@ -46,8 +34,8 @@ const Post = (props: any) => {
   return (
     <>
       {data &&
-        data.map((item: FetchedData) => (
-          <PostItem item={item} key={item.date} />
+        data.map((item: PostData) => (
+          <PostItem item={item} key={item.regdate} />
         ))}
       {modal && <ModalPost modal={modal} setModal={setModal} />}
       {!modal && (
