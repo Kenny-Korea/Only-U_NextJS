@@ -19,21 +19,21 @@ const options = {
 };
 
 const GoogleMapContainer = (props: Props) => {
+  const { placeInfo, setPlaceInfo } = props;
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
     libraries,
   });
-  if (loadError) return "Error loading maps";
-  if (!isLoaded) return "Loading...";
+  // if (loadError) return "Error loading maps";
+  // if (!isLoaded) return "Loading...";
   const google = window.google;
   console.log("hi");
-  const { placeInfo, setPlaceInfo } = props;
   const mapRef = useRef();
-  const onLoadMap = useCallback((map) => {
+  const onLoadMap = useCallback((map: any) => {
     mapRef.current = map;
   }, []);
 
-  const onClickPlace = async (e) => {
+  const onClickPlace = async (e: any) => {
     // if (!e.placeId) return;
     // const placeRef = e.placeId;
     // let request = {

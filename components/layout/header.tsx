@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { PageReducerSelector } from "@/state/reducers/pageReducer";
 import { createBrowserHistory } from "history";
 import { useDispatch } from "react-redux";
+import { AuthReducerSelector } from "@/state/reducers/authReducer";
 // import ModalSettings from "../Modal/ModalSettings";
 // import { AuthContext } from "../../Context/AuthContext";
 // import { currentPageState, hidingFooterState } from "../../atoms";
@@ -14,10 +15,14 @@ const Header = () => {
   const headerTitle = useSelector(
     (state: PageReducerSelector) => state.pageReducer.currentPage
   );
+  const authState = useSelector(
+    (state: AuthReducerSelector) => state.authReducer.loginStatus
+  );
   const dispatch = useDispatch();
 
   const onClickHeaderTitle = () => {
     dispatch({ type: "TOGGLE_NAVBAR" });
+    console.log(authState);
   };
 
   // useEffect(() => {

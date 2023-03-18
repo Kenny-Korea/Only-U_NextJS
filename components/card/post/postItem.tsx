@@ -4,6 +4,7 @@
 
 import { ItemProps, PostData } from "@/types";
 import { dateFormat } from "@/utils/dateFormat";
+import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
 import EditButton from "../../features/modifyItem";
 
@@ -74,6 +75,8 @@ const PostItem = (props: ItemProps<PostData>) => {
   const getRegisteredDate = useMemo(() => {
     return dateFormat(item.regdate);
   }, [item]);
+
+  console.log(item);
 
   return (
     <>
@@ -154,13 +157,23 @@ const PostItem = (props: ItemProps<PostData>) => {
                 className={`w-full h-full flex duration-500`}
                 ref={imageContainerRef}
               >
-                {item.imageurl?.map((imageimageurl: string) => {
+                {item.imageurl.map((url: string) => {
                   return (
-                    <div
-                      key={imageimageurl}
-                      style={{ backgroundImage: `imageurl(${imageimageurl})` }}
-                      className="min-w-full h-full bg-cover bg-no-repeat bg-center"
-                    />
+                    <div className="min-w-full h-full relative" key={url}>
+                      <Image
+                        src={url}
+                        alt=""
+                        // width={300}
+                        // height={100}
+                        fill
+                        style={{ objectFit: "cover", overflow: "hidden" }}
+                      />
+                    </div>
+                    // <div
+                    //   key={url}
+                    //   style={{ backgroundImage: `url(${url})` }}
+                    //   className="min-w-full h-full bg-cover bg-no-repeat bg-center"
+                    // />
                   );
                 })}
               </div>

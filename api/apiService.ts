@@ -31,19 +31,28 @@ const imageCompressionOptions = {
   maxWidth: 300,
 };
 
+// TODO. CREATE
 export const createItem = async (
   type: TypeArg,
   data: ItemArg<PlanArg | PostArg | ChatArg | PlaceArg>,
-  image: ImageArg
+  image?: ImageArg
 ) => {
-  //* 1. 기존에 데이터가 있는지 확인하는 공통 res
+  //* 1. 기존에 데이터가 있는지 확인
   const res = await getDoc(doc(db, type, docPath));
   const docRef = doc(db, type, docPath);
   const uploadDate = Timestamp.now().seconds;
 
   //* 2. switch - case
   switch (type) {
+    case "user":
+      break;
+    case "plans":
+      data.id = uuidv4();
+      data.regdate = uploadDate;
+      break;
     case "posts":
+      if (!image) return; // TS
+      // 이미지 압축 시작
       const compressedImages: File[] = [];
       for (let x of image) {
         try {
@@ -57,7 +66,6 @@ export const createItem = async (
           console.log("error");
         }
       }
-      console.log(compressedImages);
       // 이미지 업로드 및 url 다운로드
       const urlArray: string[] = [];
       if (compressedImages.length !== 0 || Array.isArray(compressedImages)) {
@@ -74,7 +82,7 @@ export const createItem = async (
             urlArray.push(url);
           });
         }
-        // data의 타입이 확실하지 않기 때문에 예외 처리 별도 해줘야 함
+        //! data의 타입이 확실하지 않기 때문에 예외 처리 별도 해줘야 함
         if ("imageurl" in data) {
           data.id = uuidv4();
           data.imageurl = urlArray;
@@ -84,9 +92,6 @@ export const createItem = async (
       }
       break;
     case "places":
-      break;
-
-    case "plans":
       break;
 
     default:
@@ -112,15 +117,27 @@ export const createItem = async (
   }
 };
 
+// TODO. READ
 export const readItems = async (type: TypeArg) => {
-  const modifiedType = type.substring(0, type.length - 1); // db 내 이름 수정하지 않기 위해 사용
-  const docRef = doc(db, type, docPath);
-  const docSnap = await getDoc(docRef); // Promise 객체 리턴
-  if (docSnap.exists()) {
-    const array = docSnap.data()[modifiedType];
-    return array;
+  if (type === "user") {
+    const docRef = doc(db, type, docPath);
+    const docSnap = await getDoc(docRef); // Promise 객체 리턴
+    if (docSnap.exists()) {
+      const array = docSnap.data();
+      return array;
+    } else {
+      return [];
+    }
   } else {
-    return [];
+    const modifiedType = type.substring(0, type.length - 1); // db 내 이름 수정하지 않기 위해 사용
+    const docRef = doc(db, type, docPath);
+    const docSnap = await getDoc(docRef); // Promise 객체 리턴
+    if (docSnap.exists()) {
+      const array = docSnap.data()[modifiedType];
+      return array;
+    } else {
+      return [];
+    }
   }
 };
 // export const readItems = async (type: TypeArg) => {
@@ -135,5 +152,8 @@ export const readItems = async (type: TypeArg) => {
 //     return [];
 //   }
 // };
+
+// TODO. UPDATE
 export const updateItem = () => {};
+// TODO. DELETE
 export const deleteItem = () => {};

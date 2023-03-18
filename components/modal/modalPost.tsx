@@ -40,7 +40,6 @@ const ModalPost = (props: ModalProps) => {
   );
 
   const onClickSubmit = async () => {
-    dispatch({ type: "UPLOADING_STARTS" });
     // 예외 처리
     if (
       !titleRef.current?.value ||
@@ -52,6 +51,7 @@ const ModalPost = (props: ModalProps) => {
       return;
     }
 
+    dispatch({ type: "UPLOADING_STARTS" });
     const data: ItemArg<PostArg> = {
       id: null,
       title: titleRef.current?.value,

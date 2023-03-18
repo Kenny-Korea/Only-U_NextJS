@@ -23,6 +23,7 @@ const Place = () => {
   const openModal = () => {
     setModal(true);
   };
+  console.log(data);
 
   return (
     <>
@@ -35,7 +36,7 @@ const Place = () => {
           <CreateNewItemButton path="Place" />
         </div>
       )}
-      {data && data.length === 0 && "Add new place!"}
+      {!data && "Add new place!"}
     </>
   );
 };

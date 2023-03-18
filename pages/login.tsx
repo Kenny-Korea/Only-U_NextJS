@@ -4,11 +4,13 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { usePath } from "@/hooks/usePath";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   usePath("Login");
   const [err, setErr] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -17,8 +19,10 @@ const Login = () => {
     const email = (e.currentTarget[0] as HTMLInputElement).value;
     const password = (e.currentTarget[1] as HTMLInputElement).value;
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push("/");
+      const res = await signInWithEmailAndPassword(auth, email, password);
+      const userUid = res.user.uid;
+      dispatch({ type: "AUTH_LOGIN" });
+      router.replace("/");
     } catch (err) {
       setErr(true);
     }

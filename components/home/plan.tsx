@@ -2,11 +2,23 @@ import { useState } from "react";
 import CalendarTodayRoundedIcon from "@mui/icons-material/CalendarTodayRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import PlanItem from "../card/planItem";
+import { useQuery } from "react-query";
+import { PlanData } from "@/types";
+import { readItems } from "@/api/apiService";
+import ModalPlan from "../modal/modalPlan";
 
 const Plan = () => {
-  const [items, setItems] = useState([]);
   const [modal, setModal] = useState(false);
-
+  const { isLoading, error, data, isFetching } = useQuery<PlanData[]>(
+    "getPlans",
+    () => {
+      return readItems("plans");
+    },
+    { staleTime: 30000, keepPreviousData: true }
+  );
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error has occurred</div>;
+  console.log(isFetching);
   const openModal = () => {
     setModal(true);
   };
@@ -25,10 +37,9 @@ const Plan = () => {
         <div className="w-full h-4/5 overflow-y-scroll">
           <div className="w-full h-fit flex flex-col gap-2">
             <hr />
-            {items.map((item) => (
-              <PlanItem item={item} />
-            ))}
-            {items.length === 0 && "Add new plan!"}
+            {modal && <ModalPlan modal={modal} setModal={setModal} />}
+            {data && data.map((item) => <PlanItem item={item} key={item.id} />)}
+            {data && data.length === 0 && "Add new plan!"}
           </div>
         </div>
       </div>

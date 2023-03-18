@@ -49,9 +49,9 @@ export type ItemProps<T> = {
   readonly item: T;
 };
 
-// TODO. createItem 함수에 전달 할 3가지 Argument Type
+// TODO. createItem 함수에 전달 할 4가지 Argument Type
 export type ItemArg<T> = T;
-export type TypeArg = "posts" | "plans" | "places";
+export type TypeArg = "user" | "posts" | "plans" | "places";
 export type ImageArg = File[];
 
 // TODO. createItem 함수에 전달해 줄 Data Argument Type
@@ -63,7 +63,10 @@ interface DataArg {
   regdate: null | number;
   writer: string;
 }
-export interface PlanArg extends DataArg {}
+export interface PlanArg extends DataArg {
+  readonly title: string;
+  readonly plandate: Date; // Datepicker 라이브러리가 Date 형식을 사용해야 하므로
+}
 export interface PostArg extends DataArg {
   readonly title: string;
   readonly hashtag: (string | null)[];

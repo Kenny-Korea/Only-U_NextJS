@@ -22,7 +22,7 @@ const Post = () => {
     () => {
       return readItems("posts");
     },
-    { staleTime: 30000, keepPreviousData: true }
+    { staleTime: 600000, keepPreviousData: true }
   );
   if (isLoading) return "Loading...";
   if (error) return "An error has occurred: " + error;
@@ -34,16 +34,14 @@ const Post = () => {
   return (
     <>
       {data &&
-        data.map((item: PostData) => (
-          <PostItem item={item} key={item.regdate} />
-        ))}
+        data.map((item: PostData) => <PostItem item={item} key={item.id} />)}
       {modal && <ModalPost modal={modal} setModal={setModal} />}
       {!modal && (
         <div onClick={openModal}>
           <CreateNewItemButton path="Post" />
         </div>
       )}
-      {data && data.length === 0 && "Add new post!"}
+      {!data && "Add new post!"}
     </>
   );
 };
