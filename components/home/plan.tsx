@@ -6,13 +6,15 @@ import { useQuery } from "react-query";
 import { PlanData } from "@/types";
 import { readItems } from "@/api/apiService";
 import ModalPlan from "../modal/modalPlan";
+import { useSelector } from "react-redux";
 
 const Plan = () => {
   const [modal, setModal] = useState(false);
+  const currentUser = useSelector((state: any) => state.authReducer);
   const { isLoading, error, data, isFetching } = useQuery<PlanData[]>(
     "getPlans",
     () => {
-      return readItems("plans");
+      return []; //readItems("plans");
     },
     { staleTime: 30000, keepPreviousData: true }
   );
@@ -26,7 +28,12 @@ const Plan = () => {
     <>
       <div className="min-w-full min-h-[40vh] h-[60vh] flex flex-col gap-2 pt-2">
         <div className="apartItem bg-mainColor pl-3 pr-1 h-8 text-lg text-white bg-main rounded-full">
-          <div className="flex items-center gap-2 font-bold">
+          <div
+            className="flex items-center gap-2 font-bold"
+            onClick={() => {
+              console.log(currentUser);
+            }}
+          >
             <CalendarTodayRoundedIcon style={{ fontSize: "1.2rem" }} />
             Plan
           </div>

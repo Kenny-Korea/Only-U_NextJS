@@ -21,7 +21,7 @@ const ModalPost = (props: ModalProps) => {
   const queryClient = useQueryClient();
 
   //* useMutation
-  const mutation = useMutation(
+  const { mutate } = useMutation(
     (data: ItemArg<PostArg>) => {
       return createItem("posts", data, imageFileContainer);
     },
@@ -62,7 +62,7 @@ const ModalPost = (props: ModalProps) => {
       regdate: null,
     };
     // mutation 객체에 데이터 전달
-    mutation.mutate(data);
+    mutate(data);
   };
 
   const onClickCancel = () => {

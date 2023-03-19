@@ -23,18 +23,27 @@ import {
   TypeArg,
 } from "@/types";
 
-export const docPath =
-  "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2";
+// export const docPath =
+// "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2";
+// export const docPath = "yWlfq9J67FMV6NTQfbooyvbc1AE2";
 
 const imageCompressionOptions = {
   maxSizeMB: 0.5,
   maxWidth: 300,
 };
 
+// type CreateItemArg = {
+//   type: TypeArg,
+//   data: ItemArg<PlanArg | PostArg | ChatArg | PlaceArg>,
+//   docPath: string,
+//   image?: ImageArg
+// }
+
 // TODO. CREATE
 export const createItem = async (
   type: TypeArg,
   data: ItemArg<PlanArg | PostArg | ChatArg | PlaceArg>,
+  docPath: string,
   image?: ImageArg
 ) => {
   //* 1. 기존에 데이터가 있는지 확인
@@ -118,28 +127,30 @@ export const createItem = async (
 };
 
 // TODO. READ
-export const readItems = async (type: TypeArg) => {
-  if (type === "user") {
-    const docRef = doc(db, type, docPath);
-    const docSnap = await getDoc(docRef); // Promise 객체 리턴
-    if (docSnap.exists()) {
-      const array = docSnap.data();
-      return array;
-    } else {
-      return [];
-    }
+export const readItems = async (type: TypeArg, docPath: string) => {
+  const modifiedType = type.substring(0, type.length - 1); // db 내 이름 수정하지 않기 위해 사용
+  const docRef = doc(db, type, docPath);
+  const docSnap = await getDoc(docRef); // Promise 객체 리턴
+  if (docSnap.exists()) {
+    const array = docSnap.data()[modifiedType];
+    return array;
   } else {
-    const modifiedType = type.substring(0, type.length - 1); // db 내 이름 수정하지 않기 위해 사용
-    const docRef = doc(db, type, docPath);
-    const docSnap = await getDoc(docRef); // Promise 객체 리턴
-    if (docSnap.exists()) {
-      const array = docSnap.data()[modifiedType];
-      return array;
-    } else {
-      return [];
-    }
+    return [];
   }
 };
+
+// TODO. GET_USER_INFO
+export const getUserInfo = async (userUid: string) => {
+  const docRef = doc(db, "user", userUid);
+  const docSnap = await getDoc(docRef); // Promise 객체 리턴
+  if (docSnap.exists()) {
+    console.log(docSnap.data());
+    return docSnap.data();
+  } else {
+    return null;
+  }
+};
+
 // export const readItems = async (type: TypeArg) => {
 //   const modifiedType = type.substring(0, type.length - 1); // db 내 이름 수정하지 않기 위해 사용
 //   const docRef = doc(db, type, docPath);

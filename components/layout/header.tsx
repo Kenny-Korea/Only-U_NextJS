@@ -4,34 +4,40 @@ import { useSelector } from "react-redux";
 import { PageReducerSelector } from "@/state/reducers/pageReducer";
 import { createBrowserHistory } from "history";
 import { useDispatch } from "react-redux";
-import { AuthReducerSelector } from "@/state/reducers/authReducer";
-// import ModalSettings from "../Modal/ModalSettings";
-// import { AuthContext } from "../../Context/AuthContext";
-// import { currentPageState, hidingFooterState } from "../../atoms";
+import { AuthReducerSelector, AUTH_LOGIN } from "@/state/reducers/authReducer";
+import { auth } from "@/firebase";
+import { signOut } from "firebase/auth";
+import { useRouter } from "next/router";
+import { useQuery, useQueryClient } from "react-query";
+import { PlanData, UserData } from "@/types";
+import { getUserInfo } from "@/api/apiService";
+import { useAuth } from "@/hooks/useAuth";
 
 const Header = () => {
-  // const { currentUser } = useContext(AuthContext); - redux로 관리
   const [settings, setSettings] = useState(false);
   const headerTitle = useSelector(
     (state: PageReducerSelector) => state.pageReducer.currentPage
   );
   const authState = useSelector(
-    (state: AuthReducerSelector) => state.authReducer.loginStatus
+    (state: AuthReducerSelector) => state.authReducer
   );
   const dispatch = useDispatch();
+
+  const router = useRouter();
+
+  const onClickSettings = () => {
+    setSettings(!settings);
+  };
+
+  const userInfo = useAuth();
+
+  const queryClient = useQueryClient();
 
   const onClickHeaderTitle = () => {
     dispatch({ type: "TOGGLE_NAVBAR" });
     console.log(authState);
-  };
-
-  // useEffect(() => {
-  //   const history = createBrowserHistory();
-  //   console.log(history.action);
-  // }, [headerTitle]);
-
-  const onClickSettings = () => {
-    setSettings(!settings);
+    console.log(userInfo);
+    console.log(queryClient);
   };
 
   return (
@@ -43,6 +49,16 @@ const Header = () => {
           onClick={onClickHeaderTitle}
         >
           {headerTitle}
+          {/* <button
+            onClick={() => {
+              signOut(auth).then(() => {
+                console.log("logged-out");
+                router.replace("/login");
+              });
+            }}
+          >
+            logout
+          </button> */}
         </div>
       </div>
     </>

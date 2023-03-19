@@ -44,6 +44,15 @@ export interface PlaceData extends Data {
   readonly imageurl: string[]; // 다른 data와의 통일성 및 추후 확장성을 위해 string[] 형식으로 지정
 }
 
+export type UserData = {
+  readonly uid: string;
+  readonly email: string;
+  readonly imageurl: string[];
+  readonly partnerid: string;
+  readonly combinedid: string;
+  readonly regnum: null | number;
+};
+
 // TODO. 개별 아이템 카드에서 전달받을 Props Type (Generics)
 export type ItemProps<T> = {
   readonly item: T;

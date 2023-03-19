@@ -2,38 +2,54 @@ import { readItems } from "@/api/apiService";
 import PostItem from "@/components/card/post/postItem";
 import CreateNewItemButton from "@/components/features/openModal";
 import ModalPost from "@/components/modal/modalPost";
+import { useAuth } from "@/hooks/useAuth";
+import { useFetch } from "@/hooks/useFetch";
 import { usePath } from "@/hooks/usePath";
 import { PostData } from "@/types";
+
 import { useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 
 const Post = () => {
   usePath("Post");
+  const [modal, setModal] = useState(false);
   // const { jsonData } = props;
   // let data;
   // if (jsonData) {
   //   console.log("maja");
   //   data = JSON.parse(jsonData);
   // }
+  const userInfo = useAuth();
+  const queryClient = useQueryClient();
 
-  const [modal, setModal] = useState(false);
+  const test = "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2";
+  // const data = useFetch(userInfo.combinedId);
+  // const { data } = useFetch(test);
+
   const { isLoading, error, data, isFetching } = useQuery<PostData[]>(
     "getPosts",
     () => {
-      return readItems("posts");
+      return readItems("posts", test);
     },
     { staleTime: 600000, keepPreviousData: true }
   );
   if (isLoading) return "Loading...";
   if (error) return "An error has occurred: " + error;
-  console.log(isFetching);
+  console.log("isFetching? : " + isFetching);
   const openModal = () => {
     setModal(true);
   };
 
   return (
     <>
-      {data &&
+      <button
+        onClick={() => {
+          console.log(data);
+        }}
+      >
+        data
+      </button>
+      {Array.isArray(data) &&
         data.map((item: PostData) => <PostItem item={item} key={item.id} />)}
       {modal && <ModalPost modal={modal} setModal={setModal} />}
       {!modal && (

@@ -76,8 +76,6 @@ const PostItem = (props: ItemProps<PostData>) => {
     return dateFormat(item.regdate);
   }, [item]);
 
-  console.log(item);
-
   return (
     <>
       {/* 아... 너무 지저분하므로 꼭 여기는 정리하자 */}

@@ -5,6 +5,7 @@ import { auth } from "../firebase";
 import { usePath } from "@/hooks/usePath";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
+import { userLogin } from "@/state/actions";
 
 const Login = () => {
   usePath("Login");
@@ -21,7 +22,8 @@ const Login = () => {
     try {
       const res = await signInWithEmailAndPassword(auth, email, password);
       const userUid = res.user.uid;
-      dispatch({ type: "AUTH_LOGIN" });
+      console.log(res);
+      dispatch(userLogin(userUid));
       router.replace("/");
     } catch (err) {
       setErr(true);
