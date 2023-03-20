@@ -20,10 +20,13 @@ const ModalPost = (props: ModalProps) => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
+  const docPathTemp =
+    "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2";
+
   //* useMutation
   const { mutate } = useMutation(
     (data: ItemArg<PostArg>) => {
-      return createItem("posts", data, imageFileContainer);
+      return createItem("posts", data, docPathTemp, imageFileContainer);
     },
     {
       onSuccess: () => {

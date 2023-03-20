@@ -1,14 +1,11 @@
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {
-  addDoc,
   getDoc,
   doc,
   Timestamp,
   setDoc,
   updateDoc,
-  onSnapshot,
   arrayUnion,
-  collection,
 } from "firebase/firestore";
 import { db, storage } from "../firebase";
 import { uuidv4 } from "@firebase/util";

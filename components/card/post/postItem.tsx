@@ -14,14 +14,14 @@ const PostItem = (props: ItemProps<PostData>) => {
   const [firstTouchX, setFirstTouchX] = useState(0);
   // const { currentUser } = useContext(AuthContext);
   // const { partnerInfo } = useContext(PartnerContext);
-  const currentUser = {
-    uid: "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2",
-    imageurl: "abc",
-  };
-  const partnerInfo = {
-    uid: "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2",
-    imageurl: "abc",
-  };
+  // const currentUser = {
+  //   uid: "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2",
+  //   imageurl: "abc",
+  // };
+  // const partnerInfo = {
+  //   uid: "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2",
+  //   imageurl: "abc",
+  // };
   const [isDetailOpen, setIsDetailOpen] = useState<boolean | null>(null);
 
   const titleRef = useRef<HTMLSpanElement>(null);
@@ -90,11 +90,11 @@ const PostItem = (props: ItemProps<PostData>) => {
               <div className="w-full absolute top-0 flex justify-between p-2 z-10">
                 <div className="flex flex-col gap-2">
                   <img
-                    src={
-                      item.writer === currentUser.uid
-                        ? currentUser?.imageurl
-                        : partnerInfo?.imageurl
-                    }
+                    // src={
+                    //   item.writer === currentUser.uid
+                    //     ? currentUser?.imageurl
+                    //     : partnerInfo?.imageurl
+                    // }
                     alt=""
                     className="w-8 h-8 object-cover rounded-full border border-gray-300"
                   />

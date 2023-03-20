@@ -9,11 +9,13 @@ import { useQuery } from "react-query";
 
 const Place = () => {
   usePath("Place");
+
   const [modal, setModal] = useState(false);
   const { isLoading, error, data, isFetching } = useQuery<PlaceData[]>(
     "getPlaces",
     () => {
-      return readItems("places");
+      // const userUid = localStorage.getItem("userUid");
+      return readItems("places", userUid);
     },
     { staleTime: 30000, keepPreviousData: true }
   );

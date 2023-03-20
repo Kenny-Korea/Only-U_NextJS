@@ -10,17 +10,20 @@ import { useSelector } from "react-redux";
 
 const Plan = () => {
   const [modal, setModal] = useState(false);
+  const userUid = useSelector((state: any) => state.authReducer.userUid);
   const currentUser = useSelector((state: any) => state.authReducer);
   const { isLoading, error, data, isFetching } = useQuery<PlanData[]>(
     "getPlans",
     () => {
-      return []; //readItems("plans");
+      console.log("yWlfq9J67FMV6NTQfbooyvbc1AE2" + userUid);
+      return readItems("plans", "yWlfq9J67FMV6NTQfbooyvbc1AE2" + userUid);
     },
-    { staleTime: 30000, keepPreviousData: true }
+    { enabled: !!userUid }
+    // { staleTime: 30000, keepPreviousData: true }
   );
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>An error has occurred</div>;
-  console.log(isFetching);
+  console.log({ isLoading, isFetching });
   const openModal = () => {
     setModal(true);
   };

@@ -22,8 +22,8 @@ const Login = () => {
     try {
       const res = await signInWithEmailAndPassword(auth, email, password);
       const userUid = res.user.uid;
-      console.log(res);
-      dispatch(userLogin(userUid));
+      localStorage.setItem("userUid", userUid);
+      // dispatch(userLogin(userUid));
       router.replace("/");
     } catch (err) {
       setErr(true);

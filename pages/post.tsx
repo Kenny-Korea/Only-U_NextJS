@@ -7,7 +7,7 @@ import { useFetch } from "@/hooks/useFetch";
 import { usePath } from "@/hooks/usePath";
 import { PostData } from "@/types";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "react-query";
 
 const Post = () => {
@@ -19,29 +19,45 @@ const Post = () => {
   //   console.log("maja");
   //   data = JSON.parse(jsonData);
   // }
-  const userInfo = useAuth();
+  // const userInfo = useAuth();
   const queryClient = useQueryClient();
 
   const test = "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2";
   // const data = useFetch(userInfo.combinedId);
   // const { data } = useFetch(test);
 
-  const { isLoading, error, data, isFetching } = useQuery<PostData[]>(
+  // const [data, setData] = useState();
+  // useEffect(() => {
+  //   const array: any = [];
+  //   console.log("useEffect");
+  //   readItems("posts", test)
+  //     .then((item) => {
+  //       array.push(...item);
+  //     })
+  //     .then(() => {
+  //       setData(array);
+  //     });
+  // }, []);
+
+  const { isLoading, status, error, data, isFetching } = useQuery<PostData[]>(
     "getPosts",
     () => {
       return readItems("posts", test);
-    },
-    { staleTime: 600000, keepPreviousData: true }
+    }
+    // { staleTime: 600000, keepPreviousData: true }
   );
-  if (isLoading) return "Loading...";
+  // if (isLoading) return "Loading...";
+  // if (isLoading) return "Loading...";
   if (error) return "An error has occurred: " + error;
-  console.log("isFetching? : " + isFetching);
+  console.log({ isLoading, isFetching });
+
   const openModal = () => {
     setModal(true);
   };
 
   return (
     <>
+      {status === "loading" && <div>Loading...</div>}
       <button
         onClick={() => {
           console.log(data);

@@ -4,7 +4,7 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { doc, updateDoc, arrayRemove } from "firebase/firestore";
 import { db } from "../../firebase";
-import { AuthContext } from "@/context/authContext";
+// import { AuthContext } from "@/context/authContext";
 
 type EditButtonProps = {
   item: {
@@ -16,7 +16,7 @@ type EditButtonProps = {
 const EditButton = (props: EditButtonProps) => {
   const { item, docName } = props;
   const [clicked, setClicked] = useState(false);
-  const { partnerInfo } = useContext(AuthContext);
+  // const { partnerInfo } = useContext(AuthContext);
 
   const onClickSettings = () => {
     setClicked(!clicked);

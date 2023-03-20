@@ -14,7 +14,8 @@ const Navbar = () => {
   );
   const router = useRouter();
   const onClickBackButton = (path: string) => {
-    router.replace(path);
+    router.push(path);
+    // router.push(path);
   };
   const hideNavbar = useMemo(() => {
     return false;
@@ -42,14 +43,14 @@ const Navbar = () => {
             <li
               className="list active"
               key={item.name}
-              onClick={() => {
-                onClickBackButton(item.path);
-              }}
+              // onClick={() => {
+              //   onClickBackButton(item.path);
+              // }}
             >
-              {/* <Link href={item.path}> */}
-              <span className="icon">{<item.icon />}</span>
-              <span className="text">{item.name}</span>
-              {/* </Link> */}
+              <Link href={item.path}>
+                <span className="icon">{<item.icon />}</span>
+                <span className="text">{item.name}</span>
+              </Link>
             </li>
           ))}
           <div className="indicator"></div>

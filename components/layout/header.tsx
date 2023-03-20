@@ -1,27 +1,52 @@
 import { useEffect, useState } from "react";
-import MenuRoundedIcon from "@mui/icons-material/MenuRounded"; //이거 그 web dev simplified에서 구현한걸로 변경하기
+// import MenuRoundedIcon from "@mui/icons-material/MenuRounded"; //이거 그 web dev simplified에서 구현한걸로 변경하기
 import { useSelector } from "react-redux";
 import { PageReducerSelector } from "@/state/reducers/pageReducer";
-import { createBrowserHistory } from "history";
+// import { createBrowserHistory } from "history";
 import { useDispatch } from "react-redux";
 import { AuthReducerSelector, AUTH_LOGIN } from "@/state/reducers/authReducer";
 import { auth } from "@/firebase";
-import { signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useQuery, useQueryClient } from "react-query";
-import { PlanData, UserData } from "@/types";
 import { getUserInfo } from "@/api/apiService";
-import { useAuth } from "@/hooks/useAuth";
+// import { PlanData, UserData } from "@/types";
+// import { getUserInfo } from "@/api/apiService";
+// import { useAuth } from "@/hooks/useAuth";
 
 const Header = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      const userUid = user?.uid;
+      dispatch({ type: AUTH_LOGIN, payload: userUid });
+    });
+  }, []);
+
+  const userUid = useSelector((state: any) => state.authReducer.userUid);
+
+  const { isLoading, error, data, isFetching } = useQuery<any>(
+    "getUser",
+    () => {
+      return getUserInfo(userUid);
+    },
+    { enabled: !!userUid }
+    // { staleTime: 30000, keepPreviousData: true }
+  );
+
+  console.log({ isLoading, isFetching });
+
+  console.log(data);
+
   const [settings, setSettings] = useState(false);
+
+  const test = useSelector((state: PageReducerSelector) => state.pageReducer);
   const headerTitle = useSelector(
     (state: PageReducerSelector) => state.pageReducer.currentPage
   );
   const authState = useSelector(
     (state: AuthReducerSelector) => state.authReducer
   );
-  const dispatch = useDispatch();
 
   const router = useRouter();
 
@@ -29,15 +54,23 @@ const Header = () => {
     setSettings(!settings);
   };
 
-  const userInfo = useAuth();
+  // const userInfo = useAuth();
 
   const queryClient = useQueryClient();
 
   const onClickHeaderTitle = () => {
     dispatch({ type: "TOGGLE_NAVBAR" });
+    console.log(test);
     console.log(authState);
-    console.log(userInfo);
-    console.log(queryClient);
+    // console.log(userInfo);
+    // console.log(queryClient);
+  };
+
+  const onClickLogout = () => {
+    signOut(auth).then(() => {
+      console.log("logged-out");
+      router.replace("/login");
+    });
   };
 
   return (
@@ -49,16 +82,7 @@ const Header = () => {
           onClick={onClickHeaderTitle}
         >
           {headerTitle}
-          {/* <button
-            onClick={() => {
-              signOut(auth).then(() => {
-                console.log("logged-out");
-                router.replace("/login");
-              });
-            }}
-          >
-            logout
-          </button> */}
+          <button onClick={onClickLogout}>logout</button>
         </div>
       </div>
     </>
