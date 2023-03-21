@@ -21,7 +21,7 @@ const ModalPlan = (props: ModalProps) => {
   //* useMutation
   const mutation = useMutation(
     (data: ItemArg<PlanArg>) => {
-      return createItem("plans", data);
+      return createItem("plans", data, "fdsafsd");
     },
     {
       onSuccess: () => {

@@ -2,11 +2,18 @@ import { useState } from "react";
 import CalendarTodayRoundedIcon from "@mui/icons-material/CalendarTodayRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import PlanItem from "../card/planItem";
-import { useQuery } from "react-query";
+import { QueryClient, useQuery } from "react-query";
 import { PlanData } from "@/types";
 import { readItems } from "@/api/apiService";
 import ModalPlan from "../modal/modalPlan";
 import { useSelector } from "react-redux";
+
+// export async function getServerSideProps() {
+//   const queryClient = new QueryClient();
+//   await queryClient.prefetchQuery("getPlans", () => {
+//     return readItems("plans", "yWlfq9J67FMV6NTQfbooyvbc1AE2" + userUid);
+//   });
+// }
 
 const Plan = () => {
   const [modal, setModal] = useState(false);

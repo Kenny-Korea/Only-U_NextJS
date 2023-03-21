@@ -8,11 +8,18 @@ import { AuthReducerSelector, AUTH_LOGIN } from "@/state/reducers/authReducer";
 import { auth } from "@/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "next/router";
-import { useQuery, useQueryClient } from "react-query";
+import { QueryClient, useQuery, useQueryClient } from "react-query";
 import { getUserInfo } from "@/api/apiService";
 // import { PlanData, UserData } from "@/types";
 // import { getUserInfo } from "@/api/apiService";
 // import { useAuth } from "@/hooks/useAuth";
+
+// export async function getServerSideProps({req, res}) {
+//     const queryClient = new QueryClient();
+//     await queryClient.prefetchQuery("getPlans", () => {
+//       return getUserInfo(userUid);
+//     });
+//   }
 
 const Header = () => {
   const dispatch = useDispatch();

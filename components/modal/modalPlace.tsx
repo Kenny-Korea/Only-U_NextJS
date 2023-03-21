@@ -39,7 +39,7 @@ const ModalPlace = (props: ModalProps) => {
   //* useMutation
   const mutation = useMutation(
     (data: ItemArg<PlaceArg>) => {
-      return createItem("posts", data, imageFileContainer);
+      return createItem("posts", data, "fdsafsd", imageFileContainer);
     },
     {
       onSuccess: () => {

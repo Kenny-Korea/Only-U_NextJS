@@ -3,7 +3,7 @@ import PostItem from "@/components/card/post/postItem";
 import CreateNewItemButton from "@/components/features/openModal";
 import ModalPost from "@/components/modal/modalPost";
 import { useAuth } from "@/hooks/useAuth";
-import { useFetch } from "@/hooks/useFetch";
+// import { useFetch } from "@/hooks/useFetch";
 import { usePath } from "@/hooks/usePath";
 import { PostData } from "@/types";
 
@@ -54,6 +54,8 @@ const Post = () => {
   const openModal = () => {
     setModal(true);
   };
+
+  console.count();
 
   return (
     <>
