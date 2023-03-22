@@ -19,6 +19,10 @@ interface Data {
   readonly writer: string;
 }
 
+export interface ProfileData extends Data {
+  readonly photoURL: string;
+}
+
 export interface PlanData extends Data {
   readonly title: string;
   readonly plandate: number;

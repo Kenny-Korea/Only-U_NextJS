@@ -141,7 +141,7 @@ export const getUserInfo = async (userUid: string) => {
   const docRef = doc(db, "user", userUid);
   const docSnap = await getDoc(docRef); // Promise 객체 리턴
   if (docSnap.exists()) {
-    console.log(docSnap.data());
+    // console.log(docSnap.data());
     return docSnap.data();
   } else {
     return null;

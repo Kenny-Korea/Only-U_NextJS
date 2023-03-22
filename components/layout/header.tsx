@@ -4,7 +4,11 @@ import { useSelector } from "react-redux";
 import { PageReducerSelector } from "@/state/reducers/pageReducer";
 // import { createBrowserHistory } from "history";
 import { useDispatch } from "react-redux";
-import { AuthReducerSelector, AUTH_LOGIN } from "@/state/reducers/authReducer";
+import {
+  AuthReducerSelector,
+  AUTH_LOGIN,
+  AUTH_LOGOUT,
+} from "@/state/reducers/authReducer";
 import { auth } from "@/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "next/router";
@@ -26,24 +30,25 @@ const Header = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       const userUid = user?.uid;
-      dispatch({ type: AUTH_LOGIN, payload: userUid });
+      if (userUid) {
+        dispatch({ type: AUTH_LOGIN, payload: userUid });
+        console.log("User logged in");
+      } else {
+        dispatch({ type: AUTH_LOGOUT });
+        console.log("User logged out");
+      }
     });
   }, []);
 
   const userUid = useSelector((state: any) => state.authReducer.userUid);
 
-  const { isLoading, error, data, isFetching } = useQuery<any>(
-    "getUser",
-    () => {
-      return getUserInfo(userUid);
-    },
-    { enabled: !!userUid }
-    // { staleTime: 30000, keepPreviousData: true }
-  );
-
-  console.log({ isLoading, isFetching });
-
-  console.log(data);
+  // const { isLoading, error, data, isFetching } = useQuery<any>(
+  //   "getUser",
+  //   () => {
+  //     return getUserInfo(userUid);
+  //   },
+  //   { enabled: !!userUid, staleTime: 30000, keepPreviousData: true }
+  // );
 
   const [settings, setSettings] = useState(false);
 
@@ -90,6 +95,7 @@ const Header = () => {
         >
           {headerTitle}
           <button onClick={onClickLogout}>logout</button>
+          {settings ? "settings" : null}
         </div>
       </div>
     </>

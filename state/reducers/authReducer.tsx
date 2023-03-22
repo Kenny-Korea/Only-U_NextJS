@@ -9,6 +9,12 @@ export type AuthReducerSelector = {
   };
 };
 
+export type AuthState = {
+  authReducer: {
+    userUid: string;
+  };
+};
+
 type State = {
   loginStatus: boolean;
   userUid: null | string;
@@ -35,6 +41,13 @@ export const authReducer = (state: State = initialState, action: Action) => {
       ...state,
       loginStatus: true,
       userUid: action.payload,
+    };
+  }
+  if (action.type === AUTH_LOGOUT) {
+    return {
+      ...state,
+      loginStatus: false,
+      userUid: null,
     };
   }
   return state;

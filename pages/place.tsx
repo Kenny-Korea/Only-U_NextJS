@@ -2,31 +2,21 @@ import { readItems } from "@/api/apiService";
 import PlaceItem from "@/components/card/place/placeItem";
 import CreateNewItemButton from "@/components/features/openModal";
 import ModalPlace from "@/components/modal/modalPlace";
+import { useItemData } from "@/hooks/useItemData";
 import { usePath } from "@/hooks/usePath";
-import { PlaceData } from "@/types";
 import { useState } from "react";
-import { useQuery } from "react-query";
+import { dehydrate, QueryClient } from "react-query";
 
 const Place = () => {
   usePath("Place");
-  const test = "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2";
-
   const [modal, setModal] = useState(false);
-  const { isLoading, error, data, isFetching } = useQuery<PlaceData[]>(
-    "getPlaces",
-    () => {
-      // const userUid = localStorage.getItem("userUid");
-      return readItems("places", test);
-    },
-    { staleTime: 30000, keepPreviousData: true }
-  );
-  if (isLoading) return "Loading...";
-  if (error) return "An error has occurred: " + error;
-  console.log(isFetching);
+  const { data, isLoading, error } = useItemData("places");
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error has occurred</div>;
+
   const openModal = () => {
     setModal(true);
   };
-  console.log(data);
 
   return (
     <>
@@ -45,3 +35,18 @@ const Place = () => {
 };
 
 export default Place;
+
+export const test = "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2";
+
+export async function getServerSideProps() {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery("getPlaces", () => {
+    return readItems("places", test);
+  });
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}

@@ -1,72 +1,24 @@
-import { readItems } from "@/api/apiService";
 import PostItem from "@/components/card/post/postItem";
 import CreateNewItemButton from "@/components/features/openModal";
 import ModalPost from "@/components/modal/modalPost";
-import { useAuth } from "@/hooks/useAuth";
-// import { useFetch } from "@/hooks/useFetch";
+import { useItemData } from "@/hooks/useItemData";
 import { usePath } from "@/hooks/usePath";
 import { PostData } from "@/types";
-
-import { useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "react-query";
+import { useState } from "react";
 
 const Post = () => {
   usePath("Post");
   const [modal, setModal] = useState(false);
-  // const { jsonData } = props;
-  // let data;
-  // if (jsonData) {
-  //   console.log("maja");
-  //   data = JSON.parse(jsonData);
-  // }
-  // const userInfo = useAuth();
-  const queryClient = useQueryClient();
-
-  const test = "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2";
-  // const data = useFetch(userInfo.combinedId);
-  // const { data } = useFetch(test);
-
-  // const [data, setData] = useState();
-  // useEffect(() => {
-  //   const array: any = [];
-  //   console.log("useEffect");
-  //   readItems("posts", test)
-  //     .then((item) => {
-  //       array.push(...item);
-  //     })
-  //     .then(() => {
-  //       setData(array);
-  //     });
-  // }, []);
-
-  const { isLoading, status, error, data, isFetching } = useQuery<PostData[]>(
-    "getPosts",
-    () => {
-      return readItems("posts", test);
-    }
-    // { staleTime: 600000, keepPreviousData: true }
-  );
-  // if (isLoading) return "Loading...";
-  // if (isLoading) return "Loading...";
-  if (error) return "An error has occurred: " + error;
-  console.log({ isLoading, isFetching });
+  const { data, isLoading, error } = useItemData("posts");
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error has occurred</div>;
 
   const openModal = () => {
     setModal(true);
   };
 
-  console.count();
-
   return (
     <>
-      {status === "loading" && <div>Loading...</div>}
-      <button
-        onClick={() => {
-          console.log(data);
-        }}
-      >
-        data
-      </button>
       {Array.isArray(data) &&
         data.map((item: PostData) => <PostItem item={item} key={item.id} />)}
       {modal && <ModalPost modal={modal} setModal={setModal} />}
@@ -83,32 +35,23 @@ const Post = () => {
 export default Post;
 
 // export async function getServerSideProps() {
-//   const data = await readItems("posts");
+//   let combinedId = "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2";
+
+//   const userUid = useSelector((state: AuthState) => state.authReducer.userUid);
+
+//   const queryClient = new QueryClient();
+//   const test = await queryClient.prefetchQuery(["getUser", userUid], () =>
+//     getUserInfo(userUid)
+//   );
+//   console.log(test);
+
+//   await queryClient.prefetchQuery(["getPosts", combinedId], () =>
+//     readItems("posts", combinedId)
+//   );
+
 //   return {
 //     props: {
-//       jsonData: JSON.stringify(data),
+//       dehydratedState: dehydrate(queryClient),
 //     },
 //   };
 // }
-
-// useEffect(() => {
-//   const array: any = [];
-//   readItems("posts")
-//     .then((item) => {
-//       array.push(...item);
-//     })
-//     .then(() => {
-//       setItems(array);
-//     });
-// }, []);
-
-// rules_version = '2';
-// service cloud.firestore {
-//   match /databases/{database}/documents {
-//     match /{document=**} {
-//      allow read, write: if request.auth != null;
-//     }
-//   }
-// }
-
-// FF766B

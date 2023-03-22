@@ -13,8 +13,8 @@ const settings = {
   },
 };
 
-// // module.exports =
-// //   process.env.NODE_ENV === "development" ? settings : withPWA(settings);
+// module.exports =
+//   process.env.NODE_ENV === "development" ? settings : withPWA(settings);
 
 // module.exports = withPWA({
 //   // config
@@ -59,19 +59,29 @@ const settings = {
 /** @type {import('next').NextConfig} */
 const withPWA = require("next-pwa")({
   dest: "public",
+  // pwa: {
+  //   dest: "public",
+  //   disable: process.env.NODE_ENV === "development",
+  // },
 });
 
-module.exports = withPWA({
-  images: {
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    deviceSizes: [640],
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "firebasestorage.googleapis.com",
-        // port: '',
-        // pathname: '/account123/**',
-      },
-    ],
-  },
-});
+// module.exports =
+//   process.env.NODE_ENV === "development" ? settings : withPWA(settings);
+
+module.exports =
+  process.env.NODE_ENV === "development"
+    ? settings
+    : withPWA({
+        images: {
+          imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+          deviceSizes: [640],
+          remotePatterns: [
+            {
+              protocol: "https",
+              hostname: "firebasestorage.googleapis.com",
+              // port: '',
+              // pathname: '/account123/**',
+            },
+          ],
+        },
+      });
