@@ -3,7 +3,7 @@ import { ItemArg, ModalProps, PlaceArg } from "@/types";
 import { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useDispatch } from "react-redux";
-import GoogleMapContainer from "../card/post/googlemaps";
+import GoogleMapContainer from "../card/place/googlemaps";
 import ModalLayout from "./layout";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import AddPhotoAlternateRoundedIcon from "@mui/icons-material/AddPhotoAlternateRounded";

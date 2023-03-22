@@ -7,6 +7,7 @@ import { createItem } from "@/api/apiService";
 import { useDispatch } from "react-redux";
 import { useMutation, useQueryClient } from "react-query";
 import { MissingValueErrorMessage } from "@/utils/missingValueError";
+import { useUserInfo } from "@/hooks/useUserInfo";
 
 const ModalPost = (props: ModalProps) => {
   const { modal, setModal } = props; // 각 개별 모달의 상태를 전역적으로 관리할 필요는 없기 때문에 local state로 관리
@@ -20,17 +21,16 @@ const ModalPost = (props: ModalProps) => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
-  const docPathTemp =
-    "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2";
+  const user = useUserInfo();
 
   //* useMutation
   const { mutate } = useMutation(
     (data: ItemArg<PostArg>) => {
-      return createItem("posts", data, docPathTemp, imageFileContainer);
+      return createItem("posts", data, user?.combinedId, imageFileContainer);
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("getPosts");
+        queryClient.invalidateQueries("posts");
         dispatch({ type: "UPLOADING_DONE" });
         setModal(false);
       },

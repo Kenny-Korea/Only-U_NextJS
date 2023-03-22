@@ -30,6 +30,12 @@ export const pageReducer = (state: State = initialState, action: Action) => {
       navbar: true,
     };
   }
+  if (action.type === "HIDE_NAVBAR") {
+    return {
+      currentPage: state.currentPage,
+      navbar: false,
+    };
+  }
   if (action.type === "TOGGLE_NAVBAR") {
     return {
       currentPage: state.currentPage,

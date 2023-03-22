@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useMutation, useQueryClient } from "react-query";
 import { createItem } from "@/api/apiService";
 import { MissingValueErrorMessage } from "@/utils/missingValueError";
+import { useUserInfo } from "@/hooks/useUserInfo";
 
 const ModalPlan = (props: ModalProps) => {
   const { modal, setModal } = props;
@@ -18,14 +19,17 @@ const ModalPlan = (props: ModalProps) => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
+  const user = useUserInfo();
+  console.log(user);
+
   //* useMutation
   const mutation = useMutation(
     (data: ItemArg<PlanArg>) => {
-      return createItem("plans", data, "fdsafsd");
+      return createItem("plans", data, user?.combinedId);
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("getPlans");
+        queryClient.invalidateQueries("plans");
         dispatch({ type: "UPLOADING_DONE" });
         setModal(false);
       },
@@ -55,6 +59,7 @@ const ModalPlan = (props: ModalProps) => {
     // mutation 객체에 데이터 전달
     mutation.mutate(data);
   };
+
   const onClickCancel = () => {
     setModal(false);
   };

@@ -15,7 +15,7 @@ export type ModalLayoutProps = {
 // TODO. 서버로부터 받는 데이터의 타입
 interface Data {
   readonly id: string;
-  readonly regdate: number;
+  readonly regdate: Date;
   readonly writer: string;
 }
 
@@ -52,9 +52,12 @@ export type UserData = {
   readonly uid: string;
   readonly email: string;
   readonly imageurl: string[];
-  readonly partnerid: string;
   readonly combinedid: string;
   readonly regnum: null | number;
+  readonly p_uid: string;
+  readonly p_email: string;
+  readonly p_imageurl: string[];
+  readonly regdate: Date;
 };
 
 // TODO. 개별 아이템 카드에서 전달받을 Props Type (Generics)
@@ -64,7 +67,7 @@ export type ItemProps<T> = {
 
 // TODO. createItem 함수에 전달 할 4가지 Argument Type
 export type ItemArg<T> = T;
-export type TypeArg = "user" | "posts" | "plans" | "places";
+export type TypeArg = "plans" | "posts" | "chats" | "places";
 export type ImageArg = File[];
 
 // TODO. createItem 함수에 전달해 줄 Data Argument Type
@@ -73,7 +76,7 @@ export type ImageArg = File[];
 // createItem 함수에서 data 변수를 새로 생성하지 않고, 기존 value만 교체할 예정이므로, 해당 단계에서 모든 key를 설정해줘야 함
 interface DataArg {
   id: null | string;
-  regdate: null | number;
+  regdate: null | Date;
   writer: string;
 }
 export interface PlanArg extends DataArg {

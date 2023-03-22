@@ -5,7 +5,6 @@
 } */
 
 :root {
-  /* --clr: rgb(229 231 235); */
   --clr: white;
   --text: rgb(255, 87, 100);
   --dark: rgb(71 85 105);
@@ -114,4 +113,33 @@
 }
 .navigation ul li:nth-child(5).active ~ .indicator {
   transform: translateX(calc(70px * 4));
+}
+
+@keyframes navbarSlideIn {
+  from {
+    bottom: -4rem;
+  }
+  to {
+    bottom: 0rem;
+  }
+}
+
+@keyframes navbarSlideOut {
+  from {
+    right: 10rem;
+  }
+  to {
+    right: -10rem;
+  }
+}
+
+.showNavbar {
+  animation: navbarSlideIn 0.2s;
+  animation-fill-mode: forwards;
+}
+
+.hideNavbar {
+  animation: navbarSlideOut 0.2s;
+  animation-fill-mode: forwards;
+  display: none;
 }

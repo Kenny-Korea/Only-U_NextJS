@@ -12,16 +12,7 @@ const PostItem = (props: ItemProps<PostData>) => {
   const { item } = props;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [firstTouchX, setFirstTouchX] = useState(0);
-  // const { currentUser } = useContext(AuthContext);
-  // const { partnerInfo } = useContext(PartnerContext);
-  // const currentUser = {
-  //   uid: "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2",
-  //   imageurl: "abc",
-  // };
-  // const partnerInfo = {
-  //   uid: "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2",
-  //   imageurl: "abc",
-  // };
+
   const [isDetailOpen, setIsDetailOpen] = useState<boolean | null>(null);
 
   const titleRef = useRef<HTMLSpanElement>(null);

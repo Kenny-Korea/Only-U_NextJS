@@ -50,8 +50,6 @@ export const createItem = async (
 
   //* 2. switch - case
   switch (type) {
-    case "user":
-      break;
     case "plans":
       data.id = uuidv4();
       data.regdate = uploadDate;
@@ -96,6 +94,10 @@ export const createItem = async (
           console.log("for문 다 돌았음");
         }
       }
+      break;
+    case "chats":
+      data.id = uuidv4();
+      data.regdate = uploadDate;
       break;
     case "places":
       break;
