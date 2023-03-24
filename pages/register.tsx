@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 const Register = () => {
   usePath("Register");
   const [err, setErr] = useState(false);
+  const [pwErr, setPwErr] = useState(false);
   const router = useRouter();
   const [missingValueError, setMissingValueError] = useState<boolean>(false);
 

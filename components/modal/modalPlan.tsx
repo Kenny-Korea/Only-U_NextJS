@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { createItem } from "@/api/apiService";
 import { MissingValueErrorMessage } from "@/utils/missingValueError";
 import { useUserInfo } from "@/hooks/useUserInfo";
+import { useUpload } from "@/hooks/useUpload";
 
 const ModalPlan = (props: ModalProps) => {
   const { modal, setModal } = props;
@@ -17,29 +18,29 @@ const ModalPlan = (props: ModalProps) => {
 
   const titleRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
-  const user = useUserInfo();
-  console.log(user);
+  // const user = useUserInfo();
+  // console.log(user);
 
   //* useMutation
-  const mutation = useMutation(
-    (data: ItemArg<PlanArg>) => {
-      return createItem("plans", data, user?.combinedId);
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("plans");
-        dispatch({ type: "UPLOADING_DONE" });
-        setModal(false);
-      },
-      onError: () => {
-        alert("Failed to upload posts. Please try again");
-        dispatch({ type: "UPLOADING_DONE" });
-        setModal(false);
-      },
-    }
-  );
+  // const { mutate } = useMutation(
+  //   (data: ItemArg<PlanArg>) => {
+  //     return createItem("plans", data, user?.combinedId);
+  //   },
+  //   {
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries("plans");
+  //       dispatch({ type: "UPLOADING_DONE" });
+  //       setModal(false);
+  //     },
+  //     onError: () => {
+  //       alert("Failed to upload posts. Please try again");
+  //       dispatch({ type: "UPLOADING_DONE" });
+  //       setModal(false);
+  //     },
+  //   }
+  // );
 
   const onClickSubmit = () => {
     // 예외 처리
@@ -57,7 +58,7 @@ const ModalPlan = (props: ModalProps) => {
       plandate: selectedDate,
     };
     // mutation 객체에 데이터 전달
-    mutation.mutate(data);
+    useUpload("plans", data, setModal);
   };
 
   const onClickCancel = () => {

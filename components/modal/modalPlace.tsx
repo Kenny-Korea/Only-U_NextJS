@@ -37,13 +37,13 @@ const ModalPlace = (props: ModalProps) => {
   const queryClient = useQueryClient();
 
   //* useMutation
-  const mutation = useMutation(
+  const { mutate } = useMutation(
     (data: ItemArg<PlaceArg>) => {
-      return createItem("posts", data, "fdsafsd", imageFileContainer);
+      return createItem("places", data, "fdsafsd", imageFileContainer);
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("getPosts");
+        queryClient.invalidateQueries("places");
         dispatch({ type: "UPLOADING_DONE" });
         setModal(false);
       },
@@ -79,7 +79,7 @@ const ModalPlace = (props: ModalProps) => {
       regdate: null,
     };
     // mutation 객체에 데이터 전달
-    mutation.mutate(data);
+    mutate(data);
   };
 
   const onClickCancel = () => {

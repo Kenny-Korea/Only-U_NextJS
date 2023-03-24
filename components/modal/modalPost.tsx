@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useMutation, useQueryClient } from "react-query";
 import { MissingValueErrorMessage } from "@/utils/missingValueError";
 import { useUserInfo } from "@/hooks/useUserInfo";
+import { useUpload } from "@/hooks/useUpload";
 
 const ModalPost = (props: ModalProps) => {
   const { modal, setModal } = props; // 각 개별 모달의 상태를 전역적으로 관리할 필요는 없기 때문에 local state로 관리
@@ -19,28 +20,28 @@ const ModalPost = (props: ModalProps) => {
   const hashtagRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const dispatch = useDispatch();
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
-  const user = useUserInfo();
+  // const user = useUserInfo();
 
   //* useMutation
-  const { mutate } = useMutation(
-    (data: ItemArg<PostArg>) => {
-      return createItem("posts", data, user?.combinedId, imageFileContainer);
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("posts");
-        dispatch({ type: "UPLOADING_DONE" });
-        setModal(false);
-      },
-      onError: () => {
-        alert("Failed to upload posts. Please try again");
-        dispatch({ type: "UPLOADING_DONE" });
-        setModal(false);
-      },
-    }
-  );
+  // const { mutate } = useMutation(
+  //   (data: ItemArg<PostArg>) => {
+  //     return createItem("posts", data, user?.combinedId, imageFileContainer);
+  //   },
+  //   {
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries("posts");
+  //       dispatch({ type: "UPLOADING_DONE" });
+  //       setModal(false);
+  //     },
+  //     onError: () => {
+  //       alert("Failed to upload posts. Please try again");
+  //       dispatch({ type: "UPLOADING_DONE" });
+  //       setModal(false);
+  //     },
+  //   }
+  // );
 
   const onClickSubmit = async () => {
     // 예외 처리
@@ -65,7 +66,7 @@ const ModalPost = (props: ModalProps) => {
       regdate: null,
     };
     // mutation 객체에 데이터 전달
-    mutate(data);
+    useUpload("posts", data, setModal, imageFileContainer);
   };
 
   const onClickCancel = () => {
