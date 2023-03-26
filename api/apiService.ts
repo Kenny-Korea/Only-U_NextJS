@@ -29,24 +29,25 @@ const imageCompressionOptions = {
   maxWidth: 300,
 };
 
-// type CreateItemArg = {
-//   type: TypeArg,
-//   data: ItemArg<PlanArg | PostArg | ChatArg | PlaceArg>,
-//   docPath: string,
-//   image?: ImageArg
-// }
+export type CreateItemArg = {
+  type: TypeArg;
+  data: ItemArg<PlanArg | PostArg | ChatArg | PlaceArg>;
+  docPath: string;
+  setModal: React.Dispatch<React.SetStateAction<boolean>>;
+  image?: ImageArg;
+};
 
 // TODO. CREATE
-export const createItem = async (
-  type: TypeArg,
-  data: ItemArg<PlanArg | PostArg | ChatArg | PlaceArg>,
-  docPath: string,
-  image?: ImageArg
-) => {
+export const createItem = async (variables: CreateItemArg) => {
+  const type = variables.type;
+  const data = variables.data;
+  const docPath = variables.docPath;
+  const image = variables.image;
+
   //* 1. 기존에 데이터가 있는지 확인
   const res = await getDoc(doc(db, type, docPath));
   const docRef = doc(db, type, docPath);
-  const uploadDate = Timestamp.now().seconds;
+  const uploadDate = Timestamp.now().toDate();
 
   //* 2. switch - case
   switch (type) {
@@ -123,6 +124,7 @@ export const createItem = async (
   } else {
     handleUpdate(updateDoc);
   }
+  return;
 };
 
 // TODO. READ

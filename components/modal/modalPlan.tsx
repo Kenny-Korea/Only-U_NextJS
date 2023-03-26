@@ -1,14 +1,12 @@
-import { ItemArg, ModalProps, PlanArg } from "@/types";
+import { ItemArg, ModalProps, PlanArg, Variables } from "@/types";
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import ModalLayout from "./layout";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useMutation, useQueryClient } from "react-query";
-import { createItem } from "@/api/apiService";
 import { MissingValueErrorMessage } from "@/utils/missingValueError";
 import { useUserInfo } from "@/hooks/useUserInfo";
-import { useUpload } from "@/hooks/useUpload";
+import { usePostMutation } from "@/hooks/usePostMutation";
 
 const ModalPlan = (props: ModalProps) => {
   const { modal, setModal } = props;
@@ -17,39 +15,20 @@ const ModalPlan = (props: ModalProps) => {
   const [missingValueError, setMissingValueError] = useState<boolean>(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
+
   const dispatch = useDispatch();
-  // const queryClient = useQueryClient();
-
-  // const user = useUserInfo();
-  // console.log(user);
-
-  //* useMutation
-  // const { mutate } = useMutation(
-  //   (data: ItemArg<PlanArg>) => {
-  //     return createItem("plans", data, user?.combinedId);
-  //   },
-  //   {
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries("plans");
-  //       dispatch({ type: "UPLOADING_DONE" });
-  //       setModal(false);
-  //     },
-  //     onError: () => {
-  //       alert("Failed to upload posts. Please try again");
-  //       dispatch({ type: "UPLOADING_DONE" });
-  //       setModal(false);
-  //     },
-  //   }
-  // );
+  const { mutate } = usePostMutation();
+  const user = useUserInfo();
 
   const onClickSubmit = () => {
-    // 예외 처리
+    // 1. 예외 처리
     if (!titleRef.current?.value) {
       setMissingValueError(true);
       return;
     }
-
     dispatch({ type: "UPLOADING_STARTS" });
+
+    // 2. data 정의
     const data: ItemArg<PlanArg> = {
       id: null,
       title: titleRef.current?.value,
@@ -57,8 +36,17 @@ const ModalPlan = (props: ModalProps) => {
       regdate: null,
       plandate: selectedDate,
     };
-    // mutation 객체에 데이터 전달
-    useUpload("plans", data, setModal);
+
+    // 3. createItem 함수에 전달할 variables
+    const variables: Variables = {
+      type: "plans",
+      data,
+      docPath: user?.combinedId,
+      setModal,
+    };
+
+    // 4. mutate 함수 호출
+    mutate(variables);
   };
 
   const onClickCancel = () => {

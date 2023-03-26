@@ -23,7 +23,7 @@ export const useItemData = (colName: ColName) => {
   } = useQuery<any[]>(
     [colName, combinedId],
     () => readItems(colName, combinedId),
-    { enabled: !!combinedId }
+    { enabled: !!combinedId, staleTime: 5000 }
   );
   return { data, isLoading, error };
 };

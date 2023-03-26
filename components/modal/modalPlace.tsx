@@ -1,5 +1,5 @@
 import { createItem } from "@/api/apiService";
-import { ItemArg, ModalProps, PlaceArg } from "@/types";
+import { ItemArg, ModalProps, PlaceArg, Variables } from "@/types";
 import { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useDispatch } from "react-redux";
@@ -10,12 +10,9 @@ import AddPhotoAlternateRoundedIcon from "@mui/icons-material/AddPhotoAlternateR
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import { MissingValueErrorMessage } from "@/utils/missingValueError";
+import { useUserInfo } from "@/hooks/useUserInfo";
+import { usePostMutation } from "@/hooks/usePostMutation";
 
-type placeInfo = {
-  title: string;
-  rating: any;
-  address: string;
-};
 const initialValue = {
   name: null,
   address: null,
@@ -23,6 +20,7 @@ const initialValue = {
   rating: null,
   placeId: null,
 };
+
 const ModalPlace = (props: ModalProps) => {
   const { modal, setModal } = props;
   const [missingValueError, setMissingValueError] = useState<boolean>(false);
@@ -30,33 +28,19 @@ const ModalPlace = (props: ModalProps) => {
   const [placeType, setPlaceType] = useState<"food" | "place">("food");
   const [rating, setRating] = useState<number>(3);
   const [placeInfo, setPlaceInfo] = useState(initialValue);
+
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const imageFileRef = useRef<HTMLInputElement>(null);
+
   const dispatch = useDispatch();
-  const queryClient = useQueryClient();
+  const user = useUserInfo();
+  const { mutate } = usePostMutation();
 
   //* useMutation
-  const { mutate } = useMutation(
-    (data: ItemArg<PlaceArg>) => {
-      return createItem("places", data, "fdsafsd", imageFileContainer);
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("places");
-        dispatch({ type: "UPLOADING_DONE" });
-        setModal(false);
-      },
-      onError: () => {
-        alert("Failed to upload posts. Please try again");
-        dispatch({ type: "UPLOADING_DONE" });
-        setModal(false);
-      },
-    }
-  );
 
   const onClickSubmit = async () => {
-    // 예외 처리
+    // 1. 예외 처리
     if (
       !titleRef.current?.value ||
       !contentRef.current?.value ||
@@ -66,8 +50,9 @@ const ModalPlace = (props: ModalProps) => {
       setMissingValueError(true);
       return;
     }
-
     dispatch({ type: "UPLOADING_STARTS" });
+
+    // 2. data 정의
     const data: ItemArg<PlaceArg> = {
       id: null,
       title: titleRef.current?.value,
@@ -78,8 +63,18 @@ const ModalPlace = (props: ModalProps) => {
       writer: "kenny",
       regdate: null,
     };
-    // mutation 객체에 데이터 전달
-    mutate(data);
+
+    // 3. createItem 함수에 전달할 variables
+    const variables: Variables = {
+      type: "places",
+      data,
+      docPath: user?.combinedId,
+      setModal,
+      image: imageFileContainer,
+    };
+
+    // 4. mutate 함수 호출
+    mutate(variables);
   };
 
   const onClickCancel = () => {

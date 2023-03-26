@@ -101,3 +101,11 @@ export interface PlaceArg extends DataArg {
   readonly content: string;
   imageurl: null | (string | null)[];
 }
+
+export type Variables = {
+  type: "plans" | "posts" | "places";
+  data: PlanArg | PostArg | PlaceArg;
+  docPath: string;
+  setModal: React.Dispatch<React.SetStateAction<boolean>>;
+  image?: File[];
+};

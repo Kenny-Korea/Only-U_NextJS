@@ -2,13 +2,11 @@ import { useRef, useState } from "react";
 import ModalLayout from "./layout";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Image from "next/image";
-import { ItemArg, ModalProps, PostArg } from "@/types";
-import { createItem } from "@/api/apiService";
+import { ItemArg, ModalProps, PostArg, Variables } from "@/types";
 import { useDispatch } from "react-redux";
-import { useMutation, useQueryClient } from "react-query";
 import { MissingValueErrorMessage } from "@/utils/missingValueError";
 import { useUserInfo } from "@/hooks/useUserInfo";
-import { useUpload } from "@/hooks/useUpload";
+import { usePostMutation } from "@/hooks/usePostMutation";
 
 const ModalPost = (props: ModalProps) => {
   const { modal, setModal } = props; // 각 개별 모달의 상태를 전역적으로 관리할 필요는 없기 때문에 local state로 관리
@@ -16,35 +14,17 @@ const ModalPost = (props: ModalProps) => {
   const [imageFileContainer, setImageFileContainer] = useState<File[]>([]);
   const [previewUrlContainer, setPreviewUrlContainer] = useState<string[]>([]);
   const [hashtagContainer, setHashtagContainer] = useState<string[]>([]);
+
   const titleRef = useRef<HTMLInputElement>(null);
   const hashtagRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
+
   const dispatch = useDispatch();
-  // const queryClient = useQueryClient();
-
-  // const user = useUserInfo();
-
-  //* useMutation
-  // const { mutate } = useMutation(
-  //   (data: ItemArg<PostArg>) => {
-  //     return createItem("posts", data, user?.combinedId, imageFileContainer);
-  //   },
-  //   {
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries("posts");
-  //       dispatch({ type: "UPLOADING_DONE" });
-  //       setModal(false);
-  //     },
-  //     onError: () => {
-  //       alert("Failed to upload posts. Please try again");
-  //       dispatch({ type: "UPLOADING_DONE" });
-  //       setModal(false);
-  //     },
-  //   }
-  // );
+  const user = useUserInfo();
+  const { mutate } = usePostMutation();
 
   const onClickSubmit = async () => {
-    // 예외 처리
+    // 1. 예외 처리
     if (
       !titleRef.current?.value ||
       !contentRef.current?.value ||
@@ -54,8 +34,9 @@ const ModalPost = (props: ModalProps) => {
       setMissingValueError(true);
       return;
     }
-
     dispatch({ type: "UPLOADING_STARTS" });
+
+    // 2. data 정의
     const data: ItemArg<PostArg> = {
       id: null,
       title: titleRef.current?.value,
@@ -65,8 +46,18 @@ const ModalPost = (props: ModalProps) => {
       writer: "kenny",
       regdate: null,
     };
-    // mutation 객체에 데이터 전달
-    useUpload("posts", data, setModal, imageFileContainer);
+
+    // 3. createItem 함수에 전달할 variables
+    const variables: Variables = {
+      type: "posts",
+      data,
+      docPath: user?.combinedId,
+      setModal,
+      image: imageFileContainer,
+    };
+
+    // 4. mutate 함수 호출
+    mutate(variables);
   };
 
   const onClickCancel = () => {
@@ -222,3 +213,21 @@ const ModalPost = (props: ModalProps) => {
 };
 
 export default ModalPost;
+
+// const { mutate } = useMutation(
+//   (data: ItemArg<PlaceArg>) => {
+//     return createItem("places", data, "fdsafsd", imageFileContainer);
+//   },
+//   {
+//     onSuccess: () => {
+//       queryClient.invalidateQueries("places");
+//       dispatch({ type: "UPLOADING_DONE" });
+//       setModal(false);
+//     },
+//     onError: () => {
+//       alert("Failed to upload posts. Please try again");
+//       dispatch({ type: "UPLOADING_DONE" });
+//       setModal(false);
+//     },
+//   }
+// );
