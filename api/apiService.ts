@@ -6,6 +6,9 @@ import {
   setDoc,
   updateDoc,
   arrayUnion,
+  query,
+  collection,
+  where,
 } from "firebase/firestore";
 import { db, storage } from "../firebase";
 import { uuidv4 } from "@firebase/util";
@@ -37,6 +40,12 @@ export type CreateItemArg = {
   image?: ImageArg;
 };
 
+export type CreateChatArg = {
+  type: ChatArg;
+  data: ItemArg<ChatArg>;
+  docPath: string;
+};
+
 // TODO. CREATE
 export const createItem = async (variables: CreateItemArg) => {
   const type = variables.type;
@@ -47,7 +56,7 @@ export const createItem = async (variables: CreateItemArg) => {
   //* 1. 기존에 데이터가 있는지 확인
   const res = await getDoc(doc(db, type, docPath));
   const docRef = doc(db, type, docPath);
-  const uploadDate = Timestamp.now().toDate();
+  const uploadDate = Timestamp.now().seconds * 1000;
 
   //* 2. switch - case
   switch (type) {
@@ -101,6 +110,8 @@ export const createItem = async (variables: CreateItemArg) => {
       data.regdate = uploadDate;
       break;
     case "places":
+      data.id = uuidv4();
+      data.regdate = uploadDate;
       break;
 
     default:
@@ -127,7 +138,7 @@ export const createItem = async (variables: CreateItemArg) => {
   return;
 };
 
-// TODO. READ
+// TODO. READ - POSTS
 export const readItems = async (type: TypeArg, docPath: string) => {
   const modifiedType = type.substring(0, type.length - 1); // db 내 이름 수정하지 않기 위해 사용
   const docRef = doc(db, type, docPath);
@@ -140,7 +151,12 @@ export const readItems = async (type: TypeArg, docPath: string) => {
   }
 };
 
-// TODO. GET_USER_INFO
+// TODO. READ - CHATS
+// export const readChats = async() => {
+//   const q = query(collection(db, "chats"), where("chat", "==",  ))
+// }
+
+// TODO. READ - USER INFO
 export const getUserInfo = async (userUid: string) => {
   const docRef = doc(db, "user", userUid);
   const docSnap = await getDoc(docRef); // Promise 객체 리턴

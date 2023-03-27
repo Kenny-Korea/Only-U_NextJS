@@ -3,7 +3,7 @@
 // touchEvent를 state가 아닌 다른 값으로 사용할 수 있는 방법을 고민해보기
 
 import { ItemProps, PostData } from "@/types";
-import { dateFormat } from "@/utils/dateFormat";
+import { toDate } from "@/utils/dateFormat";
 import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
 import EditButton from "../../features/modifyItem";
@@ -64,7 +64,7 @@ const PostItem = (props: ItemProps<PostData>) => {
   };
 
   const getRegisteredDate = useMemo(() => {
-    return dateFormat(item.regdate);
+    return toDate(item.regdate);
   }, [item]);
 
   return (
@@ -152,8 +152,6 @@ const PostItem = (props: ItemProps<PostData>) => {
                       <Image
                         src={url}
                         alt=""
-                        // width={300}
-                        // height={100}
                         fill
                         style={{ objectFit: "cover", overflow: "hidden" }}
                       />

@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 // TODO. Modal창 on/off를 위해 전달받는 Props Type
 export type ModalProps = {
   modal: boolean;
@@ -15,7 +17,7 @@ export type ModalLayoutProps = {
 // TODO. 서버로부터 받는 데이터의 타입
 interface Data {
   readonly id: string;
-  readonly regdate: Date;
+  readonly regdate: number;
   readonly writer: string;
 }
 
@@ -57,7 +59,7 @@ export type UserData = {
   readonly p_uid: string;
   readonly p_email: string;
   readonly p_imageurl: string[];
-  readonly regdate: Date;
+  readonly regdate: number;
 };
 
 // TODO. 개별 아이템 카드에서 전달받을 Props Type (Generics)
@@ -76,7 +78,7 @@ export type ImageArg = File[];
 // createItem 함수에서 data 변수를 새로 생성하지 않고, 기존 value만 교체할 예정이므로, 해당 단계에서 모든 key를 설정해줘야 함
 interface DataArg {
   id: null | string;
-  regdate: null | Date;
+  regdate: null | number;
   writer: string;
 }
 export interface PlanArg extends DataArg {
@@ -99,7 +101,7 @@ export interface PlaceArg extends DataArg {
   readonly rating: number;
   readonly placetype: "food" | "place";
   readonly content: string;
-  imageurl: null | (string | null)[];
+  imageurl: null | (string | google.maps.places.PlacePhoto | null)[];
 }
 
 export type Variables = {
@@ -108,4 +110,10 @@ export type Variables = {
   docPath: string;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
   image?: File[];
+};
+
+export type ChatVariables = {
+  type: "chats";
+  data: ChatArg;
+  docPath: string;
 };

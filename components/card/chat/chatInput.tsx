@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import AttachFileRoundedIcon from "@mui/icons-material/AttachFileRounded";
+import SendIcon from "@mui/icons-material/Send";
 import { useUserInfo } from "@/hooks/useUserInfo";
-import { ChatArg, ItemArg } from "@/types";
+import { ChatArg, ChatVariables, ItemArg } from "@/types";
 import { useSelector } from "react-redux";
 import { AuthState } from "@/state/reducers/authReducer";
 import { useMutation, useQueryClient } from "react-query";
@@ -17,8 +18,8 @@ const ChatInput = () => {
   const userUid = useSelector((state: AuthState) => state.authReducer.userUid);
 
   const { mutate } = useMutation(
-    (data: ItemArg<ChatArg>) => {
-      return createItem("chats", data, user?.combinedId);
+    (variables: ChatVariables) => {
+      return createItem(variables);
     },
     {
       onSuccess: () => {
@@ -38,27 +39,28 @@ const ChatInput = () => {
       writer: userUid,
       regdate: null,
     };
+
+    const variables: ChatVariables = {
+      type: "chats",
+      data,
+      docPath: user?.combinedId,
+    };
+
     // mutation 객체에 데이터 전달
     chatInputRef.current.value = "";
     chatInputRef.current.focus();
-    mutate(data);
+    mutate(variables);
   };
 
-  const showNavbar = () => {
-    dispatch({ type: "SHOW_NAVBAR" });
-  };
   const hideNavbar = () => {
     dispatch({ type: "HIDE_NAVBAR" });
-  };
-  const toggleNavbar = () => {
-    dispatch({ type: "TOGGLE_NAVBAR" });
   };
 
   return (
     <>
       <div className={`w-screen min-h-[3.5rem] h-14 centerItem`}>
         <div className="w-full h-8 mx-2 flex justify-between rounded-full">
-          <div className="w-[calc(100%-4rem)] flex">
+          <div className="w-[calc(100%-2.5rem)] flex">
             <div className="w-8 h-full bg-white centerItem rounded-tl-full rounded-bl-full">
               <div className="w-6 h-6 bg-mainColor rounded-full centerItem">
                 <AddRoundedIcon
@@ -69,7 +71,7 @@ const ChatInput = () => {
             <textarea
               cols={30}
               rows={3}
-              className="w-[calc(100%-4rem)] h-8 px-2 pt-1 bg-white resize-none outline-none text-md"
+              className="w-[calc(100%-4rem)] h-8 px-2 pt-[6px] bg-white resize-none outline-none text-sm"
               ref={chatInputRef}
               placeholder="Message"
               onFocus={hideNavbar}
@@ -82,10 +84,10 @@ const ChatInput = () => {
             </div>
           </div>
           <button
-            className="w-14 h-full bg-mainColor text-white rounded-full centerItem"
+            className="w-8 h-full bg-mainColor text-white rounded-full centerItem"
             onClick={onClickSubmit}
           >
-            Send
+            <SendIcon style={{ width: 16 }} />
           </button>
         </div>
       </div>

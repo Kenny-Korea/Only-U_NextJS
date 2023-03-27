@@ -1,4 +1,5 @@
 import { ModalLayoutProps } from "@/types";
+import { useRef, useState } from "react";
 
 const ModalLayout = (props: ModalLayoutProps) => {
   const { children, modal, onClickSubmit, onClickCancel } = props;
@@ -6,23 +7,24 @@ const ModalLayout = (props: ModalLayoutProps) => {
   return (
     <>
       <>
-        {/* 외부 레이아웃 */}
+        {/* 검정 배경 */}
         {modal && (
           <div
             id={modal ? "fadeIn" : "fadeOut"}
-            className="w-screen h-screen fixed top-0 left-0 z-10"
+            className="w-screen h-screen fixed top-0 left-0 z-10 overflow-y-scroll"
           />
         )}
+        {/* 흰색 레이아웃 */}
         <div
-          className="w-full h-screen fixed left-0 pt-12 z-10"
           id={modal ? "addPostSlideIn" : "addPostSlideOut"}
+          className="w-full h-[120vh] fixed left-0 z-10 pt-0 bg-scroll"
         >
           {/* 내부 컨텐츠 */}
           <div className="rounded-xl overflow-hidden shadow-md m-4 p-3 bg-backgroundColor overflow-y-scroll">
             <div className="flex flex-col gap-2">{children}</div>
             <div className="flex justify-between gap-4 mx-3 my-2">
               <button
-                className="w-1/2 h-8 bg-mainColor text-white rounded-md"
+                className="w-1/2 h-8 bg-mainColor text-white rounded-md font-bold"
                 onClick={onClickSubmit}
               >
                 {true ? "저장" : "등록"}

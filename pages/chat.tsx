@@ -2,7 +2,7 @@ import ChatInput from "@/components/card/chat/chatInput";
 import ChatItem from "@/components/card/chat/chatItem";
 import { useItemData } from "@/hooks/useItemData";
 import { usePath } from "@/hooks/usePath";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
 const Chat = () => {
@@ -25,7 +25,11 @@ const Chat = () => {
           {data?.map((item) => (
             <ChatItem item={item} />
           ))}
-          {!data && "Start a new chat with your partner!"}
+          {!data && (
+            <p className="w-full text-center">
+              Start a new chat with your partner!
+            </p>
+          )}
         </div>
 
         <ChatInput />

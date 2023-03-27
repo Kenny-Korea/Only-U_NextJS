@@ -47,10 +47,10 @@
 .textArea {
   @apply w-full px-2 py-1 text-sm rounded-sm outline-none border-2 border-gray-200 resize-none;
 }
-
+/* 
 .ratingButton {
   @apply w-1/5 h-full bg-gray-200 hover:bg-yellow-400;
-}
+} */
 
 .hashtag {
   @apply h-5 mr-2 w-fit px-2 font-semibold text-xs text-center text-white rounded-full leading-5 bg-mainColor inline-block;
@@ -73,7 +73,7 @@ td:nth-child(odd) {
 }
 
 td:nth-child(even) {
-  @apply w-auto pl-2 border-slate-300 border-b;
+  @apply w-auto border-slate-300 border-b;
 }
 
 .ellipsis {

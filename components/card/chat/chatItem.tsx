@@ -1,5 +1,6 @@
 import { AuthState } from "@/state/reducers/authReducer";
 import { ItemProps, ChatData } from "@/types";
+import { toDate, toHour, toMinute } from "@/utils/dateFormat";
 import { useSelector } from "react-redux";
 
 const ChatItem = (props: ItemProps<ChatData>) => {
@@ -10,29 +11,28 @@ const ChatItem = (props: ItemProps<ChatData>) => {
   const messageItem = "p-2 text-xs";
 
   return (
-    <>
-      <div
+    <div
+      className={
+        item.writer === userUid
+          ? `${messageWrapper} justify-end`
+          : `${messageWrapper} justify-end flex-row-reverse`
+      }
+    >
+      <div className="text-[10px] text-gray-400 flex justify-end items-end mr-1 pb-1">
+        {toHour(item.regdate)}:{toMinute(item.regdate)}
+        {/* {item.regdate.toDate().getMinutes()} */}
+      </div>
+      <p
+        style={{ maxWidth: "70%" }}
         className={
           item.writer === userUid
-            ? `${messageWrapper} justify-end`
-            : `${messageWrapper} justify-end flex-row-reverse`
+            ? `${messageItem} bg-blue-200 rounded-tl-xl rounded-bl-xl rounded-br-xl`
+            : `${messageItem} bg-gray-200 rounded-tr-xl rounded-bl-xl rounded-br-xl`
         }
       >
-        <div className="text-xs text-gray-400 flex justify-end items-end mr-1">
-          {item.regdate}:{/* {item.regdate.toDate().getMinutes()} */}
-        </div>
-        <p
-          style={{ maxWidth: "70%" }}
-          className={
-            item.writer === userUid
-              ? `${messageItem} bg-blue-200 rounded-tl-xl rounded-bl-xl rounded-br-xl`
-              : `${messageItem} bg-gray-200 rounded-tr-xl rounded-bl-xl rounded-br-xl`
-          }
-        >
-          {item.content}
-        </p>
-      </div>
-    </>
+        {item.content}
+      </p>
+    </div>
   );
 };
 
