@@ -1,22 +1,20 @@
-import React, { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import { doc, updateDoc, arrayRemove } from "firebase/firestore";
-import { db } from "../../firebase";
-// import { AuthContext } from "@/context/authContext";
+import { ChatArg, ItemArg, PlaceArg, PlanArg, PostArg, TypeArg } from "@/types";
+import { deleteItem } from "@/api/apiService";
+import { useUserInfo } from "@/hooks/useUserInfo";
 
 type EditButtonProps = {
-  item: {
-    id: string;
-  };
-  docName: string;
+  item: ItemArg<PlanArg | PostArg | ChatArg | PlaceArg>;
+  type: TypeArg;
 };
 
 const EditButton = (props: EditButtonProps) => {
-  const { item, docName } = props;
+  const user = useUserInfo();
+  const { item, type } = props;
   const [clicked, setClicked] = useState(false);
-  // const { partnerInfo } = useContext(AuthContext);
 
   const onClickSettings = () => {
     setClicked(!clicked);
@@ -24,14 +22,8 @@ const EditButton = (props: EditButtonProps) => {
 
   const onClickUpdate = () => {};
 
-  const onClickDelete = async () => {
-    // if (window.confirm("정말 삭제하시겠습니까?")) {
-    //   const docRef = doc(db, docName, partnerInfo.combinedId);
-    //   const fieldName = docName.substring(0, docName.length - 1);
-    //   await updateDoc(docRef, {
-    //     [fieldName]: arrayRemove(item),
-    //   });
-    // }
+  const onClickDelete = () => {
+    deleteItem(type, user?.combinedId, item);
   };
 
   const frame = (event: () => void, icon: React.ReactNode) => (

@@ -27,7 +27,7 @@ export interface ProfileData extends Data {
 
 export interface PlanData extends Data {
   readonly title: string;
-  readonly plandate: number;
+  readonly plandate: number; // Datepicker 라이브러리가 Date 형식을 사용해야 하므로
 }
 
 export interface PostData extends Data {
@@ -65,6 +65,7 @@ export type UserData = {
 // TODO. 개별 아이템 카드에서 전달받을 Props Type (Generics)
 export type ItemProps<T> = {
   readonly item: T;
+  readonly placeView?: boolean;
 };
 
 // TODO. createItem 함수에 전달 할 4가지 Argument Type
@@ -83,7 +84,7 @@ interface DataArg {
 }
 export interface PlanArg extends DataArg {
   readonly title: string;
-  readonly plandate: Date; // Datepicker 라이브러리가 Date 형식을 사용해야 하므로
+  readonly plandate: number; // Datepicker 라이브러리가 Date 형식을 사용해야 하므로
 }
 export interface PostArg extends DataArg {
   readonly title: string;

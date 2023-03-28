@@ -95,7 +95,7 @@ const PostItem = (props: ItemProps<PostData>) => {
                     </div>
                   )}
                 </div>
-                <EditButton item={item} docName="posts" />
+                <EditButton item={item} type="posts" />
               </div>
 
               {/* 위로 올라가는 이펙트 시작 */}

@@ -34,7 +34,7 @@ const Plan = () => {
             <hr />
             {modal && <ModalPlan modal={modal} setModal={setModal} />}
             {data && data.map((item) => <PlanItem item={item} key={item.id} />)}
-            {data && data.length === 0 && "Add new plan!"}
+            {!data || (data.length === 0 && "Add new plan!")}
           </div>
         </div>
       </div>

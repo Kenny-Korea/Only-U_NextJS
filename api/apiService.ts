@@ -9,6 +9,7 @@ import {
   query,
   collection,
   where,
+  arrayRemove,
 } from "firebase/firestore";
 import { db, storage } from "../firebase";
 import { uuidv4 } from "@firebase/util";
@@ -53,10 +54,43 @@ export const createItem = async (variables: CreateItemArg) => {
   const docPath = variables.docPath;
   const image = variables.image;
 
-  //* 1. 기존에 데이터가 있는지 확인
+  //* 1-1. 기존 데이터가 있는지 확인
   const res = await getDoc(doc(db, type, docPath));
   const docRef = doc(db, type, docPath);
   const uploadDate = Timestamp.now().seconds * 1000;
+
+  //* 1-2. 필요한 변수 및 함수 선언
+  const compressedImages: File[] = [];
+  const urlArray: string[] = [];
+  const compressImage = async () => {
+    for (let x of image!) {
+      try {
+        const compressedImage = await imageCompression(
+          x,
+          imageCompressionOptions
+        );
+        console.log(compressedImage);
+        compressedImages.push(compressedImage);
+      } catch {
+        console.log("error");
+      }
+    }
+  };
+  const distributeUrl = async () => {
+    for (let i = 0; i < compressedImages.length; i++) {
+      const storageRef = ref(storage, docPath + uploadDate + i);
+      const uploadTask = await uploadBytesResumable(
+        storageRef,
+        compressedImages[i],
+        {
+          contentType: "image/jpeg",
+        }
+      );
+      await getDownloadURL(uploadTask.ref).then((url) => {
+        urlArray.push(url);
+      });
+    }
+  };
 
   //* 2. switch - case
   switch (type) {
@@ -64,54 +98,52 @@ export const createItem = async (variables: CreateItemArg) => {
       data.id = uuidv4();
       data.regdate = uploadDate;
       break;
+
     case "posts":
-      if (!image) return; // TS
+      if (!image) return; // Post는 무조건 이미지가 1개 이상 있어야 함
       // 이미지 압축 시작
-      const compressedImages: File[] = [];
-      for (let x of image) {
-        try {
-          const compressedImage = await imageCompression(
-            x,
-            imageCompressionOptions
-          );
-          console.log(compressedImage);
-          compressedImages.push(compressedImage);
-        } catch {
-          console.log("error");
-        }
-      }
+      await compressImage();
+
       // 이미지 업로드 및 url 다운로드
-      const urlArray: string[] = [];
       if (compressedImages.length !== 0 || Array.isArray(compressedImages)) {
-        for (let i = 0; i < compressedImages.length; i++) {
-          const storageRef = ref(storage, docPath + uploadDate + i);
-          const uploadTask = await uploadBytesResumable(
-            storageRef,
-            compressedImages[i],
-            {
-              contentType: "image/jpeg",
-            }
-          );
-          await getDownloadURL(uploadTask.ref).then((url) => {
-            urlArray.push(url);
-          });
-        }
-        //! data의 타입이 확실하지 않기 때문에 예외 처리 별도 해줘야 함
-        if ("imageurl" in data) {
-          data.id = uuidv4();
-          data.imageurl = urlArray;
-          data.regdate = uploadDate;
-          console.log("for문 다 돌았음");
-        }
+        await distributeUrl();
       }
+      //! data의 타입이 확실하지 않기 때문에 예외 처리 별도 해줘야 함
+      if ("imageurl" in data) {
+        data.id = uuidv4();
+        data.imageurl = urlArray;
+        data.regdate = uploadDate;
+        console.log("for문 다 돌았음");
+      }
+
       break;
+
     case "chats":
       data.id = uuidv4();
       data.regdate = uploadDate;
       break;
+
     case "places":
-      data.id = uuidv4();
-      data.regdate = uploadDate;
+      if (image) {
+        // Place는 첨부한 이미지가 있을 수도, 없을 수도 있음
+        await compressImage();
+      }
+      // 이미지 업로드 및 url 다운로드
+      if (compressedImages.length !== 0 || Array.isArray(compressedImages)) {
+        await distributeUrl();
+      }
+      // 1. upload 파일이 있는 경우
+      if ("imageurl" in data && image) {
+        data.id = uuidv4();
+        data.imageurl = urlArray;
+        data.regdate = uploadDate;
+      }
+      // 2. 구글 이미지 사용하거나, 이미지가 없는 경우
+      else {
+        data.id = uuidv4();
+        data.regdate = uploadDate;
+      }
+
       break;
 
     default:
@@ -184,4 +216,16 @@ export const getUserInfo = async (userUid: string) => {
 // TODO. UPDATE
 export const updateItem = () => {};
 // TODO. DELETE
-export const deleteItem = () => {};
+export const deleteItem = async (
+  type: TypeArg,
+  docPath: string,
+  item: ItemArg<PlanArg | PostArg | ChatArg | PlaceArg>
+) => {
+  if (window.confirm("정말 삭제하시겠습니까?")) {
+    const docRef = doc(db, type, docPath);
+    const fieldName = type.substring(0, type.length - 1); // "s" 제거
+    await updateDoc(docRef, {
+      [fieldName]: arrayRemove(item), // data 객체를 보내주면 이에 해당하는 data 제거
+    });
+  }
+};

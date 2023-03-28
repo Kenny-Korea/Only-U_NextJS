@@ -24,6 +24,8 @@ const ModalPlace = (props: ModalProps) => {
   const [missingValueError, setMissingValueError] = useState<boolean>(false);
   const [imageFileContainer, setImageFileContainer] = useState<File[]>([]);
   const [placeType, setPlaceType] = useState<"food" | "place">("food");
+  const [preview, setPreview] = useState<any>([]);
+
   const [rating, setRating] = useState<string>("3");
   const [selectedPlace, setSelectedPlace] =
     useState<google.maps.places.PlaceResult>();
@@ -64,28 +66,34 @@ const ModalPlace = (props: ModalProps) => {
       writer: "kenny",
       regdate: null,
     };
-    if (selectedPlace && selectedPlace.photos) {
+    if (
+      preview.length > 0 &&
+      imageFileRef.current &&
+      imageFileRef.current.files &&
+      imageFileRef.current.files.length === 0
+    ) {
       // 이미지 파일의 url을 업로드
-      data.imageurl = [selectedPlace.photos[0]];
+      console.log("구글맵 이미지 사용!");
+      data.imageurl = [preview[0]];
     }
+    console.log(data);
 
     // 3. createItem 함수에 전달할 variables
-
     const variables: Variables = {
       type: "places",
       data,
       docPath: user?.combinedId,
       setModal,
     };
-    if (imageFileRef.current !== null && imageFileRef.current.files !== null) {
+    if (
+      imageFileRef.current &&
+      imageFileRef.current.files &&
+      imageFileRef.current.files.length > 0
+    ) {
       // 이미지 파일을 업로드
+      console.log("업로드 파일 사용!");
       variables.image = [imageFileRef.current.files[0]];
     }
-    // else if (selectedPlace && selectedPlace.photos) {
-    //   // 이미지 파일의 url을 업로드
-    //   variables.data.imageurl = [selectedPlace.photos[0] as string];
-    // }
-
     // 4. mutate 함수 호출
     mutate(variables);
   };
@@ -108,8 +116,8 @@ const ModalPlace = (props: ModalProps) => {
   };
 
   const copyNameFromMap = () => {
-    if (!titleRef.current || !selectedPlace) return;
-    titleRef.current.value = selectedPlace;
+    if (!titleRef.current || !selectedPlace?.name) return;
+    titleRef.current.value = selectedPlace.name;
   };
 
   const handleFileName = (e: any) => {
@@ -136,6 +144,8 @@ const ModalPlace = (props: ModalProps) => {
       <GoogleMapContainer
         selectedPlace={selectedPlace}
         setSelectedPlace={setSelectedPlace}
+        preview={preview}
+        setPreview={setPreview}
       />
       <table className="w-full mt-2 border-separate">
         <tbody>

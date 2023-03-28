@@ -1,6 +1,4 @@
-import { useMemo, useState } from "react";
-import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
-import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
+import { useMemo } from "react";
 import PlanOrder from "@/components/home/planOrder";
 import ItemModificationButton from "@/components/features/modifyItem";
 import { ItemProps, PlanData } from "@/types";
@@ -10,7 +8,7 @@ const PlanItem = (props: ItemProps<PlanData>) => {
   const { item } = props;
 
   const dateGap = useMemo(() => {
-    const savedDate = props.item.plandate;
+    const savedDate = item.plandate;
     const today = new Date().getTime();
     const gap = savedDate - today;
     return Math.ceil(new Date(gap).getTime() / 1000 / 60 / 60 / 24);
@@ -41,8 +39,8 @@ const PlanItem = (props: ItemProps<PlanData>) => {
           </div>
         </div>
         <ItemModificationButton
-          item={props.item}
-          docName="plan"
+          item={item}
+          type="plans"
           // key={props.item.id}
         />
       </div>

@@ -1,5 +1,4 @@
 import { ModalLayoutProps } from "@/types";
-import { useRef, useState } from "react";
 
 const ModalLayout = (props: ModalLayoutProps) => {
   const { children, modal, onClickSubmit, onClickCancel } = props;

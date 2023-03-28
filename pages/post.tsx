@@ -1,5 +1,5 @@
 import PostItem from "@/components/card/post/postItem";
-import CreateNewItemButton from "@/components/features/openModal";
+import CreateNewItemButton from "@/components/features/createNewItem";
 import ModalPost from "@/components/modal/modalPost";
 import { useItemData } from "@/hooks/useItemData";
 import { usePath } from "@/hooks/usePath";
@@ -19,6 +19,13 @@ const Post = () => {
 
   return (
     <>
+      <button
+        onClick={() => {
+          console.log(data);
+        }}
+      >
+        click
+      </button>
       {Array.isArray(data) &&
         data.map((item: PostData) => <PostItem item={item} key={item.id} />)}
       {modal && <ModalPost modal={modal} setModal={setModal} />}
@@ -27,7 +34,7 @@ const Post = () => {
           <CreateNewItemButton path="Post" />
         </div>
       )}
-      {!data && "Add new post!"}
+      {!data || (data.length === 0 && "Add new post!")}
     </>
   );
 };

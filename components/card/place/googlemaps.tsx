@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 type Props = {
   selectedPlace: any;
   setSelectedPlace: any;
+  preview: any;
+  setPreview: any;
 };
 
 const center = { lat: 43.6532225, lng: -79.383186 };
@@ -21,8 +23,7 @@ const options = {
 };
 
 const GoogleMapContainer = (props: Props) => {
-  const { selectedPlace, setSelectedPlace } = props;
-  const [preview, setPreview] = useState<any>([]);
+  const { selectedPlace, setSelectedPlace, preview, setPreview } = props;
   const dispatch = useDispatch();
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,

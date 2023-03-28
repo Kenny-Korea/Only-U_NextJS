@@ -1,18 +1,18 @@
-import React from "react";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 
 type CreateNewItemButtonProps = {
   path: string;
 };
 
+//! NOT WORKING ANYMORE
 const CreateNewItemButton = (props: CreateNewItemButtonProps) => {
   const { path } = props;
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const handleClickButton = () => {
     switch (path) {
       case "Post":
-        dispatch({ type: "" });
+      // dispatch({ type: "" });
       // modal의 상태를 단순히 boolean 값으로만 주게 되면, 작성하다가 뒤로 가기를 누르는 경우, modal이 계속 true로 남아있을 수 있으므로 다시 생각을 해봐야겠다...
       // modal이 열리고 닫히는 상태를 굳이 전역 관리할 필요가 있을까?
     }
