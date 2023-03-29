@@ -167,9 +167,6 @@ const PostItem = (props: ItemProps<PostData>) => {
           </div>
         </div>
       )}
-      {postView === "grid" && (
-        <div className="w-full h-full">{/* <Image /> */}</div>
-      )}
     </>
   );
 };

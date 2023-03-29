@@ -20,7 +20,6 @@ const ChatItem = (props: ItemProps<ChatData>) => {
     >
       <div className="text-[10px] text-gray-400 flex justify-end items-end mr-1 pb-1">
         {toHour(item.regdate)}:{toMinute(item.regdate)}
-        {/* {item.regdate.toDate().getMinutes()} */}
       </div>
       <p
         style={{ maxWidth: "70%" }}

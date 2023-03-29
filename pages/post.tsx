@@ -57,7 +57,7 @@ const Post = () => {
 
   const modalImageProps = {
     images: displayGridImages as string[],
-    page: imageModal,
+    page: imageModal as number,
     setModal: setImageModal,
   };
 

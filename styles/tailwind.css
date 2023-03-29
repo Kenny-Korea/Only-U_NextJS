@@ -56,6 +56,11 @@
   @apply h-5 mr-2 w-fit px-2 font-semibold text-xs text-center text-white rounded-full leading-5 bg-mainColor inline-block;
 }
 
+.modalArrow {
+  @apply w-12 h-full centerItem font-bold absolute top-0
+  /* hover:bg-white hover:bg-opacity-30 ; */;
+}
+
 tr {
   @apply h-6;
 }

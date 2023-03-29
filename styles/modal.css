@@ -3,26 +3,19 @@
   --main: #ff766b;
 }
 
-.square {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(2, 100px);
-
+/* .hr {
+  border: none;
+  border-top: 1px solid gray;
+  text-align: center;
+  overflow: visible;
+}
+.hr:after {
+  content: "Or";
   position: relative;
-}
-
-.square:after {
-  content: "";
-  display: block;
-  padding-bottom: 100%;
-}
-
-.inner {
-  /* position: absolute; */
-  width: 100%;
-  height: 100%;
-}
+  top: -15px;
+  background-color: white;
+  padding: 0 10px;
+} */
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
