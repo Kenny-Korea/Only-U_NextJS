@@ -66,6 +66,7 @@ export type UserData = {
 export type ItemProps<T> = {
   readonly item: T;
   readonly placeView?: "flex" | "grid";
+  readonly postView?: "flex" | "grid";
 };
 
 // TODO. createItem 함수에 전달 할 4가지 Argument Type

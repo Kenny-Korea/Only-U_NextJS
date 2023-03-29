@@ -1,16 +1,10 @@
-import { getUserInfo, readItems } from "@/api/apiService";
 import PlaceItem from "@/components/card/place/placeItem";
 import CreateNewItemButton from "@/components/features/createNewItem";
 import ModalPlace from "@/components/modal/modalPlace";
 import { useItemData } from "@/hooks/useItemData";
 import { usePath } from "@/hooks/usePath";
 import { useEffect, useState } from "react";
-import { dehydrate, QueryClient } from "react-query";
-import TableRowsIcon from "@mui/icons-material/TableRows";
-import GridViewSharpIcon from "@mui/icons-material/GridViewSharp";
-import { useUserInfo } from "@/hooks/useUserInfo";
-import { getDocPath } from "@/api/serverSideApi";
-import { auth } from "@/firebase";
+import FilterBar, { FilterBarProps } from "@/components/features/filterBar";
 
 const Place = () => {
   useEffect(() => {
@@ -35,37 +29,24 @@ const Place = () => {
     setModal(true);
   };
 
-  const onClickFlexView = () => {
-    // 불필요한 state 변화에 의한 렌더링을 막기 위한 early return
-    if (placeView === "flex") return;
-    const mode = localStorage.getItem("placeView");
-    if (mode === "flex") return;
-    localStorage.setItem("placeView", "flex");
-    setPlaceView("flex");
-  };
-
-  console.log();
-
-  const onClickGridView = () => {
-    // 불필요한 state 변화에 의한 렌더링을 막기 위한 early return
-    if (placeView === "grid") return;
-    const mode = localStorage.getItem("placeView");
-    if (mode === "grid") return;
-    localStorage.setItem("placeView", "grid");
-    setPlaceView("grid");
+  const filterBarProps: FilterBarProps = {
+    type: "place" as const,
+    state: placeView,
+    setState: setPlaceView,
   };
 
   return (
     <>
-      <div className="flex gap-2 justify-end">
-        <TableRowsIcon onClick={onClickFlexView} />
-        <GridViewSharpIcon onClick={onClickGridView} />
-      </div>
+      <FilterBar {...filterBarProps} />
       <div
         className={`${placeView === "grid" ? "grid grid-cols-2 gap-2" : null}`}
       >
-        {data?.map((item) => (
-          <PlaceItem item={item} placeView={placeView} key={item.id} />
+        {data?.map((item, index) => (
+          <PlaceItem
+            item={data[data.length - index - 1]}
+            placeView={placeView}
+            key={item.id}
+          />
         ))}
       </div>
       {modal && <ModalPlace modal={modal} setModal={setModal} />}

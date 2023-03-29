@@ -16,7 +16,7 @@ const ModalLayout = (props: ModalLayoutProps) => {
         {/* 흰색 레이아웃 */}
         <div
           id={modal ? "addPostSlideIn" : "addPostSlideOut"}
-          className="w-full h-[120vh] fixed left-0 z-10 pt-0 bg-scroll"
+          className="w-full h-[120vh] fixed left-0 z-20 pt-0 bg-scroll"
         >
           {/* 내부 컨텐츠 */}
           <div className="rounded-xl overflow-hidden shadow-md m-4 p-3 bg-backgroundColor overflow-y-scroll">

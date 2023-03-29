@@ -9,7 +9,7 @@ import { useMemo, useRef, useState } from "react";
 import EditButton from "../../features/modifyItem";
 
 const PostItem = (props: ItemProps<PostData>) => {
-  const { item } = props;
+  const { item, postView } = props;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [firstTouchX, setFirstTouchX] = useState(0);
 
@@ -70,105 +70,106 @@ const PostItem = (props: ItemProps<PostData>) => {
   return (
     <>
       {/* 아... 너무 지저분하므로 꼭 여기는 정리하자 */}
-      <div className="w-full flex justify-center">
-        <div className="w-full h-fit card my-2 flex flex-col gap-1">
-          {item ? (
-            <div
-              className="min-w-full bg-transparent h-[26rem] overflow-hidden relative flex items-end"
-              onTouchStart={onTouchStart}
-              onTouchEnd={onTouchEnd}
-            >
-              <div className="w-full absolute top-0 flex justify-between p-2 z-10">
-                <div className="flex flex-col gap-2">
-                  {/* <Image src={} /> */}
-                  <img
-                    // src={
-                    //   item.writer === currentUser.uid
-                    //     ? currentUser?.imageurl
-                    //     : partnerInfo?.imageurl
-                    // }
-                    alt=""
-                    className="w-8 h-8 object-cover rounded-full border border-gray-300"
-                  />
-                  {Array.isArray(item.imageurl) && item.imageurl.length > 1 && (
-                    <div className="w-9 h-5 rounded-full bg-black opacity-50 text-[9px] text-center align-middle leading-5 text-white">
-                      {currentIndex + 1} / {item.imageurl.length}
-                    </div>
-                  )}
+      {postView === "flex" && (
+        <div className="w-full flex justify-center">
+          <div className="w-full h-fit card my-2 flex flex-col gap-1">
+            {item ? (
+              <div
+                className="min-w-full bg-transparent h-[26rem] overflow-hidden relative flex items-end"
+                onTouchStart={onTouchStart}
+                onTouchEnd={onTouchEnd}
+              >
+                <div className="w-full absolute top-0 flex justify-between p-2 z-10">
+                  <div className="flex flex-col gap-2">
+                    {/* <Image src={} /> */}
+                    <img
+                      // src={
+                      //   item.writer === currentUser.uid
+                      //     ? currentUser?.imageurl
+                      //     : partnerInfo?.imageurl
+                      // }
+                      alt=""
+                      className="w-8 h-8 object-cover rounded-full border border-gray-300"
+                    />
+                    {Array.isArray(item.imageurl) &&
+                      item.imageurl.length > 1 && (
+                        <div className="w-9 h-5 rounded-full bg-black opacity-50 text-[9px] text-center align-middle leading-5 text-white">
+                          {currentIndex + 1} / {item.imageurl.length}
+                        </div>
+                      )}
+                  </div>
+                  <EditButton item={item} type="posts" />
                 </div>
-                <EditButton item={item} type="posts" />
-              </div>
 
-              {/* 위로 올라가는 이펙트 시작 */}
-              <div
-                className={`absolute w-full h-full text-white flex flex-col justify-center z-10`}
-                id={
-                  isDetailOpen === null
-                    ? "defaultPostDetail"
-                    : isDetailOpen
-                    ? "showPostDetail"
-                    : "hidePostDetail"
-                }
-                onClick={onTouchDetail}
-              >
-                <div className="w-full h-[8rem] bg-neutral-600 bg-opacity-60 flex flex-col justify-between px-3 py-2 rounded-tl-xl rounded-tr-xl">
-                  <span
-                    className={`font-bold text-[1.5rem] leading-7 ${
-                      isDetailOpen
-                        ? null
-                        : "block whitespace-nowrap overflow-hidden text-ellipsis duration-500"
-                    }`}
-                    ref={titleRef}
-                  >
-                    {item?.title}
-                  </span>
-                  <div className="w-full overflow-x-scroll whitespace-nowrap scrollbar-hide">
-                    <div className="max-h-6">
-                      {item.hashtag?.map((data: any, index: number) => {
-                        return (
-                          <div className="hashtag" key={data + index}>
-                            #{data}
-                          </div>
-                        );
-                      })}
+                {/* 위로 올라가는 이펙트 시작 */}
+                <div
+                  className={`absolute w-full h-full text-white flex flex-col justify-center z-10`}
+                  id={
+                    isDetailOpen === null
+                      ? "defaultPostDetail"
+                      : isDetailOpen
+                      ? "showPostDetail"
+                      : "hidePostDetail"
+                  }
+                  onClick={onTouchDetail}
+                >
+                  <div className="w-full h-[8rem] bg-neutral-600 bg-opacity-60 flex flex-col justify-between px-3 py-2 rounded-tl-xl rounded-tr-xl">
+                    <span
+                      className={`font-bold text-[1.5rem] leading-7 ${
+                        isDetailOpen
+                          ? null
+                          : "block whitespace-nowrap overflow-hidden text-ellipsis duration-500"
+                      }`}
+                      ref={titleRef}
+                    >
+                      {item?.title}
+                    </span>
+                    <div className="w-full overflow-x-scroll whitespace-nowrap scrollbar-hide">
+                      <div className="max-h-6">
+                        {item.hashtag?.map((data: any, index: number) => {
+                          return (
+                            <div className="hashtag" key={data + index}>
+                              #{data}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <div className="flex justify-end text-xs text-gray-200">
+                      posted at {getRegisteredDate}
                     </div>
                   </div>
-                  <div className="flex justify-end text-xs text-gray-200">
-                    posted at {getRegisteredDate}
+                  <div className="p-3 flex flex-col gap-y-4 text-xs w-full h-full bg-neutral-600 bg-opacity-60">
+                    <hr />
+                    {item?.content}
                   </div>
                 </div>
-                <div className="p-3 flex flex-col gap-y-4 text-xs w-full h-full bg-neutral-600 bg-opacity-60">
-                  <hr />
-                  {item?.content}
+                {/* 위로 올라가는 이펙트 끝 */}
+                <div
+                  className={`w-full h-full flex duration-500`}
+                  ref={imageContainerRef}
+                >
+                  {item.imageurl.map((url: string) => {
+                    return (
+                      <div className="min-w-full h-full relative" key={url}>
+                        <Image
+                          src={url}
+                          alt=""
+                          fill
+                          style={{ objectFit: "cover", overflow: "hidden" }}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
-              {/* 위로 올라가는 이펙트 끝 */}
-              <div
-                className={`w-full h-full flex duration-500`}
-                ref={imageContainerRef}
-              >
-                {item.imageurl.map((url: string) => {
-                  return (
-                    <div className="min-w-full h-full relative" key={url}>
-                      <Image
-                        src={url}
-                        alt=""
-                        fill
-                        style={{ objectFit: "cover", overflow: "hidden" }}
-                      />
-                    </div>
-                    // <div
-                    //   key={url}
-                    //   style={{ backgroundImage: `url(${url})` }}
-                    //   className="min-w-full h-full bg-cover bg-no-repeat bg-center"
-                    // />
-                  );
-                })}
-              </div>
-            </div>
-          ) : null}
+            ) : null}
+          </div>
         </div>
-      </div>
+      )}
+      {postView === "grid" && (
+        <div className="w-full h-full">{/* <Image /> */}</div>
+      )}
     </>
   );
 };

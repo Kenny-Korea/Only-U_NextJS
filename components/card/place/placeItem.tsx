@@ -56,34 +56,6 @@ const PlaceItem = (props: ItemProps<PlaceData>) => {
           </span>
         </div>
       </div>
-
-      {/* {placeView && (
-        <div className="w-full h-auto rounded-md bg-white shadow-md p-1 min-h-[8rem]">
-          {item.imageurl && (
-            <div className="min-w-[8rem] w-full h-16 relative shadow-md">
-              <Image
-                src={item.imageurl[0]}
-                alt=""
-                fill
-                sizes="20"
-                style={{ objectFit: "cover" }}
-              />
-            </div>
-          )}
-          <div className="w-full flex flex-col relative">
-            <div className="flex justify-between">
-              <span className="text-sm ellipsis w-48">{item?.title}</span>
-              <EditButton item={item} docName="places" />
-            </div>
-            <span className="text-sm text-starColor">{displayRatings}</span>
-            <span className="text-xs">{item.content}</span>
-            <div className="text-xs h-4"></div>
-            <span className="text-xs text-gray-500 absolute block bottom-0 right-0">
-              visited at {toDate(item.regdate)}
-            </span>
-          </div>
-        </div>
-      )} */}
     </>
   );
 };

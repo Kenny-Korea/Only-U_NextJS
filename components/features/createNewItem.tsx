@@ -5,7 +5,7 @@ type CreateNewItemButtonProps = {
   path: string;
 };
 
-//! NOT WORKING ANYMORE
+//! NOT WORKING ANYMORE - Only UI
 const CreateNewItemButton = (props: CreateNewItemButtonProps) => {
   const { path } = props;
   // const dispatch = useDispatch();
@@ -20,10 +20,10 @@ const CreateNewItemButton = (props: CreateNewItemButtonProps) => {
   return (
     <>
       <div
-        className="w-12 h-12 fixed bottom-24 right-6 bg-white shadow-addButton text-black text-4xl flex justify-center items-center rounded-full z-50 hover:font-bold hover:text-5xl"
+        className="w-9 h-9 fixed bottom-24 right-6 bg-white shadow-addButton text-black text-4xl flex justify-center items-center rounded-full z-30 hover:font-bold hover:text-5xl"
         onClick={handleClickButton}
       >
-        <AddRoundedIcon style={{ fontSize: "2rem" }} />
+        <AddRoundedIcon className="text-2xl font-extrabold" />
       </div>
     </>
   );
