@@ -65,7 +65,7 @@ export type UserData = {
 // TODO. 개별 아이템 카드에서 전달받을 Props Type (Generics)
 export type ItemProps<T> = {
   readonly item: T;
-  readonly placeView?: boolean;
+  readonly placeView?: "flex" | "grid";
 };
 
 // TODO. createItem 함수에 전달 할 4가지 Argument Type
@@ -105,13 +105,17 @@ export interface PlaceArg extends DataArg {
   imageurl: null | (string | google.maps.places.PlacePhoto | null)[];
 }
 
-export type Variables = {
-  type: "plans" | "posts" | "places";
-  data: PlanArg | PostArg | PlaceArg;
-  docPath: string;
-  setModal: React.Dispatch<React.SetStateAction<boolean>>;
-  image?: File[];
-};
+// export type CreateVariables = {
+//   type: "plans" | "posts" | "places";
+//   data: PlanArg | PostArg | PlaceArg;
+//   docPath: string;
+//   setModal: React.Dispatch<React.SetStateAction<boolean>>;
+//   image?: File[];
+// };
+
+// export type DeleteVariables = {
+
+// }
 
 export type ChatVariables = {
   type: "chats";

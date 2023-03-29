@@ -2,11 +2,12 @@ import { useRef, useState } from "react";
 import ModalLayout from "./layout";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Image from "next/image";
-import { ItemArg, ModalProps, PostArg, Variables } from "@/types";
+import { ItemArg, ModalProps, PostArg } from "@/types";
 import { useDispatch } from "react-redux";
 import { MissingValueErrorMessage } from "@/utils/missingValueError";
 import { useUserInfo } from "@/hooks/useUserInfo";
 import { usePostMutation } from "@/hooks/usePostMutation";
+import { CreateItemArg } from "@/api/apiService";
 
 const ModalPost = (props: ModalProps) => {
   const { modal, setModal } = props; // 각 개별 모달의 상태를 전역적으로 관리할 필요는 없기 때문에 local state로 관리
@@ -48,7 +49,7 @@ const ModalPost = (props: ModalProps) => {
     };
 
     // 3. createItem 함수에 전달할 variables
-    const variables: Variables = {
+    const variables: CreateItemArg = {
       type: "posts",
       data,
       docPath: user?.combinedId,

@@ -1,17 +1,18 @@
-import { ItemArg, ModalProps, PlanArg, Variables } from "@/types";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { ItemArg, ModalProps, PlanArg } from "@/types";
 import { useDispatch } from "react-redux";
 import ModalLayout from "./layout";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { MissingValueErrorMessage } from "@/utils/missingValueError";
 import { useUserInfo } from "@/hooks/useUserInfo";
 import { usePostMutation } from "@/hooks/usePostMutation";
+import { CreateItemArg } from "@/api/apiService";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const ModalPlan = (props: ModalProps) => {
   const { modal, setModal } = props;
-  const today = new Date();
-  const [selectedDate, setSelectedDate] = useState<Date>(today);
+  const today = Number(new Date());
+  const [selectedDate, setSelectedDate] = useState<number>(today);
   const [missingValueError, setMissingValueError] = useState<boolean>(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -38,7 +39,7 @@ const ModalPlan = (props: ModalProps) => {
     };
 
     // 3. createItem 함수에 전달할 variables
-    const variables: Variables = {
+    const variables: CreateItemArg = {
       type: "plans",
       data,
       docPath: user?.combinedId,
@@ -88,8 +89,10 @@ const ModalPlan = (props: ModalProps) => {
         <li>
           <span className="px-1">날짜</span>
           <DatePicker
-            selected={selectedDate}
-            onChange={(date: Date) => setSelectedDate(date)}
+            selected={new Date(selectedDate)}
+            onChange={(date: Date) => {
+              setSelectedDate(Number(date));
+            }}
             // 한글이면 yyyy-MM-dd 영문이면 MM-dd-yyyy로 표시하기
             dateFormat="yyyy-MM-dd"
           />

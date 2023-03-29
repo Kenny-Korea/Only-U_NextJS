@@ -1,6 +1,6 @@
 import { combineReducers, createStore } from "redux";
 import { pageReducer } from "./reducers/pageReducer";
-import { uploadingReducer } from "./reducers/uploadingReducer";
+import { fetchStatusReducer } from "./reducers/fetchStatusReducer";
 import { authReducer } from "./reducers/authReducer";
 
 // createStore는 reducerFunction을 포인터로 가지고 있어야 함
@@ -9,7 +9,7 @@ import { authReducer } from "./reducers/authReducer";
 export const store = createStore(
   combineReducers({
     pageReducer,
-    uploadingReducer,
+    fetchStatusReducer,
     authReducer,
   })
 );

@@ -1,4 +1,9 @@
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 import {
   getDoc,
   doc,
@@ -23,10 +28,14 @@ import {
   PostArg,
   TypeArg,
 } from "@/types";
+import { useDispatch } from "react-redux";
+import { storageDir } from "@/utils/globalVariables";
 
 // export const docPath =
 // "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2";
 // export const docPath = "yWlfq9J67FMV6NTQfbooyvbc1AE2";
+
+// const dispatch = useDispatch();
 
 const imageCompressionOptions = {
   maxSizeMB: 0.5,
@@ -39,6 +48,13 @@ export type CreateItemArg = {
   docPath: string;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
   image?: ImageArg;
+};
+
+//! TODO. Delete도 useMutation을 통하 진행할 수 있도록 수정 필요
+export type DeleteItemArg = {
+  type: TypeArg;
+  data: ItemArg<PlanArg | PostArg | ChatArg | PlaceArg>;
+  docPath: string;
 };
 
 export type CreateChatArg = {
@@ -216,16 +232,28 @@ export const getUserInfo = async (userUid: string) => {
 // TODO. UPDATE
 export const updateItem = () => {};
 // TODO. DELETE
-export const deleteItem = async (
-  type: TypeArg,
-  docPath: string,
-  item: ItemArg<PlanArg | PostArg | ChatArg | PlaceArg>
-) => {
-  if (window.confirm("정말 삭제하시겠습니까?")) {
-    const docRef = doc(db, type, docPath);
-    const fieldName = type.substring(0, type.length - 1); // "s" 제거
-    await updateDoc(docRef, {
-      [fieldName]: arrayRemove(item), // data 객체를 보내주면 이에 해당하는 data 제거
-    });
+export const deleteItem = async (variables: DeleteItemArg) => {
+  const type = variables.type;
+  const docPath = variables.docPath;
+  const data = variables.data;
+
+  // 1. 데이터 지우기 (database)
+  const docRef = doc(db, type, docPath);
+  const fieldName = type.substring(0, type.length - 1); // "s" 제거
+  await updateDoc(docRef, {
+    [fieldName]: arrayRemove(data), // data 객체를 보내주면 이에 해당하는 data 제거
+  });
+  // 2. 이미지 파일 지우기 (storage)
+  if (!("imageurl" in data) || !data.imageurl || data.imageurl.length === 0)
+    return; // 이미지 url이 없으면 리턴
+  if (!data.imageurl.includes(storageDir)) return; // storage에 저장되어 있지 않으면 리턴
+  for (let url of data.imageurl) {
+    const desertRef = ref(storage, url as string);
+    try {
+      console.log(desertRef);
+      await deleteObject(desertRef);
+    } catch {
+      console.log("Error deleting files");
+    }
   }
 };

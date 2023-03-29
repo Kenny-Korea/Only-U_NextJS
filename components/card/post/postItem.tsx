@@ -80,6 +80,7 @@ const PostItem = (props: ItemProps<PostData>) => {
             >
               <div className="w-full absolute top-0 flex justify-between p-2 z-10">
                 <div className="flex flex-col gap-2">
+                  {/* <Image src={} /> */}
                   <img
                     // src={
                     //   item.writer === currentUser.uid

@@ -19,13 +19,6 @@ const Post = () => {
 
   return (
     <>
-      <button
-        onClick={() => {
-          console.log(data);
-        }}
-      >
-        click
-      </button>
       {Array.isArray(data) &&
         data.map((item: PostData) => <PostItem item={item} key={item.id} />)}
       {modal && <ModalPost modal={modal} setModal={setModal} />}

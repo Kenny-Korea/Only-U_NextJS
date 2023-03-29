@@ -20,13 +20,15 @@ const PlaceItem = (props: ItemProps<PlaceData>) => {
     <>
       <div
         className={`w-full h-auto rounded-md bg-white shadow-md relative ${
-          placeView ? "p-1 min-h-[8rem]" : "mb-3 p-2 flex gap-2 min-h-[5rem]"
+          placeView === "grid"
+            ? "p-1 min-h-[8rem]"
+            : "mb-3 p-2 flex gap-2 min-h-[5rem]"
         } `}
       >
         {item.imageurl && (
           <div
             className={`relative shadow-md ${
-              placeView
+              placeView === "grid"
                 ? "min-w-[8rem] w-full h-16"
                 : "min-w-[4rem] h-full min-h-[5rem]"
             } `}

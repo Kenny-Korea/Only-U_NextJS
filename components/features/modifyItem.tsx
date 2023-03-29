@@ -3,8 +3,10 @@ import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { ChatArg, ItemArg, PlaceArg, PlanArg, PostArg, TypeArg } from "@/types";
-import { deleteItem } from "@/api/apiService";
+import { DeleteItemArg } from "@/api/apiService";
 import { useUserInfo } from "@/hooks/useUserInfo";
+import { useDeleteMutation } from "@/hooks/useDeleteMutation";
+import { useDispatch } from "react-redux";
 
 type EditButtonProps = {
   item: ItemArg<PlanArg | PostArg | ChatArg | PlaceArg>;
@@ -15,6 +17,8 @@ const EditButton = (props: EditButtonProps) => {
   const user = useUserInfo();
   const { item, type } = props;
   const [clicked, setClicked] = useState(false);
+  const { mutate } = useDeleteMutation();
+  const dispatch = useDispatch();
 
   const onClickSettings = () => {
     setClicked(!clicked);
@@ -23,7 +27,15 @@ const EditButton = (props: EditButtonProps) => {
   const onClickUpdate = () => {};
 
   const onClickDelete = () => {
-    deleteItem(type, user?.combinedId, item);
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      dispatch({ type: "DELETING_STARTS" });
+      const variables: DeleteItemArg = {
+        type: type,
+        data: item,
+        docPath: user?.combinedId,
+      };
+      mutate(variables);
+    }
   };
 
   const frame = (event: () => void, icon: React.ReactNode) => (
@@ -56,10 +68,10 @@ const EditButton = (props: EditButtonProps) => {
     return [updateButton, deleteButton, settingsButton];
   };
 
-  const displayButton = useMemo(() => {
-    if (!clicked) return [settingsButton, updateButton, deleteButton];
-    return [updateButton, deleteButton, settingsButton];
-  }, []);
+  // const displayButton = useMemo(() => {
+  //   if (!clicked) return [settingsButton, updateButton, deleteButton];
+  //   return [updateButton, deleteButton, settingsButton];
+  // }, []);
 
   // --------------------
 

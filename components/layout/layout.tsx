@@ -1,6 +1,7 @@
-import { UploadingReducerSelector } from "@/state/reducers/uploadingReducer";
+import { FetchStatusReducerSelector } from "@/state/reducers/fetchStatusReducer";
 import React from "react";
 import { useSelector } from "react-redux";
+import ModalStatus from "../modal/uploading";
 import ModalUploading from "../modal/uploading";
 import Content from "./content";
 import Header from "./header";
@@ -12,13 +13,16 @@ type ComponentProps = {
 
 const Layout = (props: ComponentProps) => {
   const isUploading = useSelector(
-    (state: UploadingReducerSelector) => state.uploadingReducer.uploading
+    (state: FetchStatusReducerSelector) => state.fetchStatusReducer.uploading
   );
-  // console.log(isUploading);
+  const isDeleting = useSelector(
+    (state: FetchStatusReducerSelector) => state.fetchStatusReducer.deleting
+  );
 
   return (
     <>
-      {isUploading && <ModalUploading />}
+      {isUploading && <ModalStatus status="Uploading" />}
+      {isDeleting && <ModalStatus status="Deleting" />}
       <div className="w-screen h-screen">
         <Header />
         <Content>{props.children}</Content>
