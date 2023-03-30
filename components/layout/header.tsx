@@ -14,10 +14,12 @@ import { onAuthStateChanged } from "firebase/auth";
 import ModalSettings from "../modal/modalSettings";
 import ModalRequest from "../modal/modalRequest";
 import { useUserInfo } from "@/hooks/useUserInfo";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const dispatch = useDispatch();
   const user = useUserInfo();
+  const router = useRouter();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -62,8 +64,7 @@ const Header = () => {
 
   const onClickHeaderTitle = () => {
     // dispatch({ type: "TOGGLE_NAVBAR" });
-    console.log(authState);
-    console.log(user);
+    router.replace("/login");
   };
 
   const modalRequestProps = {
