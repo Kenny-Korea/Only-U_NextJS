@@ -23,7 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <Layout>
               <Component {...pageProps} />
             </Layout>
-            <ReactQueryDevtools position="top-right" />
+            <ReactQueryDevtools position="top-left" />
           </Hydrate>
         </Provider>
       </QueryClientProvider>

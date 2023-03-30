@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import PlanOrder from "@/components/home/planOrder";
 import ItemModificationButton from "@/components/features/modifyItem";
 import { ItemProps, PlanData } from "@/types";
-import { toDate } from "@/utils/dateFormat";
+import { toDate, toFullDate } from "@/utils/dateFormat";
 
 const PlanItem = (props: ItemProps<PlanData>) => {
   const { item } = props;
@@ -21,7 +21,7 @@ const PlanItem = (props: ItemProps<PlanData>) => {
   };
 
   const getPlannedDate = useMemo(() => {
-    return toDate(item.plandate);
+    return toFullDate(item.plandate);
   }, [item]);
 
   return (

@@ -8,7 +8,8 @@ type UsePathElement =
   | "Place"
   | "Gift"
   | "Login"
-  | "Register";
+  | "Register"
+  | "Partner";
 
 export const usePath = (path: UsePathElement) => {
   const dispatch = useDispatch();

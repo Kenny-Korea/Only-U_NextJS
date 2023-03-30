@@ -1,12 +1,10 @@
 import React from "react";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import Image from "next/image";
-import test from "/public/OnlyU-512.png";
-import unnamed from "/public/unnamed.png";
 import { useSelector } from "react-redux";
 import { AuthState } from "@/state/reducers/authReducer";
 import { useQuery } from "react-query";
-import { getUserInfo } from "@/api/apiService";
+import { readUser } from "@/api/apiService";
 
 const Profile = () => {
   const profileName = "Gwangja Couple";
@@ -14,8 +12,8 @@ const Profile = () => {
   const userUid = useSelector((state: AuthState) => state.authReducer.userUid);
 
   const { data: user, error } = useQuery(
-    ["getUser", userUid],
-    () => getUserInfo(userUid),
+    ["user", userUid],
+    () => readUser(userUid),
     {
       enabled: !!userUid,
     }
@@ -27,24 +25,26 @@ const Profile = () => {
     <>
       <div className="w-[35vh] h-[35vh] min-h-[35vh] min-w-[35vh] relative">
         <div className="w-full h-full rounded-full bg-white overflow-hidden flex relative border-8 border-bgColor">
-          <div className="w-1/2 h-full bg-cover bg-center border-none">
+          <div className="w-1/2 h-full bg-cover bg-center border-none relative">
             {userImage && (
               <Image
                 src={userImage}
                 alt=""
                 fill
+                sizes="20"
                 style={{
                   objectFit: "cover",
                 }}
               />
             )}
           </div>
-          <div className="w-1/2 h-full bg-cover bg-center border-none">
+          <div className="w-1/2 h-full bg-cover bg-center border-none relative">
             {userImage && (
               <Image
                 src={userImage}
                 alt=""
                 fill
+                sizes="20"
                 style={{
                   objectFit: "cover",
                 }}

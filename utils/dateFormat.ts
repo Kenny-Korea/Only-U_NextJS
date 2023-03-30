@@ -1,3 +1,7 @@
+export const toFullDate = (date: number) => {
+  return new Intl.DateTimeFormat("ko-KR").format(date);
+};
+
 export const toYear = (date: number) => {
   return new Date(date).getFullYear();
 };

@@ -47,12 +47,12 @@ const FilterBar = (props: FilterBarProps) => {
 
   return (
     <div className="w-full flex gap-2 my-3 sticky top-3 z-20">
-      <div className="w-full bg-white border p-2 rounded-md shadow-md">
-        <div className="w-full relative">
+      <div className="w-full h-10 bg-white border p-2 rounded-md shadow-md">
+        <div className="w-full centerItem relative">
           <input
             type="text"
             className="w-full bg-slate-100 rounded-full text-xs px-3 py-1 outline-none shadow-inner"
-            placeholder="Search"
+            placeholder="아직 필터링 기능 적용 안됨"
             onFocus={toggleNavbar}
             onBlur={toggleNavbar}
             value={inputValue}
@@ -72,19 +72,25 @@ const FilterBar = (props: FilterBarProps) => {
           )}
         </div>
       </div>
-      <div className="min-w-min w-24 flex justify-center gap-3 items-center bg-white rounded-md ">
-        <TableRowsIcon
-          onClick={onClickFlexView}
-          className={`text-lg ${
-            state === "flex" ? "text-mainColor" : "text-gray-400"
+      <div className="min-w-min w-28 flex justify-center items-center bg-white rounded-md">
+        <div
+          className={`flexGridButton ${
+            state === "flex"
+              ? "text-mainColor shadow-md"
+              : "text-gray-400 shadow-inner"
           }`}
-        />
-        <GridViewSharpIcon
-          onClick={onClickGridView}
-          className={`text-lg ${
-            state === "grid" ? "text-mainColor" : "text-gray-400"
+        >
+          <TableRowsIcon onClick={onClickFlexView} className="text-lg" />
+        </div>
+        <div
+          className={`flexGridButton ${
+            state === "grid"
+              ? "text-mainColor shadow-md"
+              : "text-gray-400 shadow-inner"
           }`}
-        />
+        >
+          <GridViewSharpIcon onClick={onClickGridView} className="text-lg" />
+        </div>
       </div>
     </div>
   );

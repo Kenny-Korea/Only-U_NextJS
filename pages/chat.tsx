@@ -2,7 +2,7 @@ import ChatInput from "@/components/card/chat/chatInput";
 import ChatItem from "@/components/card/chat/chatItem";
 import { useItemData } from "@/hooks/useItemData";
 import { usePath } from "@/hooks/usePath";
-import { toDate, toDay, toMonth, toYear } from "@/utils/dateFormat";
+import { toDate, toDay, toFullDate } from "@/utils/dateFormat";
 import { useCallback, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 
@@ -12,9 +12,6 @@ const Chat = () => {
   const chatBoxRef = useRef<HTMLDivElement>(null);
 
   const { data, isLoading, error } = useItemData("chats");
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>An error has occurred</div>;
 
   const scrollToLatestMessage = useCallback(() => {
     if (chatBoxRef && chatBoxRef.current) {
@@ -27,6 +24,9 @@ const Chat = () => {
   useEffect(() => {
     scrollToLatestMessage();
   }, [data]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error has occurred</div>;
 
   const showNavbar = () => {
     dispatch({ type: "SHOW_NAVBAR" });
@@ -47,14 +47,12 @@ const Chat = () => {
             if (
               toDate(data[index].regdate) !== toDate(data[index + 1].regdate)
             ) {
-              console.log("hey");
               return (
                 <div className="w-full flex flex-col" key={item.regdate}>
                   <ChatItem item={item} />
                   <div className="w-full flex justify-between text-xs text-gray-500">
                     <hr className="hr" />
-                    {toYear(data[index].regdate)}.{toMonth(data[index].regdate)}
-                    .{toDate(data[index].regdate)} -{" "}
+                    {toFullDate(data[index].regdate)} -{" "}
                     {toDay(data[index].regdate)}
                     <hr className="hr" />
                   </div>

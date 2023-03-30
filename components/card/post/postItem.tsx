@@ -3,7 +3,7 @@
 // touchEvent를 state가 아닌 다른 값으로 사용할 수 있는 방법을 고민해보기
 
 import { ItemProps, PostData } from "@/types";
-import { toDate } from "@/utils/dateFormat";
+import { toDate, toFullDate } from "@/utils/dateFormat";
 import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
 import EditButton from "../../features/modifyItem";
@@ -63,8 +63,9 @@ const PostItem = (props: ItemProps<PostData>) => {
     setIsDetailOpen(!isDetailOpen);
   };
 
+  // post는 state 변경이 잦으므로 useMemo 사용
   const getRegisteredDate = useMemo(() => {
-    return toDate(item.regdate);
+    return toFullDate(item.regdate);
   }, [item]);
 
   return (

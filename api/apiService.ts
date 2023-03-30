@@ -18,6 +18,7 @@ import {
   orderBy,
   limit,
   getDocs,
+  deleteField,
 } from "firebase/firestore";
 import { db, storage } from "../firebase";
 import { uuidv4 } from "@firebase/util";
@@ -31,7 +32,6 @@ import {
   PostArg,
   TypeArg,
 } from "@/types";
-import { useDispatch } from "react-redux";
 import { storageDir } from "@/utils/globalVariables";
 
 // export const docPath =
@@ -53,7 +53,12 @@ export type CreateItemArg = {
   image?: ImageArg;
 };
 
-//! TODO. Delete도 useMutation을 통하 진행할 수 있도록 수정 필요
+export type UpdateUserArg = {
+  userUid: string;
+  regNum?: number;
+  requestTo?: string;
+};
+
 export type DeleteItemArg = {
   type: TypeArg;
   data: ItemArg<PlanArg | PostArg | ChatArg | PlaceArg>;
@@ -189,7 +194,8 @@ export const createItem = async (variables: CreateItemArg) => {
   return;
 };
 
-// TODO. READ - POSTS
+// TODO. READ
+// Items
 export const readItems = async (type: TypeArg, docPath: string) => {
   const modifiedType = type.substring(0, type.length - 1); // db 내 이름 수정하지 않기 위해 사용
   const docRef = doc(db, type, docPath);
@@ -202,13 +208,8 @@ export const readItems = async (type: TypeArg, docPath: string) => {
   }
 };
 
-// TODO. READ - CHATS
-// export const readChats = async() => {
-//   const q = query(collection(db, "chats"), where("chat", "==",  ))
-// }
-
-// TODO. READ - USER INFO
-export const getUserInfo = async (userUid: string) => {
+// User Info
+export const readUser = async (userUid: string) => {
   const docRef = doc(db, "user", userUid);
   const docSnap = await getDoc(docRef); // Promise 객체 리턴
   if (docSnap.exists()) {
@@ -219,21 +220,44 @@ export const getUserInfo = async (userUid: string) => {
   }
 };
 
-// export const readItems = async (type: TypeArg) => {
-//   const modifiedType = type.substring(0, type.length - 1); // db 내 이름 수정하지 않기 위해 사용
-//   const docRef = doc(db, type, docPath);
-//   const docSnap = await getDoc(docRef); // Promise 객체 리턴
-//   if (docSnap.exists()) {
-//     const array = docSnap.data()[modifiedType];
-//     console.log(array);
-//     return array;
-//   } else {
-//     return [];
-//   }
-// };
+// Partner Registration
+export const readPartner = async (regNum: number) => {
+  const userRef = collection(db, "user");
+  const q = query(userRef, where("regNum", "==", regNum));
+  try {
+    const querySnapshot = await getDocs(q);
+    let result;
+    querySnapshot.forEach((doc) => {
+      result = doc.data();
+    });
+    return result;
+  } catch {
+    console.log("failed to fetch userinfo");
+  }
+};
 
 // TODO. UPDATE
-export const updateItem = () => {};
+export const updateItem = async (userUid: string, regNum: number) => {
+  const userRef = doc(db, "user", userUid);
+  await updateDoc(userRef, { regNum: regNum });
+};
+
+export const updateUserRegNum = async (variables: UpdateUserArg) => {
+  if (!variables.regNum) return;
+  const userUid = variables.userUid;
+  const regNum = variables.regNum;
+  const userRef = doc(db, "user", userUid);
+  await updateDoc(userRef, { regNum: regNum });
+};
+
+export const updateUserRequestStatus = async (variables: UpdateUserArg) => {
+  if (!variables.requestTo) return;
+  const requestTo = variables.requestTo;
+  const userUid = variables.userUid;
+  const userRef = doc(db, "user", requestTo);
+  await updateDoc(userRef, { request: userUid });
+};
+
 // TODO. DELETE
 export const deleteItem = async (variables: DeleteItemArg) => {
   const type = variables.type;
@@ -259,4 +283,9 @@ export const deleteItem = async (variables: DeleteItemArg) => {
       console.log("Error deleting files");
     }
   }
+};
+
+export const deleteUserRequestStatus = async (userUid: string) => {
+  const userRef = doc(db, "user", userUid);
+  await updateDoc(userRef, { request: deleteField() });
 };

@@ -1,4 +1,4 @@
-import { ItemArg, ModalProps, PlaceArg, Variables } from "@/types";
+import { ItemArg, ModalProps, PlaceArg } from "@/types";
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import GoogleMapContainer from "../card/place/googlemaps";
@@ -10,14 +10,7 @@ import { useUserInfo } from "@/hooks/useUserInfo";
 import { usePostMutation } from "@/hooks/usePostMutation";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-
-// const initialValue = {
-//   name: null,
-//   address: null,
-//   image: null,
-//   rating: null,
-//   placeId: null,
-// };
+import { CreateItemArg } from "@/api/apiService";
 
 const ModalPlace = (props: ModalProps) => {
   const { modal, setModal } = props;
@@ -79,7 +72,7 @@ const ModalPlace = (props: ModalProps) => {
     console.log(data);
 
     // 3. createItem 함수에 전달할 variables
-    const variables: Variables = {
+    const variables: CreateItemArg = {
       type: "places",
       data,
       docPath: user?.combinedId,
@@ -134,13 +127,6 @@ const ModalPlace = (props: ModalProps) => {
       onClickSubmit={onClickSubmit}
       onClickCancel={onClickCancel}
     >
-      <button
-        onClick={() => {
-          console.log(selectedPlace);
-        }}
-      >
-        click
-      </button>
       <GoogleMapContainer
         selectedPlace={selectedPlace}
         setSelectedPlace={setSelectedPlace}

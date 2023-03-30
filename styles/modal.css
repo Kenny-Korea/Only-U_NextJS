@@ -3,19 +3,25 @@
   --main: #ff766b;
 }
 
-/* .hr {
-  border: none;
-  border-top: 1px solid gray;
-  text-align: center;
-  overflow: visible;
+.hr-sect {
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  color: rgb(255, 118, 107);
+  font-size: 16px;
+  font-weight: bold;
+  margin: 8px 0px;
 }
-.hr:after {
-  content: "Or";
-  position: relative;
-  top: -15px;
-  background-color: white;
-  padding: 0 10px;
-} */
+.hr-sect::before,
+.hr-sect::after {
+  content: "";
+  flex-grow: 1;
+  background: rgba(0, 0, 0, 0.35);
+  height: 1px;
+  font-size: 0px;
+  line-height: 0px;
+  margin: 0px 16px;
+}
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
@@ -123,7 +129,7 @@
 #settingSlideIn {
   /* top: 3.5rem;
   width: 4rem; */
-  height: calc(100vh - 10rem);
+  /* height: calc(100vh - 8rem); */
   animation: settingSlideIn 0.5s;
   animation-fill-mode: forwards;
 }
@@ -131,7 +137,7 @@
 #settingSlideOut {
   /* top: 3.5rem;
   width: 4rem; */
-  height: calc(100vh - 10rem);
+  /* height: calc(100vh - 8rem); */
   animation: settingSlideOut 0.5s;
   animation-fill-mode: forwards;
   /* display: none; */

@@ -63,7 +63,7 @@ const Post = () => {
 
   return (
     <>
-      <FilterBar {...filterBarProps} />
+      <FilterBar {...filterBarProps} key={"post"} />
       <div
         className={`w-full ${
           postView === "grid" ? "grid grid-cols-3  gap-2" : null
@@ -81,7 +81,7 @@ const Post = () => {
         {postView === "grid" &&
           Array.isArray(data) &&
           displayGridImages?.map((image, index) => (
-            <div className="w-full h-28 relative">
+            <div className="w-full h-28 relative" key={image}>
               <Image
                 src={image}
                 alt=""

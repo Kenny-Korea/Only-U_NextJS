@@ -64,13 +64,6 @@ const ModalPlan = (props: ModalProps) => {
       onClickSubmit={onClickSubmit}
       onClickCancel={onClickCancel}
     >
-      <button
-        onClick={() => {
-          console.log(selectedDate);
-        }}
-      >
-        date?!
-      </button>
       <span className="w-full h-6 text-textBlack text-md flex justify-center items-center">
         디데이 작성
       </span>

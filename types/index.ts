@@ -71,7 +71,7 @@ export type ItemProps<T> = {
 
 // TODO. createItem 함수에 전달 할 4가지 Argument Type
 export type ItemArg<T> = T;
-export type TypeArg = "plans" | "posts" | "chats" | "places";
+export type TypeArg = "plans" | "posts" | "chats" | "places" | "user";
 export type ImageArg = File[];
 
 // TODO. createItem 함수에 전달해 줄 Data Argument Type

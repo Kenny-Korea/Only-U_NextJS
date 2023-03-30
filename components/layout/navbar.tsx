@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { PageReducerSelector } from "@/state/reducers/pageReducer";
 
+const menu = ["Home", "Post", "Chat", "Place", "Gift"];
+
 const Navbar = () => {
   const currentPage = useSelector(
     (state: PageReducerSelector) => state.pageReducer.currentPage
@@ -13,13 +15,10 @@ const Navbar = () => {
     (state: PageReducerSelector) => state.pageReducer.navbar
   );
   const router = useRouter();
-  const onClickBackButton = (path: string) => {
-    router.push(path);
-  };
+  // const onClickBackButton = (path: string) => {
+  //   router.push(path);
+  // };
 
-  const menu = useMemo(() => {
-    return ["Home", "Post", "Chat", "Place", "Gift"];
-  }, []);
   useEffect(() => {
     const list = window.document.querySelectorAll(".list");
     list.forEach((item, itemIndex) => {

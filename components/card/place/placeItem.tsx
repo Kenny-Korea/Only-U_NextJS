@@ -1,5 +1,5 @@
 import { ItemProps, PlaceData } from "@/types";
-import { toDate } from "@/utils/dateFormat";
+import { toDate, toFullDate } from "@/utils/dateFormat";
 import Image from "next/image";
 import React, { useMemo } from "react";
 import EditButton from "../../features/modifyItem";
@@ -52,7 +52,7 @@ const PlaceItem = (props: ItemProps<PlaceData>) => {
           <span className="text-xs">{item.content}</span>
           <div className="text-xs h-4"></div>
           <span className="text-xs text-gray-500 absolute bottom-1 right-1">
-            visited at {toDate(item.regdate)}
+            visited at {toFullDate(item.regdate)}
           </span>
         </div>
       </div>

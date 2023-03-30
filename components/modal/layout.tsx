@@ -26,7 +26,7 @@ const ModalLayout = (props: ModalLayoutProps) => {
                 className="w-1/2 h-8 bg-mainColor text-white rounded-md font-bold"
                 onClick={onClickSubmit}
               >
-                {true ? "저장" : "등록"}
+                {true ? "등록" : "등록"}
               </button>
               <button
                 className="w-1/2 h-8 bg-slate-300 rounded-md"

@@ -24,6 +24,10 @@
   @apply flex justify-center items-center;
 }
 
+.centerItemCol {
+  @apply flex flex-col justify-center items-center;
+}
+
 .apartItem {
   @apply flex justify-between items-center;
 }
@@ -61,6 +65,18 @@
   /* hover:bg-white hover:bg-opacity-30 ; */;
 }
 
+.flexGridButton {
+  @apply w-9 h-9 rounded-sm centerItem;
+}
+
+.submitButton {
+  @apply w-full h-8 bg-mainColor text-white font-semibold centerItem rounded-md;
+}
+
+.copiedAlarm {
+  @apply w-16 h-6 centerItem text-white text-sm font-bold fixed top-12 left-[calc(50%-32px)];
+}
+
 tr {
   @apply h-6;
 }
@@ -86,5 +102,5 @@ td:nth-child(even) {
 }
 
 .roundDecoration {
-  @apply w-[50rem] h-[50rem] -top-[40rem] left-[calc(100vw/2-25rem)] rounded-full bg-gradient-to-br from-white via-subColor to-yellow-100 fixed;
+  @apply w-[50rem] h-[50rem] -top-[40rem] left-[calc(100vw/2-25rem)] rounded-full bg-gradient-to-br from-white via-subColor to-yellow-100;
 }
