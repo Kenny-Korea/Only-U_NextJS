@@ -26,30 +26,30 @@ const Register = () => {
       // 유저 계정 생성
       const res = await createUserWithEmailAndPassword(auth, email, password);
       const storageRef = ref(storage, username); // 두 번째 인자를 이름으로 이미지가 저장됨
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      const uploadTask = uploadBytesResumable(storageRef, file as any);
 
-      uploadTask.on(
-        (error) => {
-          setErr(true);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref)
-            .then(async (downloadURL) => {
-              await updateProfile(res.user, {
-                displayName: username,
-                photoURL: downloadURL,
-              });
-              await setDoc(doc(db, "users", res.user.uid), {
-                uid: res.user.uid,
-                displayName: username,
-                email: email,
-                photoURL: downloadURL,
-              });
-              router.replace("/");
-            })
-            .catch(() => <div>Failed to upload Image</div>);
-        }
-      );
+      // uploadTask.on(
+      //   (error) => {
+      //     setErr(true);
+      //   },
+      //   () => {
+      //     getDownloadURL(uploadTask.snapshot.ref)
+      //       .then(async (downloadURL) => {
+      //         await updateProfile(res.user, {
+      //           displayName: username,
+      //           photoURL: downloadURL,
+      //         });
+      //         await setDoc(doc(db, "users", res.user.uid), {
+      //           uid: res.user.uid,
+      //           displayName: username,
+      //           email: email,
+      //           photoURL: downloadURL,
+      //         });
+      //         router.replace("/");
+      //       })
+      //       .catch(() => <div>Failed to upload Image</div>);
+      //   }
+      // );
     } catch (err) {
       setErr(true);
     }

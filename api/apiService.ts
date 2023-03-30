@@ -25,6 +25,7 @@ import { uuidv4 } from "@firebase/util";
 import imageCompression from "browser-image-compression";
 import {
   ChatArg,
+  ChatVariables,
   ImageArg,
   ItemArg,
   PlaceArg,
@@ -238,6 +239,11 @@ export const readPartner = async (regNum: number) => {
 
 // TODO. UPDATE
 export const updateItem = async (userUid: string, regNum: number) => {
+  const userRef = doc(db, "user", userUid);
+  await updateDoc(userRef, { regNum: regNum });
+};
+
+export const updateUser = async (userUid: string, regNum: number) => {
   const userRef = doc(db, "user", userUid);
   await updateDoc(userRef, { regNum: regNum });
 };

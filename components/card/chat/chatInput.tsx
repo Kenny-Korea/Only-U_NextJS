@@ -18,7 +18,7 @@ const ChatInput = () => {
   const userUid = useSelector((state: AuthState) => state.authReducer.userUid);
 
   const { mutate } = useMutation(
-    (variables: ChatVariables) => {
+    (variables: any) => {
       return createItem(variables);
     },
     {
