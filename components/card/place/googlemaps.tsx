@@ -1,9 +1,15 @@
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
-import { GoogleMap, useLoadScript, Autocomplete } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  useLoadScript,
+  Autocomplete,
+  Marker,
+} from "@react-google-maps/api";
 import { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
+import { libraries } from "@/utils/globalVariables";
 
 type Props = {
   selectedPlace: any;
@@ -12,8 +18,8 @@ type Props = {
   setPreview: any;
 };
 
+// 각종 default configuration
 const center = { lat: 43.6532225, lng: -79.383186 };
-const libraries: "places"[] = ["places"];
 const mapContainerStyle = {
   width: "100%",
   height: "12rem",
@@ -23,35 +29,40 @@ const options = {
 };
 
 const GoogleMapContainer = (props: Props) => {
-  const { selectedPlace, setSelectedPlace, preview, setPreview } = props;
   const dispatch = useDispatch();
+  const { selectedPlace, setSelectedPlace, preview, setPreview } = props;
+  const [autocomplete, setAutocomplete] =
+    useState<google.maps.places.Autocomplete | null>(null);
+  const [coordinates, setCoordinates] = useState(center);
+  const [place, setPlace] = useState<string | null>(null);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // TODO. 구글맵 초기 로드 관련 변수 및 함수
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
-    libraries,
+    libraries: libraries,
   });
-
   const google = window.google;
-  const mapRef = useRef(null);
-  const onLoadMap = useCallback((map: any) => {
-    mapRef.current = map;
+  const mapRef = useRef<google.maps.Map | null>(null); // map 객체 담을 용도
+
+  const onLoadMap = useCallback((map: google.maps.Map) => {
+    mapRef.current = map; // Google Map이 load되면 mapRef.current에 map 객체 담아줌
+    navigator.geolocation.getCurrentPosition(
+      ({ coords: { latitude: lat, longitude: lng } }) => {
+        setCoordinates({ lat, lng });
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }, []);
 
-  const onClickPlace = async (e: any) => {
-    if (!e.placeId) return;
-    const placeRef = e.placeId;
-    let request = {
-      placeId: placeRef,
-      fields: [
-        "name",
-        "address_components",
-        "photos",
-        "rating",
-        "place_id",
-        // "icon",
-        // "opening_hours",
-        // "reviews",
-      ],
-    };
+  const onLoadAutoComplete = (autoC: google.maps.places.Autocomplete) =>
+    setAutocomplete(autoC);
+
+  // TODO. API - 장소 정보 get 요청
+  const getPlaceInfo = (request: { placeId: string; fields: string[] }) => {
     let service = new google.maps.places.PlacesService(
       document.getElementById("map") as HTMLDivElement
     );
@@ -75,6 +86,45 @@ const GoogleMapContainer = (props: Props) => {
     service.getDetails(request, callback);
   };
 
+  // TODO. Autocomplete로 장소를 선택하게 되면 실행되는 함수
+  const onPlaceChanged = () => {
+    if (!autocomplete) return;
+    const lat = autocomplete?.getPlace()?.geometry?.location?.lat();
+    const lng = autocomplete?.getPlace()?.geometry?.location?.lng();
+    if (lat && lng) {
+      setCoordinates({ lat, lng });
+    } else return;
+    const placeRef = autocomplete.getPlace().place_id as string;
+    setPlace(placeRef);
+  };
+
+  const onClickPlace = async (e: google.maps.MapMouseEvent) => {
+    if ("placeId" in e) {
+      const placeRef = e.placeId as string;
+      let request = {
+        placeId: placeRef,
+        fields: ["name", "address_components", "photos", "rating", "place_id"],
+      };
+      getPlaceInfo(request);
+    }
+  };
+
+  const onClickSearch = () => {
+    if (mapRef.current) {
+      mapRef.current.panTo(coordinates);
+    }
+    let request = {
+      placeId: place as string,
+      fields: ["name", "address_components", "photos", "rating", "place_id"],
+    };
+    getPlaceInfo(request);
+  };
+
+  const onClickClear = () => {
+    if (inputRef.current === null) return;
+    inputRef.current.value = "";
+  };
+
   const toggleNavbar = () => {
     dispatch({ type: "TOGGLE_NAVBAR" });
   };
@@ -87,33 +137,44 @@ const GoogleMapContainer = (props: Props) => {
         <div className="relative">
           {/* Search Bar */}
           <div className="absolute w-full top-2 left-2 z-10 flex gap-1">
-            <Autocomplete>
+            <Autocomplete
+              onLoad={onLoadAutoComplete}
+              onPlaceChanged={onPlaceChanged}
+            >
               <input
                 type="text"
-                className="w-56 rounded-full text-xs px-3 py-1 outline-none shadow-lg"
+                className="w-56 h-6 rounded-full text-xs px-3 py-1 outline-none shadow-lg"
                 placeholder="Search Location"
+                ref={inputRef}
                 onFocus={toggleNavbar}
                 onBlur={toggleNavbar}
               />
             </Autocomplete>
-            <button className="w-6 h-6 bg-blue-400 rounded-full shadow-lg">
+            <button
+              className="w-6 h-6 bg-blue-400 rounded-full shadow-lg centerItem"
+              onClick={onClickSearch}
+            >
               <SearchRoundedIcon style={{ fontSize: "1rem", color: "white" }} />
             </button>
-            <button className="w-6 h-6 bg-slate-300 rounded-full shadow-lg">
+            <button
+              className="w-6 h-6 bg-slate-300 rounded-full shadow-lg centerItem"
+              onClick={onClickClear}
+            >
               <RefreshRoundedIcon
                 style={{ fontSize: "1rem", color: "black" }}
               />
             </button>
           </div>
-          <div ref={mapRef}>
+          <div>
             <GoogleMap
               mapContainerStyle={mapContainerStyle}
               zoom={10}
-              center={center}
+              center={coordinates}
               onClick={onClickPlace}
               onLoad={onLoadMap}
               options={options}
             >
+              <Marker position={coordinates} />
               <div id="map"></div>
             </GoogleMap>
           </div>
@@ -123,7 +184,7 @@ const GoogleMapContainer = (props: Props) => {
                 <div className="flex w-full">
                   {preview?.map((image) => {
                     return (
-                      <div className="w-20 h-12 relative">
+                      <div className="w-20 h-12 relative" key={image}>
                         <Image
                           src={image}
                           alt=""

@@ -19,7 +19,7 @@ const Plan = () => {
 
   return (
     <>
-      <div className="min-w-full min-h-[40vh] h-[60vh] flex flex-col gap-2 pt-2">
+      <div className="w-full max-h-[60vh] flex flex-col gap-2 pt-2">
         <div className="apartItem bg-mainColor pl-3 pr-1 h-8 text-lg text-white bg-main rounded-full">
           <div className="flex items-center gap-2 font-bold">
             <CalendarTodayRoundedIcon style={{ fontSize: "1.2rem" }} />

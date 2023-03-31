@@ -1,6 +1,5 @@
 import { PageReducerSelector } from "@/state/reducers/pageReducer";
 import { ModalLayoutProps } from "@/types";
-import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 
 const ModalLayout = (props: ModalLayoutProps) => {
@@ -9,11 +8,6 @@ const ModalLayout = (props: ModalLayoutProps) => {
   const navbar = useSelector(
     (state: PageReducerSelector) => state.pageReducer.navbar
   );
-
-  const heightRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    console.log(heightRef.current?.clientHeight);
-  }, [heightRef.current]);
 
   return (
     <>
@@ -32,10 +26,7 @@ const ModalLayout = (props: ModalLayoutProps) => {
         {/* 이 친구가 있어야 키보드 올라오면 스크롤 가능 */}
         <div className="w-full">
           {/* 내부 컨텐츠 */}
-          <div
-            className={`rounded-xl shadow-md m-4 p-3 bg-backgroundColor`}
-            ref={heightRef}
-          >
+          <div className={`rounded-xl shadow-md m-4 p-3 bg-backgroundColor`}>
             <div className="flex flex-col gap-2">{children}</div>
             <div className="flex justify-between gap-4 mx-3 my-2">
               <button
