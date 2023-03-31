@@ -42,7 +42,7 @@ const EditButton = (props: EditButtonProps) => {
     <>
       <div className="relative w-6 h-6">
         <div
-          className={`editButtonContainer overflow-hidden ${
+          className={`editButtonContainer border-[1px] px-[2px] overflow-hidden ${
             clicked ? "w-24" : "w-6"
           }`}
         >

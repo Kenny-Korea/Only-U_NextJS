@@ -21,8 +21,8 @@ const Content = (props: ContentProp) => {
         `}
       >
         <main
-          className={`h-fit flex flex-col items-center rounded-2xl z-10 pb-4 ${
-            currentPage === "Chat" ? "w-full" : "w-5/6"
+          className={`h-full flex flex-col items-center rounded-2xl z-10 ${
+            currentPage === "Chat" ? "w-full" : "w-5/6 pb-4"
           }`}
         >
           {props.children}

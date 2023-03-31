@@ -2,7 +2,11 @@ const settings = {
   images: {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     deviceSizes: [640],
-    domains: ["firebasestorage.googleapis.com", "maps.googleapis.com", "*"],
+    domains: [
+      "firebasestorage.googleapis.com",
+      "maps.googleapis.com",
+      "only-u.vercel.app",
+    ],
   },
 };
 

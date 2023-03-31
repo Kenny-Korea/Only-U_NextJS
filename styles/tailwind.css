@@ -78,7 +78,7 @@
 }
 
 .editButtonContainer {
-  @apply h-6 border-[1px] border-slate-300 px-[2px] flex items-center gap-4 bg-white rounded-full duration-300 absolute top-0 right-0;
+  @apply h-6 border-slate-300 flex items-center gap-4 bg-white rounded-full duration-300 absolute top-0 right-0;
 }
 
 .editButtonItem {
