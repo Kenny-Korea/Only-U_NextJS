@@ -76,8 +76,8 @@ const FilterBar = (props: FilterBarProps) => {
         <div
           className={`flexGridButton ${
             state === "flex"
-              ? "text-mainColor shadow-md"
-              : "text-gray-400 shadow-inner"
+              ? "text-mainColor shadow-inner"
+              : "text-gray-400 shadow-md"
           }`}
         >
           <TableRowsIcon onClick={onClickFlexView} className="text-lg" />
@@ -85,8 +85,8 @@ const FilterBar = (props: FilterBarProps) => {
         <div
           className={`flexGridButton ${
             state === "grid"
-              ? "text-mainColor shadow-md"
-              : "text-gray-400 shadow-inner"
+              ? "text-mainColor shadow-inner"
+              : "text-gray-400 shadow-md"
           }`}
         >
           <GridViewSharpIcon onClick={onClickGridView} className="text-lg" />

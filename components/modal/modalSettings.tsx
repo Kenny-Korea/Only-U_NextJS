@@ -4,6 +4,8 @@ import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import { useRouter } from "next/router";
+import { OverridableComponent } from "@mui/material/OverridableComponent";
+import { SvgIconTypeMap } from "@mui/material";
 
 type Props = {
   modal: boolean;
@@ -14,11 +16,12 @@ type Title = "Partner" | "Settings" | "Logout";
 
 const property = { fontSize: "2rem", color: "rgb(255, 118, 107" };
 
-const settingsButton: { title: Title; icon: any }[] = [
+const settingsButton: { title: Title; icon: React.ReactNode }[] = [
   { title: "Partner", icon: <GroupRoundedIcon style={{ ...property }} /> },
   { title: "Settings", icon: <SettingsRoundedIcon style={{ ...property }} /> },
   { title: "Logout", icon: <LogoutRoundedIcon style={{ ...property }} /> },
 ];
+console.log(auth);
 
 const ModalSettings = (props: Props) => {
   const { modal, setModal } = props;
@@ -52,6 +55,7 @@ const ModalSettings = (props: Props) => {
           return (
             <div
               className="flex flex-col items-center text-[10px] font-semibold gap-0"
+              key={button.title}
               onClick={() => {
                 onClickMenu(button.title);
               }}

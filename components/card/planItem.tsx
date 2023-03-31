@@ -17,7 +17,7 @@ const PlanItem = (props: ItemProps<PlanData>) => {
   const calculateDday = () => {
     if (dateGap < 0) return "D + " + Math.abs(dateGap);
     if (dateGap > 0) return "D - " + Math.abs(dateGap);
-    return "D-Day";
+    return "D - Day";
   };
 
   const getPlannedDate = useMemo(() => {

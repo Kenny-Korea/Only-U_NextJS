@@ -48,7 +48,7 @@ export const test = "yWlfq9J67FMV6NTQfbooyvbc1AE2npGmAubtu7ReiqdN8PtgxRw8w6s2";
 
 export async function getServerSideProps() {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery("getPlans", () => {
+  await queryClient.prefetchQuery(["plans"], () => {
     return readItems("plans", test);
   });
 

@@ -23,6 +23,7 @@
   margin: 0px 16px;
 }
 
+/* 스크롤바 숨기기 */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -116,11 +117,13 @@
 }
 
 #fadeIn {
+  /* background-color: rgba(0, 0, 0, 0.2); */
   background-color: black;
   opacity: 0.2;
   animation: fadeIn 0.5s;
 }
 #fadeOut {
+  /* background-color: rgba(0, 0, 0, 0); */
   background-color: black;
   opacity: 0;
   animation: fadeOut 0.5s;

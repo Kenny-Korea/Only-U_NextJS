@@ -83,7 +83,7 @@ const Post = () => {
           displayGridImages?.map((image, index) => (
             <div className="w-full h-28 relative" key={image}>
               <Image
-                src={image}
+                src={displayGridImages[displayGridImages.length - index - 1]}
                 alt=""
                 fill
                 sizes="20"
