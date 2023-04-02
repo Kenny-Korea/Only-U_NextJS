@@ -82,7 +82,7 @@
 }
 
 .editButtonItem {
-  @apply bg-white w-5 h-5 text-black rounded-full centerItem;
+  @apply bg-white w-5 h-5 text-black rounded-full centerItem text-sm;
 }
 
 tr {

@@ -46,15 +46,18 @@ const EditButton = (props: EditButtonProps) => {
             clicked ? "w-24" : "w-6"
           }`}
         >
-          <EditRoundedIcon className="editButtonItem" onClick={onClickUpdate} />
-          <DeleteRoundedIcon
-            className="editButtonItem"
-            onClick={onClickDelete}
-          />
-          <MoreHorizRoundedIcon
+          <div className="editButtonItem" onClick={onClickUpdate}>
+            <EditRoundedIcon style={{ fontSize: "20px" }} />
+          </div>
+          <div className="editButtonItem" onClick={onClickDelete}>
+            <DeleteRoundedIcon style={{ fontSize: "20px" }} />
+          </div>
+          <div
             className="editButtonItem absolute top-[1px] right-[1px]"
             onClick={onClickSettings}
-          />
+          >
+            <MoreHorizRoundedIcon style={{ fontSize: "20px" }} />
+          </div>
         </div>
       </div>
     </>
