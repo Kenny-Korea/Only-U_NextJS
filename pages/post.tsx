@@ -89,7 +89,7 @@ const Post = () => {
                 sizes="20"
                 style={{ objectFit: "cover" }}
                 onClick={() => {
-                  onClickGridImage(index);
+                  onClickGridImage(displayGridImages.length - index - 1);
                 }}
               />
             </div>

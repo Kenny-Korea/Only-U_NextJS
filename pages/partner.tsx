@@ -2,8 +2,10 @@ import { readPartner, updateUserRegNum } from "@/api/apiService";
 import ModalPartner from "@/components/modal/modalPartner";
 import { usePath } from "@/hooks/usePath";
 import { useUserInfo } from "@/hooks/useUserInfo";
+import { authReducer, AuthState } from "@/state/reducers/authReducer";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 
 const partner = () => {
   usePath("Partner");
@@ -15,12 +17,14 @@ const partner = () => {
   const regNumRef = useRef<HTMLDivElement>(null);
   const partnerRegNumRef = useRef<HTMLInputElement>(null);
   const user = useUserInfo();
+  const loginStatus = useSelector(
+    (state: AuthState) => state.authReducer.loginStatus
+  );
 
   useEffect(() => {
     if (!user) return;
     const newRegNum = Math.floor(Math.random() * 899999) + 100000;
     setRegNum(newRegNum);
-    console.log(user);
     const variables = {
       userUid: user.uid,
       regNum: newRegNum,

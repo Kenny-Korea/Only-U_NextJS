@@ -1,13 +1,7 @@
-import { PageReducerSelector } from "@/state/reducers/pageReducer";
 import { ModalLayoutProps } from "@/types";
-import { useSelector } from "react-redux";
 
 const ModalLayout = (props: ModalLayoutProps) => {
   const { children, modal, onClickSubmit, onClickCancel } = props;
-
-  const navbar = useSelector(
-    (state: PageReducerSelector) => state.pageReducer.navbar
-  );
 
   return (
     <>
@@ -21,10 +15,10 @@ const ModalLayout = (props: ModalLayoutProps) => {
       {/* 올라오는 레이아웃 */}
       <div
         id={modal ? "addPostSlideIn" : "addPostSlideOut"}
-        className="w-full h-screen fixed left-0 top-0 z-20 pt-0 overflow-y-scroll scrollbar-hide"
+        className="w-full h-screen fixed left-0 z-20 pt-0 overflow-y-scroll scrollbar-hide"
       >
         {/* 이 친구가 있어야 키보드 올라오면 스크롤 가능 */}
-        <div className="w-full">
+        <div className="w-full h-full flex flex-col justify-center">
           {/* 내부 컨텐츠 */}
           <div className={`rounded-xl shadow-md m-4 p-3 bg-backgroundColor`}>
             <div className="flex flex-col gap-2">{children}</div>

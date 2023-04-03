@@ -15,8 +15,6 @@ import {
   collection,
   where,
   arrayRemove,
-  orderBy,
-  limit,
   getDocs,
   deleteField,
 } from "firebase/firestore";
@@ -25,7 +23,6 @@ import { uuidv4 } from "@firebase/util";
 import imageCompression from "browser-image-compression";
 import {
   ChatArg,
-  ChatVariables,
   ImageArg,
   ItemArg,
   PlaceArg,
@@ -194,6 +191,8 @@ export const createItem = async (variables: CreateItemArg) => {
   }
   return;
 };
+
+export const createUser = async () => {};
 
 // TODO. READ
 // Items

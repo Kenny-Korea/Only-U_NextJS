@@ -1,3 +1,10 @@
+// D-day 계산해주는 함수
+export const getDday = (savedDate: number) => {
+  const today = new Date().getTime();
+  const gap = savedDate - today;
+  return Math.ceil(new Date(gap).getTime() / 1000 / 60 / 60 / 24);
+};
+
 export const toFullDate = (date: number) => {
   return new Intl.DateTimeFormat("ko-KR").format(date);
 };

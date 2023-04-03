@@ -33,13 +33,9 @@ const Login = () => {
 
   return (
     <>
-      <div
-        className={`card min-h-[15rem] h-80 ${
-          err && "h-72"
-        } flex flex-col w-full`}
-      >
+      <div className="card w-full h-auto flex flex-col p-4">
         <form onSubmit={handleSubmit}>
-          <ul className="m-4 flex flex-col gap-4 text-sm">
+          <ul className="flex flex-col gap-4 text-sm">
             <li className="flex flex-col">
               <span>Email</span>
               <input className="loginInput" type="email" placeholder="email" />
@@ -55,29 +51,37 @@ const Login = () => {
           </ul>
 
           <div className="w-auto h-8 m-4 flex flex-col items-center gap-2">
-            {err && (
-              <span className="text-sm">Something went wrong. Try again</span>
-            )}
+            {err && <p className="text-sm">Something went wrong. Try again</p>}
             <div></div>
             <button className="w-full h-full py-1 text-white text-lg font-bold bg-mainColor hover:bg-mainColor rounded-full">
               Login
             </button>
-            <p className="text-sm">
-              You don't have an account?{" "}
-              <Link
-                href="/register"
-                className="text-mainColor font-bold underline underline-offset-4"
-              >
-                Register
-              </Link>
-            </p>
-            <div>
-              <p>테스트계정</p>
-              <p>tosstest@gmail.com</p>
-              <p>rhkdals2</p>
-            </div>
           </div>
         </form>
+        <div className="w-full centerItemCol">
+          <p className="text-sm">
+            You don't have an account?{" "}
+            <Link
+              href="/register"
+              className="text-mainColor font-bold underline underline-offset-4"
+            >
+              Register
+            </Link>
+          </p>
+          <div className="w-full text-xs flex flex-col mt-2">
+            <p>테스트계정</p>
+            <ul>
+              <li>
+                <p>tosstest@gmail.com</p>
+                <p>rhkdals2</p>
+              </li>
+              <li>
+                <p>kakaotest@gmail.com</p>
+                <p>rhkdals2</p>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </>
   );

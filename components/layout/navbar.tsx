@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { navbarItems } from "@/utils/navbarItems";
 import { useSelector } from "react-redux";
@@ -15,9 +15,6 @@ const Navbar = () => {
     (state: PageReducerSelector) => state.pageReducer.navbar
   );
   const router = useRouter();
-  // const onClickBackButton = (path: string) => {
-  //   router.push(path);
-  // };
 
   useEffect(() => {
     const list = window.document.querySelectorAll(".list");

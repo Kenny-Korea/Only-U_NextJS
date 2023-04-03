@@ -1,8 +1,4 @@
-import {
-  deleteUserRequestStatus,
-  readUser,
-  updateUserRequestStatus,
-} from "@/api/apiService";
+import { deleteUserRequestStatus, readUser } from "@/api/apiService";
 import { useUserInfo } from "@/hooks/useUserInfo";
 import { useEffect, useState } from "react";
 import ModalLayout from "./layout";
@@ -22,7 +18,9 @@ const ModalRequest = (props: any) => {
       });
   }, []);
 
-  const onClickSubmit = () => {};
+  const onClickSubmit = () => {
+    // 수락하면 서로 파트너로 등록되고, 각자의 정보 업데이트 + invalidate Query
+  };
 
   const onClickCancel = () => {
     if (user && user.uid) {

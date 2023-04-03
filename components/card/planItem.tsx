@@ -2,16 +2,13 @@ import { useMemo } from "react";
 import PlanOrder from "@/components/home/planOrder";
 import ItemModificationButton from "@/components/features/modifyItem";
 import { ItemProps, PlanData } from "@/types";
-import { toDate, toFullDate } from "@/utils/dateFormat";
+import { getDday, toFullDate } from "@/utils/dateFormat";
 
 const PlanItem = (props: ItemProps<PlanData>) => {
   const { item } = props;
 
   const dateGap = useMemo(() => {
-    const savedDate = item.plandate;
-    const today = new Date().getTime();
-    const gap = savedDate - today;
-    return Math.ceil(new Date(gap).getTime() / 1000 / 60 / 60 / 24);
+    return getDday(item.plandate);
   }, [props.item]);
 
   const calculateDday = () => {

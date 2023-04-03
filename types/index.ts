@@ -51,15 +51,19 @@ export interface PlaceData extends Data {
 }
 
 export type UserData = {
+  readonly username: string;
   readonly uid: string;
   readonly email: string;
   readonly imageurl: string[];
-  readonly combinedid: string;
-  readonly regnum: null | number;
-  readonly p_uid: string;
-  readonly p_email: string;
-  readonly p_imageurl: string[];
-  readonly regdate: number;
+  readonly partnerinfo: {
+    username: string | null;
+    uid: string | null;
+    email: string | null;
+    imageurl: string[] | null;
+  };
+  readonly combinedid: string | null;
+  readonly regdate: number | null;
+  readonly regnum?: null | number;
 };
 
 // TODO. 개별 아이템 카드에서 전달받을 Props Type (Generics)

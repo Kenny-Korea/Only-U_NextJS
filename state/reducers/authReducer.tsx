@@ -12,13 +12,13 @@ export type AuthReducerSelector = {
 export type AuthState = {
   authReducer: {
     userUid: string;
+    loginStatus: boolean;
   };
 };
 
 type State = {
   loginStatus: boolean;
   userUid: null | string;
-  combinedId: null | string;
 };
 
 type Action = {
@@ -29,10 +29,6 @@ type Action = {
 const initialState = {
   loginStatus: false,
   userUid: null,
-  combinedId: null,
-  // userInfo: {
-  //   username: null,
-  // },
 };
 
 export const authReducer = (state: State = initialState, action: Action) => {

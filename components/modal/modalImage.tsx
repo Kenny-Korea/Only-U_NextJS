@@ -1,6 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
-import { useRef, useState } from "react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
