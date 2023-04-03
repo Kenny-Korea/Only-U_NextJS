@@ -1,9 +1,8 @@
 ## Only U 최적화 적용기
 
-상세 페이지 주소 https://sedate-marmot-76f.notion.site/Only-U-PWA-77a003838369495ab0eab947bf8cfe22
-
-1차 프로젝트 실행 : https://only-u.netlify.app
-2차 프로젝트 실행 : https://only-u.vercel.app
+- 상세 페이지 주소 https://sedate-marmot-76f.notion.site/Only-U-PWA-77a003838369495ab0eab947bf8cfe22
+- 1차 프로젝트 실행 : https://only-u.netlify.app
+- 2차 프로젝트 실행 : https://only-u.vercel.app
 
 #### 요약
 
