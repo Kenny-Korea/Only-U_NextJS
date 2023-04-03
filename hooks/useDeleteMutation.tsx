@@ -15,7 +15,7 @@ export const useDeleteMutation = () => {
         console.log("삭제 완료");
         dispatch({ type: "DELETING_DONE" });
       },
-      onError: (data, variables) => {
+      onError: () => {
         alert("Failed to delete posts. Please try again");
         dispatch({ type: "DELETING_DONE" });
       },

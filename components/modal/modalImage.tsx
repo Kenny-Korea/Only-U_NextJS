@@ -5,24 +5,25 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 type Props = {
   images: string[];
-  page: number;
+  currentPage: number;
   setModal: React.Dispatch<React.SetStateAction<boolean | number>>;
 };
 
 const ModalImage = (props: Props) => {
-  const { images, page, setModal } = props;
+  const { images, currentPage, setModal } = props;
 
   const toPrevImage = () => {
-    if (page === 0 || typeof page === "boolean") return;
+    if (currentPage === images.length - 1 || typeof currentPage === "boolean")
+      return;
     setModal((prev) => {
-      return (prev as number) - 1;
+      return (prev as number) + 1;
     });
   };
 
   const toNextImage = () => {
-    if (page === images.length - 1 || typeof page === "boolean") return;
+    if (currentPage === 0 || typeof currentPage === "boolean") return;
     setModal((prev) => {
-      return (prev as number) + 1;
+      return (prev as number) - 1;
     });
   };
 
@@ -37,14 +38,14 @@ const ModalImage = (props: Props) => {
       />
       <div className="w-full h-full relative z-40">
         <Image
-          src={typeof page === "number" ? images[page] : ""}
+          src={typeof currentPage === "number" ? images[currentPage] : ""}
           alt=""
           fill
           sizes="20"
           style={{ objectFit: "contain" }}
         />
         <div className="w-20 h-8 rounded-full bg-black bg-opacity-50 text-lg centerItem text-white absolute bottom-8 left-[calc(50%-2.5rem)]">
-          {page + 1} / {images.length}
+          {images.length - currentPage} / {images.length}
         </div>
         <div className="modalArrow left-0" onClick={toPrevImage}>
           <ArrowBackIosNewIcon />

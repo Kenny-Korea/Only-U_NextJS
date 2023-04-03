@@ -7,6 +7,7 @@ import { useQuery } from "react-query";
 import { readUser } from "@/api/apiService";
 import ModalProfile from "../modal/modalProfile";
 import { getDday } from "@/utils/dateFormat";
+import unnamed from "../../public/unnamed.png";
 
 const Profile = () => {
   const [modal, setModal] = useState(false);
@@ -36,7 +37,6 @@ const Profile = () => {
       enabled: !!userUid,
     }
   );
-  const userImage = user?.photoURL;
   if (error) return <div>An error has occurred</div>;
 
   return (
@@ -44,9 +44,9 @@ const Profile = () => {
       <div className="w-[35vh] h-[35vh] min-h-[35vh] min-w-[35vh] relative">
         <div className="w-full h-full rounded-full bg-white overflow-hidden flex relative border-8 border-bgColor">
           <div className="w-1/2 h-full bg-cover bg-center border-none relative">
-            {userImage && (
+            {user && (
               <Image
-                src={userImage}
+                src={user?.photoURL}
                 alt=""
                 fill
                 sizes="20"
@@ -57,9 +57,9 @@ const Profile = () => {
             )}
           </div>
           <div className="w-1/2 h-full bg-cover bg-center border-none relative">
-            {userImage && (
+            {user && (
               <Image
-                src={userImage}
+                src={user?.partnerInfo?.photoURL || unnamed}
                 alt=""
                 fill
                 sizes="20"

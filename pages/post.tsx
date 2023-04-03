@@ -45,6 +45,8 @@ const Post = () => {
     setModal(true);
   };
 
+  // imageModal state는 초기값이 false였다가, grid 모드에서 사진의 개수만큼 number로 타입이 변환
+  // 좀 더 쉽고 직관적인 방법으로 변경을 고민해야 함
   const onClickGridImage = (index: number) => {
     setImageModal(index);
   };
@@ -57,7 +59,7 @@ const Post = () => {
 
   const modalImageProps = {
     images: displayGridImages as string[],
-    page: imageModal as number,
+    currentPage: imageModal as number,
     setModal: setImageModal,
   };
 
@@ -80,20 +82,23 @@ const Post = () => {
           ))}
         {postView === "grid" &&
           Array.isArray(data) &&
-          displayGridImages?.map((image, index) => (
-            <div className="w-full h-28 relative" key={image}>
-              <Image
-                src={displayGridImages[displayGridImages.length - index - 1]}
-                alt=""
-                fill
-                sizes="20"
-                style={{ objectFit: "cover" }}
-                onClick={() => {
-                  onClickGridImage(displayGridImages.length - index - 1);
-                }}
-              />
-            </div>
-          ))}
+          displayGridImages?.map((image, index) => {
+            const reversedIndex = displayGridImages.length - index - 1;
+            return (
+              <div className="w-full h-28 relative" key={image}>
+                <Image
+                  src={displayGridImages[reversedIndex]}
+                  alt=""
+                  fill
+                  sizes="20"
+                  style={{ objectFit: "cover" }}
+                  onClick={() => {
+                    onClickGridImage(reversedIndex);
+                  }}
+                />
+              </div>
+            );
+          })}
       </div>
       {typeof imageModal === "number" && <ModalImage {...modalImageProps} />}
 
