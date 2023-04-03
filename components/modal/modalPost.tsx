@@ -44,9 +44,10 @@ const ModalPost = (props: ModalProps) => {
       hashtag: hashtagContainer,
       content: contentRef.current?.value,
       imageurl: null,
-      writer: "kenny",
+      writer: user?.username,
       regdate: null,
     };
+    console.log(data);
 
     // 3. createItem 함수에 전달할 variables
     const variables: CreateItemArg = {
@@ -56,6 +57,7 @@ const ModalPost = (props: ModalProps) => {
       setModal,
       image: imageFileContainer,
     };
+    console.log(variables);
 
     // 4. mutate 함수 호출
     mutate(variables);
