@@ -1,24 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Noto+Sans+KR:wght@400;500&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&family=Pacifico&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Noto+Sans+KR:wght@400;500&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&family=Pacifico&display=swap"); */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /** 공용 Layout 관련 */
-/* .page {
-  @apply bg-green-200 flex flex-col pb-2;
-} */
+
 .card {
   @apply bg-white rounded-2xl overflow-hidden shadow-md;
 }
-
-/* .cardItems {
-  @apply flex flex-col gap-3 p-3;
-} */
-
-/* .centerPage {
-  @apply flex flex-col items-center;
-} */
 
 .centerItem {
   @apply flex justify-center items-center;
@@ -32,14 +22,6 @@
   @apply flex justify-between items-center;
 }
 
-/* .submenu {
-  @apply text-xl font-bold mx-5 my-3;
-} */
-
-/* .wrapper {
-  @apply text-xl;
-} */
-
 .input {
   @apply w-[calc(100%-(mx*3))] h-6 mx-3 my-2 px-2 py-1 text-sm shadow-sm rounded-md outline-none;
 }
@@ -51,18 +33,13 @@
 .textArea {
   @apply w-full px-2 py-1 text-sm rounded-sm outline-none border-2 border-gray-200 resize-none;
 }
-/* 
-.ratingButton {
-  @apply w-1/5 h-full bg-gray-200 hover:bg-yellow-400;
-} */
 
 .hashtag {
   @apply h-5 mr-2 w-fit px-2 font-semibold text-xs text-center text-white rounded-full leading-5 bg-mainColor inline-block;
 }
 
 .modalArrow {
-  @apply w-12 h-full centerItem font-bold absolute top-0
-  /* hover:bg-white hover:bg-opacity-30 ; */;
+  @apply w-12 h-full centerItem font-bold absolute top-0;
 }
 
 .flexGridButton {

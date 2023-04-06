@@ -1,3 +1,5 @@
+// NOT USING ANYMORE
+
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { getDocs, query, collection, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
