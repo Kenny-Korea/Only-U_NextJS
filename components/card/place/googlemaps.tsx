@@ -129,8 +129,8 @@ const GoogleMapContainer = (props: Props) => {
     dispatch({ type: "TOGGLE_NAVBAR" });
   };
 
-  if (!isLoaded) return <p>"Loading..."</p>;
-  if (loadError) return <p>"Something's gone wrong. Please try again"</p>;
+  if (!isLoaded) return <p>Loading...</p>;
+  if (loadError) return <p>Something has gone wrong. Please try again</p>;
   return (
     <>
       {isLoaded && (
