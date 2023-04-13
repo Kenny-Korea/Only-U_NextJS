@@ -19,6 +19,7 @@ const Place = () => {
 
   usePath("Place");
   const [modal, setModal] = useState(false);
+  const [modalPlaceInfo, setModalPlaceInfo] = useState(false);
   const [placeView, setPlaceView] = useState<"flex" | "grid">("flex");
   const { data, isLoading, error } = useItemData("places");
 

@@ -9,7 +9,7 @@ type Props = {
   setModal: React.Dispatch<React.SetStateAction<boolean | number>>;
 };
 
-const ModalImage = (props: Props) => {
+const ModalPostImage = (props: Props) => {
   const { images, currentPage, setModal } = props;
 
   const toPrevImage = () => {
@@ -58,4 +58,4 @@ const ModalImage = (props: Props) => {
   );
 };
 
-export default ModalImage;
+export default ModalPostImage;

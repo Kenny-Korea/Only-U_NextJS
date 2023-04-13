@@ -1,7 +1,7 @@
 import PostItem from "@/components/card/post/postItem";
 import CreateNewItemButton from "@/components/features/createNewItem";
 import FilterBar, { FilterBarProps } from "@/components/features/filterBar";
-import ModalImage from "@/components/modal/modalImage";
+import ModalPostImage from "@/components/modal/modalPostImage";
 import ModalPost from "@/components/modal/modalPost";
 import { useItemData } from "@/hooks/useItemData";
 import { usePath } from "@/hooks/usePath";
@@ -100,7 +100,9 @@ const Post = () => {
             );
           })}
       </div>
-      {typeof imageModal === "number" && <ModalImage {...modalImageProps} />}
+      {typeof imageModal === "number" && (
+        <ModalPostImage {...modalImageProps} />
+      )}
 
       {modal && <ModalPost modal={modal} setModal={setModal} />}
       {!modal && (

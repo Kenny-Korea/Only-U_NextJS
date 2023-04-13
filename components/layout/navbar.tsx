@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { navbarItems } from "@/utils/navbarItems";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
 import { PageReducerSelector } from "@/state/reducers/pageReducer";
 
 const menu = ["Home", "Post", "Chat", "Place", "Gift"];
@@ -14,9 +13,9 @@ const Navbar = () => {
   const showNavbar = useSelector(
     (state: PageReducerSelector) => state.pageReducer.navbar
   );
-  const router = useRouter();
 
   useEffect(() => {
+    // TODO. DOM 객체를 직접 조작하지 않는 방법으로 Navbar css를 구성하는 방법으로 전환 필요
     const list = window.document.querySelectorAll(".list");
     list.forEach((item, itemIndex) => {
       if (currentPage === menu[itemIndex]) {

@@ -21,7 +21,7 @@ const Plan = () => {
   };
 
   const getToken = () => {
-    const token = await getIdToken();
+    // const token = await getIdToken();
   };
 
   return (

@@ -16,6 +16,8 @@ const PlaceItem = (props: ItemProps<PlaceData>) => {
     return result;
   }, [item.rating]);
 
+  const onClickPlaceItem = () => {};
+
   return (
     <>
       <div
@@ -24,6 +26,7 @@ const PlaceItem = (props: ItemProps<PlaceData>) => {
             ? "p-1 min-h-[8rem]"
             : "mb-3 p-2 flex gap-2 min-h-[5rem]"
         } `}
+        onClick={onClickPlaceItem}
       >
         {item.imageurl && (
           <div

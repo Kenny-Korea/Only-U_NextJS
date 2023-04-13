@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import { store } from "@/state/store";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
   // TODO. 왜 queryClient를 변수로 선언하면 제대로 동작하지 않는지?
